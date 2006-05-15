@@ -1,0 +1,38 @@
+#logingContainerDiv {
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	
+	text-align: left;
+}
+
+.logintable {
+	border-style: solid;
+	
+	border-top-width:    1px;
+	border-bottom-width: 1px;
+	border-left-width:   1px;
+	border-right-width:  1px;
+	
+	width: 240px;
+}
+
+#anmeldungDiv, #loginDiv, #vergessenDiv {
+	width: 280px;
+	float: none;
+	clear: both;
+	
+	margin-left: 40px;
+	margin-right: 20px;
+	margin-top: 10px;
+}
+
+
+#errorDiv {
+	margin-left: 40px;
+	margin-right: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	
+}

@@ -1,0 +1,109 @@
+.menulink {
+	font-weight: bold;
+	color: #000000;
+}
+
+.menulink:link {
+	font-style: normal;
+	text-decoration: none;
+}
+
+.menulink:visited {
+	font-style: normal;
+	text-decoration: none;
+}
+
+.menulink:hover {
+	font-style: normal;
+	text-decoration: none;
+	color: #888888;
+}
+
+.logo {
+	/*vertical-align: bottom;*/
+	width: 36px;
+	text-align: center;
+	padding-bottom: 5px;
+	color: #FFFFFF;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+#menu, #menuLogin {
+	margin-left:   0px;
+	margin-bottom: 30px;
+	margin-top:    0px;
+	margin-right:  0px;
+	
+	text-align: left;
+	width: 100%;
+	
+	border-style: solid;
+	border-bottom-width: 1px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+	border-top-width: 0px;
+	
+	position: relative;
+	left: 0px;
+	top: 0px;
+	
+
+}
+
+.containerTable {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-rigth: 0px;
+	
+	padding-top: 0px;
+	padding-left: 0px;
+	padding-botttom: 0px;
+	padding-rigth: 0px;
+	height: 42px;
+}
+
+.menutable {
+	margin-top: 10px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+}
+
+.menutable td {
+	padding-right: 20px;
+}
+
+.tableTopRight {
+
+	margin-left:  0px;
+	margin-right: 0px;
+	margin-top:   0px;
+	margin-bottom:0px;
+
+	padding-top: 5px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	
+	position: absolute;
+	top: 10px;
+	right: 40px;
+}
+
+#menu .tableTopRight table {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	
+}
+
+.tableTopRight td {
+	padding-left: 10px;
+}

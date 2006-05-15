@@ -1,0 +1,150 @@
+.titelbild {
+	background-color: #FFFFFF;
+	background-image:url(../images/titelbild/admin.jpg);
+	background-repeat: no-repeat;
+}
+
+.titelGanz {
+	width : 690px;
+	height : 21px;
+	margin-left: 30px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	
+	font-family: Times, Times New Roman, Verdana, Arial;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: none;
+	
+	background-color: #000000;
+	background-image: url(../images/titelende.gif);
+	background-repeat: no-repeat;
+	background-position: right;
+
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 0px;
+	border-left-width: 1px;
+	border-color: #000000;
+	border-style: solid;
+
+}
+
+.titelHalb {
+	width : 330px;
+	height : 21px;
+	margin-left: 30px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	
+	font-family: Times, Times New Roman, Verdana, Arial;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: none;
+	
+	background-color: #000000;
+	background-image: url(../images/titelende.gif);
+	background-repeat: no-repeat;
+	background-position: right;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 0px;
+	border-left-width: 1px;
+	border-color: #000000;
+	border-style: solid;
+	
+	vertical-align: bottom;
+	
+
+}
+
+.subtitelGanz {
+	width : 690px;
+	margin-left: 30px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 0px;
+	border-left-width: 1px;
+	border-color: #000000;
+	border-style: solid;
+
+	
+	background-color: #CCCCCC;
+}
+
+.subtitelHalb {
+	width : 330px;
+	margin-left: 30px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 0px;
+	border-left-width: 1px;
+	border-color: #000000;
+	border-style: solid;
+
+		
+	background-color: #CCCCCC;
+}
+
+.inhaltGanz {
+	width : 660px;
+	margin-left: 30px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	background-color: #F5F5F5;
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-color: #000000;
+	border-style: solid;
+
+	padding:15px;
+
+}
+
+* html .inhaltGanz {  /* nur fuer Internet Explorer */
+  width:690px;     /* Version 5.x */
+  w\idth:690px;    /* Version 6 */
+}
+
+.inhaltHalb {
+	width : 300px;
+	margin-left: 30px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	background-color: #F7F7F5;
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-color: #000000;
+	border-style: solid;
+
+	padding:15px;
+
+}
+
+* html .inhaltHalb {  /* nur fuer Internet Explorer */
+  width:330px;     /* Version 5.x */
+  w\idth:330px;    /* Version 6 */
+}
+
+a {
+	font-weight: bold;
+	color: #FF0000;
+}

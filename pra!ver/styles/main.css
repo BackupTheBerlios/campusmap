@@ -1,0 +1,568 @@
+body {
+	font-family: Verdana, Arial, Helvetica, Geneva, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	font-weight: normal;
+	color: #000000;
+	text-decoration: none;
+	
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	text-align: center;
+	/*background-image:url(../images/blumen3.gif);*/
+	background-color: #B0BE9E;
+}
+
+.hauptbox {
+	width: 750px;
+	padding: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #FFFFFF;
+	border: 0px;
+	text-align:left;
+	voice-family: "\"}\"";
+	voice-family:inherit;
+}
+
+.schwarzelinie {
+	background-color: #000000;
+}
+
+.floatleft {
+	float: left;
+}
+
+.hintergrundstreifen {
+	display: inline;
+	width: 750px;
+	/*background-image:url(../images/hintergrundstreifen.gif);*/
+	background-repeat: no-repeat;
+}
+
+
+
+.fusstext {
+	font-family: Verdana, Arial, Helvetica, Geneva, sans-serif;
+	font-size: 9px;
+	font-style: normal;
+	font-weight: bold;
+	color: #ffffff;
+	text-decoration: none;
+}
+.titelGanz {
+	width : 690px;
+	height : 21px;
+	margin-left: 30px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	
+	font-family: Times, Times New Roman, Verdana, Arial;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: none;
+	
+	background-color: #000000;
+	background-image: url(../images/titelende.gif);
+	background-repeat: no-repeat;
+	background-position: right;
+
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 0px;
+	border-left-width: 1px;
+	border-color: #000000;
+	border-style: solid;
+
+
+
+}
+
+.titelGanzStreifen {
+	width : 690px;
+	height : 1px;
+	margin-left: 30px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+
+
+	overflow: hidden;	
+	
+	background-color: #000000;
+
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 0px;
+	border-left-width: 1px;
+	border-color: #000000;
+	border-style: solid;
+
+
+
+}
+.titelGanzHistory {
+	width : 690px;
+	height : 21px;
+	margin-left: 30px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	
+	font-family: Times, Times New Roman, Verdana, Arial;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: none;
+	
+	background-color: #000000;
+	background-image: url(../images/titelende_einpflegen.gif);
+	background-repeat: no-repeat;
+	background-position: right;
+
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 0px;
+	border-left-width: 1px;
+	border-color: #000000;
+	border-style: solid;
+
+
+}
+
+.titelHalb {
+	width : 330px;
+	height : 21px;
+	margin-left: 30px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	
+	font-family: Times, Times New Roman, Verdana, Arial;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: none;
+	
+	background-color: #000000;
+	background-image: url(../images/titelende.gif);
+	background-repeat: no-repeat;
+	background-position: right;
+
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 0px;
+	border-left-width: 1px;
+	border-color: #000000;
+	border-style: solid;
+	
+	vertical-align: bottom;
+
+	
+
+}
+
+table td.fett {
+	font-family: Verdana, Geneva, Arial, Helvetica, san-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: bold;
+	color: #000000;
+	text-decoration: none;
+	height: 20px;
+	
+}
+
+.inhaltGanz {
+	width : 660px;
+	margin-left: 30px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	background-color: #F7F7F5;
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-color: #000000;
+	border-style: solid;
+
+	padding:15px;
+}
+
+* html .inhaltGanz {  /* nur fuer Internet Explorer */
+  width:690px;     /* Version 5.x */
+  w\idth:690px;    /* Version 6 */
+}
+
+.inhaltHalb {
+	width : 300px;
+	margin-left: 30px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	background-color: #F7F7F5;
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-color: #000000;
+	border-style: solid;
+
+	padding:15px;
+}
+
+* html .inhaltHalb {  /* nur fuer Internet Explorer */
+  width:330px;     /* Version 5.x */
+  w\idth:330px;    /* Version 6 */
+}
+
+
+.normAbstand {
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+}
+
+.titelbild {
+	background-color: #FFFFFF;
+	background-image:url(../images/titelbild/home.jpg);
+	background-repeat: no-repeat;
+}
+
+a {
+	font-weight: bold;
+	color: #555555;
+}
+
+a:link {
+	font-style: normal;
+	text-decoration: none;
+}
+
+a:visited {
+	font-style: normal;
+	text-decoration: none;
+}
+
+a:hover {
+	font-style: normal;
+	text-decoration: none;
+	color: #AAAAAA;
+}
+
+a.db {
+	font-weight: normal;
+	color: #555555;
+}
+
+a.db:hover  {
+	font-style: normal;
+	text-decoration: none;
+	color: #800000;
+}
+
+
+
+
+.errorsList {
+	font-family: Verdana, Geneva, Arial, Helvetica, san-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FF0000;
+	text-decoration: none;
+}
+
+ul.errorsList {
+	margin-left: 0px;
+	padding-left: 0px;
+	list-style-type: none;
+}
+
+.hervorgehoben {
+	font-weight: bold;
+	color: #FFFFFF;
+}
+
+.smallformfield {
+	width: 48px;
+}
+
+.middleformfield {
+	width: 95px;
+}
+
+.wideformfield {
+	width: 135px;
+}
+
+.largeformfield {
+	width: 250px;
+}
+
+.extendedformfield {
+	width: 450px;
+}
+
+.supextendedformfield {
+	width: 550px;
+}
+
+.simpleList {
+	font-size: 10px;
+	line-height: 15px;
+	list-style-type: dot;
+	margin-top: 5px;
+}
+
+p.meldung {
+	font-size: 12px;
+	line-height: 15px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	color: #000000;
+	font-weight: bold;
+	text-align: left;
+	word-spacing: normal;
+}
+
+hr {
+	width : 100%;
+	height: 1px;
+}
+
+table, .studienPlanTable, .fachEingabeTable, .faecherTable {
+	
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	
+	border-style: none;
+	
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	
+	vertical-align: bottom;
+}
+
+.borderedTable {
+
+	padding-top: 4px;
+	padding-right: 8px;
+	padding-bottom: 4px;
+	padding-left: 8px;
+
+	border-style: solid;
+	
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	
+}
+
+.studienPlanTable {
+	width: 450;
+}
+
+.studiengangTable {
+	width: 635;
+}
+
+.dick {
+	font-family: Verdana, Geneva, Arial, Helvetica, san-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: bold;
+	color: #000000;
+	text-decoration: none;
+	
+	
+}
+
+
+table td {
+	font-family: Verdana, Geneva, Arial, Helvetica, san-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	color: #555555;
+	text-decoration: none;
+	height: 20px;
+	
+}
+
+table td.dick {
+	font-family: Verdana, Geneva, Arial, Helvetica, san-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: bold;
+	color: #000000;
+	text-decoration: none;
+	height: 20px;
+	
+}
+
+
+table td.rowDistance {
+	height : 10px;
+	font-size:  5px;
+}
+
+.headTitleDiv {
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	text-align: left;
+}
+
+.titleDiv, .titleDivhidden {
+	margin-left:  0px;
+	margin-right: 0px;
+	margin-top:   0px;
+	margin-bottom:0px;
+	
+	padding-left: 10px;
+	padding-top: 2px;
+	padding-right: 10px;
+	padding-bottom: 2px;
+	
+	border-style: solid;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-bottom-width: 0px;
+	
+	font-size: 12px;
+	font-style: normal;
+	font-weight: bold;
+	color: #000000;
+	text-decoration: none;
+	
+	background-color: #403714;
+	display : block;
+}
+
+.titleDivhidden {
+	border-bottom-width: 1px;
+}
+
+.titleTable {
+	margin-left:  0px;
+	margin-right: 0px;
+	margin-top:   0px;
+	margin-bottom:0px;
+
+	padding-left: 0px;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	
+	font-size: 12px;
+	font-style: normal;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-decoration: none;
+	
+	background-color: #900000;
+	vertical-align: middle;
+}
+
+.titleicon {
+	vertical-align: middle;
+	width: 25px;
+}
+
+.leftFloatingDiv, .leftFloatingDiv300 {
+	margin-left: 20px;
+	float: left;
+	clear: none;
+}
+
+.leftFloatingDiv300 {
+	width: 300px;
+}
+
+.containerDiv {
+	margin-top: 0px;
+	margin-bottom: 10px;
+	vertical-align: top;
+}
+
+.leftFloating, .rightFloating, .leftFloatingRightBottomMargin {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: 0px;
+	clear: none;
+	
+	float: left;
+}
+
+.leftFloatingRightBottomMargin {
+	margin-right: 40px;
+	margin-bottom: 40px;
+}
+
+.rightFloating {
+	float: right;
+}
+
+
+
+
+
+.parallelTable {
+	border-style: none;
+
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-right-width: 0px;
+	
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.parallelTable div {
+	margin-right: 0px;
+}
+
+h3, .classH3 {
+	margin-left: 30px;
+	font-family: Verdana, Geneva, Arial, Helvetica, san-serif;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: normal;
+	color: black;
+	text-decoration: none;
+}
+
+h4, .classH4 {font-family: Verdana, Geneva, Arial, Helvetica, san-serif;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: bold;
+	color: #900000;
+	text-decoration: none;
+}
+
+h5, .classH5 {
+	margin-left: 30px;
+	font-family: Verdana, Geneva, Arial, Helvetica, san-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #900000;
+	text-decoration: none;
+}
