@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+
+<objects> <!-- root tag der xml datei -->
+
+  <guiObjects> <!-- root tag GUI Funktionen über dem Kartenfenster -->
+
+	<!-- Beispiel eines Gui Gruppe mit Erklärungen:
+	
+	GUI Elemente werden immer in einem Slidecase dargestellt
+	
+	-guiGroup gibt dem SlideCase den Namen
+	-side gibt die Seite an, an der der Slidecase lehnt. 0=rechts, 1=unten, 2=links, 3=oben
+	-shift beschreibt die Position an der "side", in Richtung des Uhrzeigersinns
+	-occupy ist die Höhe/Breite des slidecases parallel zur gewählten "side"
+	-slideOut beschreibt, wie weit das slidecase von der Seite wegfährt, wenn man auf dieses klickt
+	<guiGroup guiGroup="Up-Down" side="0" shift="100" occupy="220" slideOut="100">
+	
+	  Jedem Objekt innerhalb eines Slidecases muss ein Typ zugeordnet werden.
+	  Derzeit sind Slider, Button und Overview implementiert
+	  Je nach Typ erwartet ein Objekt verschiedene Einstellungen (subtags)
+	  
+	  execution object wird beim Button und beim Slider benötigt und gibt an, was bei Benutzung ausgeführt werden soll.
+	  Sinnvoll ist im Moment nur die Manipulation der Kamera mit folgenden Funktionen:
+	  changeHeight, pitchDown, pitchUp, yawRight, yawLeft, stepForward, stepBackward, stepLeft, stepRight
+	  
+	  Beispiel Slider
+      <object type="Slider">
+        <position x="40" y="10"/>			Position
+        <size x="30" y="150"/>				Größe
+        <limitations activeArea="0.95"/>	der Bereich des Sliders, der verwendet werden kann
+        <startValue value="0.5"/> 			Anfangswert
+        <flags isvertical="1"/>				horizontaler (0) oder vertikaler (1) Slider
+        <execution executionobject="camera" executionmethod="changeHeight"/>
+      </object>
+
+	  Beispiel Button
+	  <object type="Button" keepState="0">									keepState bestimmt, ob der Button eingedrückt bleibt
+        <position x="50" y="10"/>											Position
+        <size x="20" y="20"/>												Größe
+        <execution executionobject="camera" executionmethod="pitchDown"/>	s.o.
+		<image name="info.png" offsetX="-5" offsetY="0" />					Bild des Buttons mit Offset
+		<help>Dieser Text erscheint, wenn ich den Button betätige</help>
+      </object>
+      
+      Beispiel Overview
+      <object type="Overview">
+        <position x="10" y="10"/>	Position
+        <size x="30" y="150"/>		Größe
+      </object>
+      
+    </guiGroup>
+	-->
+	
+	
+    <guiGroup guiGroup="Höhenregler" side="0" shift="100" occupy="180" slideOut="100">
+      <object type="Slider">
+        <position x="40" y="10"/>
+        <size x="30" y="150"/>
+        <limitations activeArea="0.95"/>
+        <startValue value="0.5"/>
+        <flags isvertical="1"/>
+        <execution executionobject="camera" executionmethod="changeHeight"/>
+      </object>
+    </guiGroup>
+    
+    <guiGroup guiGroup="Steuerung" side="0" shift="0" occupy="100" slideOut="100">
+      <object type="Button" keepState="0"> <!-- turnDown //-->
+        <position x="50" y="10"/>
+        <size x="20" y="20"/>
+        <execution executionobject="camera" executionmethod="pitchDown"/>
+		<image name="turnDown.png" offsetX="-5" offsetY="0" />
+		<help>Nach unten schauen.NEWLINEAlternative: Maus auf der Karte ziehen</help>
+      </object>
+      <object type="Button" keepState="0"> <!-- turnRight //-->
+        <position x="25" y="40"/>
+        <size x="20" y="20"/>
+        <execution executionobject="camera" executionmethod="yawRight"/>
+		<image name="turnRight.png" offsetX="0" offsetY="-10" />
+		<help>Nach recht schauen.NEWLINEAlternative: Maus auf der Karte ziehen</help>
+      </object>
+      <object type="Button" keepState="0"> <!-- moveForward //-->
+        <position x="50" y="40"/>
+        <size x="20" y="20"/>
+        <execution executionobject="camera" executionmethod="stepForward"/>
+		<image name="moveForward.png" offsetX="-10" offsetY="-5" />
+		<help>Nach vorne bewegen.NEWLINEAlternative: Doppelklick auf der Karte</help>
+      </object>
+      <object type="Button" keepState="0"> <!-- turnUp //-->
+        <position x="50" y="70"/>
+        <size x="20" y="20"/>
+        <execution executionobject="camera" executionmethod="pitchUp"/>
+		<image name="turnUp.png" offsetX="-5" offsetY="0" />
+		<help>Nach oben schauen.NEWLINEAlternative: Maus auf der Karte ziehen</help>
+      </object>
+      <object type="Button" keepState="0"> <!-- turnLeft //-->
+        <position x="75" y="40"/>
+        <size x="20" y="20"/>
+        <execution executionobject="camera" executionmethod="yawLeft"/>
+		<image name="turnLeft.png" offsetX="0" offsetY="-10" />
+		<help>Nach links schauen.NEWLINEAlternative: Maus auf der Karte ziehen</help>
+      </object>
+    </guiGroup>
+    
+    <guiGroup guiGroup="Uebersicht" side="3" shift="0" occupy="220" slideOut="160">
+      <object type="Overview">
+        <position x="10" y="10"/>
+        <size x="30" y="150"/>
+      </object>
+    </guiGroup>
+
+  </guiObjects>
+
+</objects>

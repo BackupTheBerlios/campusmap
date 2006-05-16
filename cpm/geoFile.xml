@@ -1,0 +1,850 @@
+<?xml version="1.0"?>
+
+<objects> <!-- root tag der xml datei -->
+
+	<worldObjects> <!-- root tag aller Objekte, die auf der Karte auftauchen sollen -->
+
+		<!-- buidings enthält alle Gebäude der Karte
+		uniformScale ist ein Multiplikator für die Gebäude Positionen und Größen
+		databaseScale ist ein Multiplikator für die Raumpositionen, die aus der Datenbank kommen -->
+		
+		<buildings uniformScale="0.1" datebaseScale="4.109756">
+		
+			<!-- Beispiel eines Gebäudes mit Erklärungen:
+			<building>
+			
+				<position x="100" y="200" z="0"/> Position des Gebäudes
+				
+				<scale x="1.0" y="1.0" z="1.0"/> Skalierung des Gebäudes
+				
+				<rotation x="1.571" y="3.142" z="0.0"/> Rotation des Gebäudes
+				
+				<modelnames name="haus" lodNum="3"/>
+				Dateiname des Gebäudes und die Anzahl der Detail Level
+				Hier ist nur der Anfang des Dateinamens anzugeben. CampusMap fügt automatisch die weiteren Bezeichnungen hinzu.
+				In diesem Fall würde haus mit 3 Detailleveln geladen werden:
+				haus_OVERVIEW.gz, haus_CLOSER.gz, haus_SELECTED.gz
+				Detaillevel 1     Detaillevel 2   Detaillevel 3
+				Das Format ist ein mit gz gepacktes Alias Obj 3D-Model
+				
+				<flags drawLines="1" zFade="0"/>
+				drawLines beschreibt, ob an diesem Gebäude die Außenlinien gezeichnet werden sollen.
+				zFade hat derzeit keine Verwendung
+				
+				Es folgt eine Liste von Kollisionskugeln, die den Mouseover Effekt ermöglichen
+				Die Position ist relativ zu den Gebäuden zu sehen
+				<colspheres>
+					<sphere x="-240" y="-201" z="135" radius="235"/>
+					<sphere x="220" y="-201" z="135" radius="235"/>
+				</colspheres>
+				
+				Es folgen textuelle Informationen über das Gebäude
+				<information>
+				
+					<indentifier buildingnumber="haus"/> interner Bezeichnung des Gebäudes, muss individuell gewählt werden
+					
+					<text headline="Haus" infotext="Dieses Haus<br>ist rund"/>
+					Bezeichung (headline) und Informationstext in einfachem HTML
+					Hier keinesfalls Codes für besondere Zeichen angeben wie zum Beispiel &nbsp;
+					
+				</information>
+				
+				Detailview beschreibt die Kameraansicht bei einer Ansicht des Gebäudes
+				<detailview>
+					
+					<roomCoordOrigin x="1275" y="-125" z="0" zRotate="0"/>
+					Gibt die Verschiebung und Drehung der Koordinaten aus der Datenbank für dieses Gebäude an.
+					
+					<startposition x="-50" y="-70" z="0"/>
+					Beschreibt die Richtung vom Mittelpunkt des Gebäudes aus, die die Kamera einnimmt,
+					wenn das Gebäude näher betrachtet werden soll
+					
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="80"/>
+					Beschreibt, in welcher Höhe und mit welches Radius das Gebäude umflogen werden soll
+					
+				</detailview>
+				
+			</building>
+			-->
+		
+			<building>
+				<position x="1150" y="-1990" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="1" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="890" y="-630" z="175" radius="300"/>
+					<sphere x="890" y="-230" z="175" radius="300"/>
+					<sphere x="890" y="200" z="175" radius="300"/>
+					<sphere x="890" y="650" z="175" radius="300"/>
+					<sphere x="-935" y="785" z="191" radius="200"/>
+					<sphere x="-935" y="400" z="191" radius="200"/>
+					<sphere x="-935" y="12" z="191" radius="200"/>
+					<sphere x="-935" y="-350" z="191" radius="200"/>
+					<sphere x="-935" y="-730" z="191" radius="200"/>
+					<sphere x="-590" y="-730" z="191" radius="200"/>
+					<sphere x="-240" y="-730" z="191" radius="200"/>
+					<sphere x="100" y="-730" z="191" radius="200"/>
+					<sphere x="440" y="-730" z="191" radius="200"/>
+					<sphere x="-560" y="785" z="191" radius="200"/>
+					<sphere x="-230" y="785" z="191" radius="200"/>
+					<sphere x="140" y="785" z="191" radius="200"/>
+					<sphere x="-525" y="785" z="191" radius="200"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="1"/>
+					<text headline="Gebäude 1 / Atrium" infotext="Mönkhofer Weg 136 - 140<br>23562 Lübeck<br><br>Cafeteria Studierende<br>Cafeteria Mitarbeiter<br>Hausmeister<br><br>Fachschaft:<br><ul><li>Elektrotechnik</li><li>Maschinenbau</li><li>Wirtschaftsingenieurwesen</li></ul>"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="7070" y="3940" z="0" zRotate="0"/>
+					<startposition x="211.20" y="355.30" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="220"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="3700" y="-3800" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="2" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-350" y="1040" z="60" radius="220"/>
+					<sphere x="-350" y="685" z="60" radius="220"/>
+					<sphere x="-350" y="310" z="60" radius="220"/>
+					<sphere x="-350" y="-50" z="60" radius="220"/>
+					<sphere x="-350" y="-395" z="60" radius="220"/>
+					<sphere x="-350" y="-780" z="60" radius="220"/>
+					<sphere x="90" y="-350" z="135" radius="435"/>
+					<sphere x="610" y="-350" z="115" radius="350"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="2"/>
+					<text headline="Gebäude 2" infotext="Fachbereich:<br><ul><li>Elektrotechnik</li><li>Maschinenbau</li><li>Wirtschaftsingenieurwesen</li></ul><br><br>Dekanate<br>Sekretariate<br>Prüfungsämter<br><br>Grosse Hörsäle"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="2777" y="1460" z="0" zRotate="90"/>
+					<startposition x="368.91" y="493.77" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="170"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="4700" y="1430" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="3" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-240" y="-201" z="135" radius="235"/>
+					<sphere x="220" y="-201" z="135" radius="235"/>
+					<sphere x="-240" y="130" z="135" radius="235"/>
+					<sphere x="220" y="130" z="135" radius="235"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="3"/>
+					<text headline="Gebäude 3" infotext="Bessemer Str. 7<br>23562 Lübeck<br><br>Technologie-Transfer<br>PROJEKT - GmbH<br>Forschungs- und Entwicklungszentrum<br>Existenzgründung<br>FHL-Akademie<br>"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="1275" y="-125" z="0" zRotate="0"/>
+					<startposition x="477.62" y="-81.80" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="100"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="3600" y="100" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="4" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-1735" y="-7" z="78" radius="225"/>
+					<sphere x="-1400" y="-7" z="78" radius="225"/>
+					<sphere x="-1050" y="-7" z="78" radius="225"/>
+					<sphere x="-710" y="-7" z="78" radius="225"/>
+					<sphere x="-330" y="-7" z="78" radius="225"/>
+					<sphere x="14" y="-7" z="78" radius="225"/>
+					<sphere x="385" y="-7" z="78" radius="225"/>
+					<sphere x="710" y="-7" z="78" radius="225"/>
+					<sphere x="1070" y="-7" z="78" radius="225"/>
+					<sphere x="1380" y="-7" z="78" radius="225"/>
+					<sphere x="1710" y="-7" z="78" radius="225"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="4"/>
+					<text headline="Gebäude 4" infotext="Laboratorien Elektrotechnik<br>Fotolabor"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="4540" y="1570" z="0" zRotate="0"/>
+					<startposition x="584.099" y="-65.798" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="230"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="6400" y="-1100" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="5" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-1300" y="-110" z="35" radius="220"/>
+					<sphere x="-1300" y="205" z="35" radius="220"/>
+					<sphere x="-905" y="-110" z="35" radius="220"/>
+					<sphere x="-905" y="205" z="35" radius="220"/>
+					<sphere x="-510" y="-110" z="35" radius="220"/>
+					<sphere x="-510" y="205" z="35" radius="220"/>
+					<sphere x="-130" y="-110" z="35" radius="220"/>
+					<sphere x="-130" y="205" z="35" radius="220"/>
+					<sphere x="270" y="-110" z="35" radius="220"/>
+					<sphere x="270" y="205" z="35" radius="220"/>
+					<sphere x="640" y="-110" z="35" radius="220"/>
+					<sphere x="640" y="205" z="35" radius="220"/>
+					<sphere x="1005" y="-110" z="35" radius="220"/>
+					<sphere x="1005" y="205" z="35" radius="220"/>
+					<sphere x="1390" y="-110" z="35" radius="220"/>
+					<sphere x="1390" y="205" z="35" radius="220"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="5"/>
+					<text headline="Gebäude 5" infotext="Versuchswerkstatt<br>Maschinenhalle"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="-2473" y="-2130" z="0" zRotate="0"/>
+					<startposition x="614.20" y="204.38" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="205"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="7765" y="-51" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="6" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="110" y="-50" z="120" radius="235"/>
+					<sphere x="-175" y="-50" z="120" radius="235"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="6"/>
+					<text headline="Gebäude 6" infotext="Kesselhaus<br>Strömungslehre"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="963" y="265" z="0" zRotate="0"/>
+					<startposition x="728.09" y="-45.10" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="80"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="8750" y="-60" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="7" lodNum="2"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="18" y="10" z="65" radius="185"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="7"/>
+					<text headline="Gebäude 7" infotext="Hausmeisterwohnung"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="675" y="21" z="0" zRotate="90"/>
+					<startposition x="910.61" y="33.04" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="60"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="8700" y="-600" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="8" lodNum="2"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="45" y="-240" z="55" radius="165"/>
+					<sphere x="45" y="22" z="55" radius="165"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="8"/>
+					<text headline="Gebäude 8" infotext="Lager"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="0" y="0" z="0" zRotate="0"/>
+					<startposition x="925.52" y="53.80" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="70"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="5120" y="-2400" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="9" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-5" y="-390" z="140" radius="210"/>
+					<sphere x="-5" y="-110" z="140" radius="210"/>
+					<sphere x="-5" y="165" z="140" radius="210"/>
+					<sphere x="-5" y="450" z="140" radius="210"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="9"/>
+					<text headline="Gebäude 9" infotext="Existenzszentrum<br>Vorlesungsräume"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="1470" y="235" z="0" zRotate="270"/>
+					<startposition x="45.25" y="262.11" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="90"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="6400" y="-2400" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="10" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="0" y="444" z="20" radius="250"/>
+					<sphere x="0" y="9" z="20" radius="250"/>
+					<sphere x="0" y="-395" z="20" radius="250"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="10"/>
+					<text headline="Gebäude 10" infotext="Labor Arbeitswissenschaften<br>Vorlesungsräume"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="1425" y="275" z="0" zRotate="270"/>
+					<startposition x="565.00" y="262.74" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="90"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="7700" y="-3000" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="11" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="770" y="570" z="52" radius="185"/>
+					<sphere x="395" y="60" z="205" radius="280"/>
+					<sphere x="395" y="-320" z="205" radius="280"/>
+					<sphere x="-71" y="60" z="205" radius="280"/>
+					<sphere x="-71" y="-320" z="205" radius="280"/>
+					<sphere x="-520" y="60" z="205" radius="280"/>
+					<sphere x="-520" y="-320" z="205" radius="280"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="11"/>
+					<text headline="Gebäude 11" infotext="Physikalische Technik"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="-585" y="-625" z="0" zRotate="0"/>
+					<startposition x="753.59" y="178.96" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="130"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="-5500" y="2900" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="13" lodNum="2"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="470" y="1337" z="100" radius="125"/>
+					<sphere x="255" y="1337" z="100" radius="125"/>
+					<sphere x="60" y="1220" z="35" radius="125"/>
+					<sphere x="-152" y="1220" z="35" radius="125"/>
+					<sphere x="-75" y="910" z="170" radius="275"/>
+					<sphere x="-14" y="520" z="170" radius="350"/>
+					<sphere x="-14" y="105" z="170" radius="350"/>
+					<sphere x="-14" y="-330" z="170" radius="350"/>
+					<sphere x="-14" y="-780" z="170" radius="350"/>
+					<sphere x="-14" y="-1215" z="170" radius="350"/>
+					<sphere x="-455" y="-270" z="145" radius="195"/>
+					<sphere x="-455" y="-595" z="145" radius="195"/>
+					<sphere x="-455" y="145" z="145" radius="195"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="13"/>
+					<text headline="Gebäude 13" infotext="Stephensonstraße 3<br>23562 Lübeck<br><br>Rekorat<br>Kanzler<br>Öffentlichkeitsarbeit<br>Hausdruckerei<br><br>Fachbereich Angewandte Naturwissenschaften<br><ul><li>Dekanat und Sekretariat</li><li>Chemieingenieurwesen</li></ul>"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="3738" y="-341" z="0" zRotate="270"/>
+					<startposition x="-466.77" y="-101.28" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="210"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="-5335" y="-1620" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="14" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-45" y="-850" z="250" radius="470"/>
+					<sphere x="-45" y="-200" z="250" radius="470"/>
+					<sphere x="-45" y="400" z="250" radius="470"/>
+					<sphere x="-45" y="1060" z="250" radius="470"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="14"/>
+					<text headline="Gebäude 14" infotext="Stephensonstraße 1<br>23562 Lübeck<br><br>Fachbereich Bauwesen<ul><li>Dekanat</li><li>Sekretariat</li><li>Fotolabor</li></ul><br><br><Frauenbeauftragte<br>ASTA"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="3652" y="1075" z="0" zRotate="90"/>
+					<startposition x="-410.064" y="184.30" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="200"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="-7528" y="-4104" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="14a" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-300" y="-115" z="40" radius="160"/>
+					<sphere x="112" y="-115" z="40" radius="160"/>
+					<sphere x="-103" y="130" z="40" radius="160"/>
+					<sphere x="310" y="130" z="40" radius="160"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="14a"/>
+					<text headline="Gebäude 14a" infotext="Vorlesungsräume"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="1625" y="133" z="0" zRotate="0"/>
+					<startposition x="-668.61" y="359.64" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="95"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="-7600" y="-2400" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="15" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-1200" y="-850" z="65" radius="170"/>
+					<sphere x="-815" y="-1080" z="65" radius="170"/>
+					<sphere x="-465" y="-1080" z="65" radius="170"/>
+					<sphere x="-40" y="-1005" z="65" radius="240"/>
+					<sphere x="-40" y="-517" z="65" radius="240"/>
+					<sphere x="-40" y="-9" z="65" radius="240"/>
+					<sphere x="-40" y="490" z="130" radius="240"/>
+					<sphere x="-40" y="980" z="65" radius="240"/>
+					<sphere x="226" y="-785" z="65" radius="240"/>
+					<sphere x="226" y="290" z="65" radius="240"/>
+					<sphere x="226" y="211" z="65" radius="240"/>
+					<sphere x="226" y="700" z="130" radius="240"/>
+					<sphere x="226" y="1200" z="65" radius="240"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="15"/>
+					<text headline="Gebäude 15" infotext="Fachbereich Bauwesen<br>Laborgebäude Baustoffprüfstelle"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="5207" y="-4141" z="0" zRotate="90"/>
+					<startposition x="-901.51" y="142.41" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="200"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="-7500" y="-400" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="16" lodNum="2"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="105" y="-52" z="40" radius="240"/>
+					<sphere x="-200" y="-52" z="40" radius="240"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="16"/>
+					<text headline="Gebäude 16" infotext="Wohnung Hausmeister"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="50" y="70" z="0" zRotate="0"/>
+					<startposition x="-747.97" y="-81.75" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="80"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="-7200" y="2750" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="17" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-300" y="-1135" z="180" radius="280"/>
+					<sphere x="245" y="-1055" z="90" radius="160"/>
+					<sphere x="-5" y="-575" z="155" radius="400"/>
+					<sphere x="-5" y="118" z="155" radius="400"/>
+					<sphere x="-5" y="800" z="155" radius="400"/>
+					<sphere x="-95" y="1330" z="205" radius="210"/>
+					<sphere x="16" y="1605" z="320" radius="110"/>
+					<sphere x="16" y="1605" z="90" radius="110"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="17"/>
+					<text headline="Gebäude 17" infotext="Stephensonstraße 5<br>23562 Lübeck<br><br>Laborgebäude:<br><ul><li>Angewandte Naturwissenschaften</li><li>Wirtschaftsingenieurwesen</li></ul>"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="4560" y="1990" z="0" zRotate="90"/>
+					<startposition x="-632.035" y="21.046" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="210"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="-8760" y="2720" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="18" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-300" y="-1135" z="180" radius="280"/>
+					<sphere x="245" y="-1055" z="90" radius="160"/>
+					<sphere x="-5" y="-575" z="155" radius="400"/>
+					<sphere x="-5" y="118" z="155" radius="400"/>
+					<sphere x="-5" y="800" z="155" radius="400"/>
+					<sphere x="-95" y="1330" z="205" radius="210"/>
+					<sphere x="16" y="1605" z="320" radius="110"/>
+					<sphere x="16" y="1605" z="90" radius="110"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="18"/>
+					<text headline="Gebäude 18" infotext="Stephensonstraße 7<br>23562 Lübeck<br><br>Rechenzentrum (RIK-RZ)<br>Rechnernetze<br>Informations- und Kommunikationsdienste<br><br>Laborgebäude:<br><ul><li>Angewandte Naturwissenschaften</li><li>Elektrotechnik</li></ul>"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="4430" y="2115" z="0" zRotate="90"/>
+					<startposition x="-817.309" y="-20.12" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="210"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="2715" y="1700" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="19" lodNum="2"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-380" y="-110" z="55" radius="110"/>
+					<sphere x="-380" y="85" z="55" radius="110"/>
+					<sphere x="-155" y="-110" z="55" radius="110"/>
+					<sphere x="-155" y="85" z="55" radius="110"/>
+					<sphere x="175" y="-3" z="110" radius="207"/>
+					<sphere x="175" y="260" z="110" radius="207"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="19"/>
+					<text headline="Gebäude 19" infotext="Hochspannungslabor /EMV<br>Verteilerstation"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="775" y="992" z="0" zRotate="0"/>
+					<startposition x="257.19" y="-96.67" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="95"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="3444" y="1337" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="19a" lodNum="2"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="228" y="0" z="110" radius="290"/>
+					<sphere x="-240" y="0" z="110" radius="290"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="19a"/>
+					<text headline="Gebäude 19a" infotext="Hochspannungslabor /EMV<br>Verteilerstation"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="2240" y="211" z="0" zRotate="0"/>
+					<startposition x="351.80" y="-65.99" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="95"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="-600" y="-1000" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="20" lodNum="2"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-62" y="440" z="60" radius="165"/>
+					<sphere x="55" y="80" z="115" radius="230"/>
+					<sphere x="55" y="-215" z="115" radius="230"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="20"/>
+					<text headline="Gebäude 20" infotext="Bessemer Str. 2<br>23562 Lübeck<br><br>Solarhaus"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="818" y="513" z="0" zRotate="270"/>
+					<startposition x="-115.68" y="19.66" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="95"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="1780" y="1960" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="21" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-10" y="-515" z="290" radius="415"/>
+					<sphere x="-10" y="31" z="290" radius="415"/>
+					<sphere x="-10" y="570" z="290" radius="415"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="21"/>
+					<text headline="Gebäude 21" infotext="Bessemer Str. 5<br>23562 Lübeck<br><br>Zulassungsstelle<br>Akadem. Auslandsamt<br><br>Laboratorien der Fachbereiche:<br><ul><li>Elektrotechnik</li><li>Maschinenbau</li><li>Physik.Technik</li>></ul>"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="2811" y="1637" z="0" zRotate="90"/>
+					<startposition x="52.819" y="-153.44" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="150"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="-2800" y="-6800" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="36" lodNum="1"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-20" y="-860" z="100" radius="230"/>
+					<sphere x="-275" y="-610" z="100" radius="230"/>
+					<sphere x="-514" y="-350" z="100" radius="230"/>
+					<sphere x="-240" y="2" z="100" radius="230"/>
+					<sphere x="55" y="480" z="100" radius="230"/>
+					<sphere x="442" y="480" z="100" radius="230"/>
+					<sphere x="865" y="480" z="100" radius="230"/>
+					<sphere x="1320" y="480" z="100" radius="230"/>
+					<sphere x="1070" y="135" z="100" radius="180"/>
+					<sphere x="815" y="-125" z="100" radius="180"/>
+					<sphere x="560" y="-295" z="140" radius="90"/>
+					<sphere x="415" y="-450" z="140" radius="90"/>
+					<sphere x="255" y="-610" z="140" radius="90"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="36"/>
+					<text headline="Gebäude 36" infotext="Mönkhofer Weg 239<br>23562 Lübeck<br><br>Virtuelle Fachhochschule<br><br>Gebäudemanagement<br>Zweigniederlassung Lübeck"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="-1742" y="-13" z="0" zRotate="135"/>
+					<startposition x="-308.65" y="532.15" z="100.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="220"/>
+				</detailview>
+			</building>
+
+			<building>
+				<position x="-11000" y="-100" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="MFC" lodNum="3"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-145" y="-413" z="465" radius="290"/>
+					<sphere x="-451" y="50" z="465" radius="290"/>
+					<sphere x="18" y="340" z="465" radius="290"/>
+					<sphere x="325" y="-123" z="465" radius="290"/>
+					<sphere x="-145" y="-413" z="167" radius="290"/>
+					<sphere x="-451" y="50" z="167" radius="290"/>
+					<sphere x="18" y="340" z="167" radius="290"/>
+					<sphere x="325" y="-123" z="167" radius="290"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="MFC"/>
+					<text headline="Multifunktionscenter (MFC)" infotext="Gesamtfläche: 6.000 m<sup>2</sup><br>Laborflächen: rd. 2- 3.000 m<sup>2</sup><br>Büroflächen: rd. 1 - 2.000 m<sup>2</sup><br>Werkstattflächen: 500m<sup>2</sup><br>Konferenz/Ausstellungsfl.: 500 m<sup>2</sup>"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="50" y="70" z="0" zRotate="0"/>
+					<startposition x="-50" y="-70" z="5.0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="140"/>
+				</detailview>
+			</building>
+
+			<building>
+				<position x="7800" y="-4000" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="Parkplatz_ANLabore" lodNum="1"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-900" y="285" z="0" radius="140"/>
+					<sphere x="-580" y="285" z="0" radius="140"/>
+					<sphere x="-260" y="285" z="0" radius="140"/>
+					<sphere x="160" y="285" z="0" radius="140"/>
+					<sphere x="480" y="285" z="0" radius="140"/>
+					<sphere x="700" y="285" z="0" radius="140"/>
+					<sphere x="-900" y="-120" z="0" radius="140"/>
+					<sphere x="-580" y="-120" z="0" radius="140"/>
+					<sphere x="-260" y="-120" z="0" radius="140"/>
+					<sphere x="160" y="-120" z="0" radius="140"/>
+					<sphere x="480" y="-120" z="0" radius="140"/>
+					<sphere x="700" y="-120" z="0" radius="140"/>
+					<sphere x="-900" y="-560" z="0" radius="140"/>
+					<sphere x="-580" y="-560" z="0" radius="140"/>
+					<sphere x="-260" y="-560" z="0" radius="140"/>
+					<sphere x="160" y="-560" z="0" radius="140"/>
+					<sphere x="480" y="-560" z="0" radius="140"/>
+					<sphere x="700" y="-560" z="0" radius="140"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="P1"/>
+					<text headline="Parkplatz Labore" infotext="Parkplatz nahe der Labore vom<br>Fachbereich Angewandte Naturwissenschaften"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="0" y="0" z="0" zRotate="0"/>
+					<startposition x="-50" y="-70" z="0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="140"/>
+				</detailview>
+			</building>
+			
+			<building>
+				<position x="6700" y="0" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="Parkplatz_Maschbau" lodNum="1"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-900" y="285" z="0" radius="140"/>
+					<sphere x="-580" y="285" z="0" radius="140"/>
+					<sphere x="-260" y="285" z="0" radius="140"/>
+					<sphere x="160" y="285" z="0" radius="140"/>
+					<sphere x="480" y="285" z="0" radius="140"/>
+					<sphere x="700" y="285" z="0" radius="140"/>
+					<sphere x="-900" y="-120" z="0" radius="140"/>
+					<sphere x="-580" y="-120" z="0" radius="140"/>
+					<sphere x="-260" y="-120" z="0" radius="140"/>
+					<sphere x="160" y="-120" z="0" radius="140"/>
+					<sphere x="480" y="-120" z="0" radius="140"/>
+					<sphere x="700" y="-120" z="0" radius="140"/>
+					<sphere x="-900" y="-560" z="0" radius="140"/>
+					<sphere x="-580" y="-560" z="0" radius="140"/>
+					<sphere x="-260" y="-560" z="0" radius="140"/>
+					<sphere x="160" y="-560" z="0" radius="140"/>
+					<sphere x="480" y="-560" z="0" radius="140"/>
+					<sphere x="700" y="-560" z="0" radius="140"/>
+					<sphere x="950" y="-560" z="0" radius="140"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="P2"/>
+					<text headline="Parkplatz Maschinenbau" infotext="Parkplatz nahe des Fachbereich<br>Maschinenbau / Wirtschaftingenieurwesen"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="0" y="0" z="0" zRotate="0"/>
+					<startposition x="-50" y="-70" z="0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="170"/>
+				</detailview>
+			</building>
+			
+			<building>
+				<position x="-7600" y="-600" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="Parkplatz_MFC_BAU" lodNum="1"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="-1720" y="860" z="0" radius="100"/>
+					<sphere x="2600" y="860" z="0" radius="100"/>
+					<sphere x="-1720" y="530" z="0" radius="100"/>
+					<sphere x="-1720" y="200" z="0" radius="100"/>
+					<sphere x="-1720" y="-130" z="0" radius="100"/>
+					<sphere x="-1720" y="-460" z="0" radius="100"/>
+					<sphere x="-1720" y="-790" z="0" radius="100"/>
+					<sphere x="-1720" y="-1120" z="0" radius="100"/>
+					<sphere x="-1720" y="-1450" z="0" radius="100"/>
+					<sphere x="-1720" y="-1780" z="0" radius="100"/>
+					<sphere x="-1720" y="-2140" z="0" radius="100"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="P3"/>
+					<text headline="Parkplatz MFC/FB BAU" infotext="Parkplatz nahe des Multifunktionscenters<br>und des Fachbereichs Bau"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="0" y="0" z="0" zRotate="0"/>
+					<startposition x="-50" y="-70" z="0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="380"/>
+				</detailview>
+			</building>
+			
+			<building>
+				<position x="-7200" y="900" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="parkplatz_RZ" lodNum="1"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="0" y="0" z="0" radius="100"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="P4"/>
+					<text headline="Parkplatz RZ/Rektorat" infotext="Parkplatz nahe des Rektorats<br>und Rechenzentrums"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="0" y="0" z="0" zRotate="0"/>
+					<startposition x="-50" y="-70" z="0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="120"/>
+				</detailview>
+			</building>
+			
+			<building>
+				<position x="6700" y="1200" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="parkplatz_TWT" lodNum="1"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="0" y="0" z="0" radius="100"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="P5"/>
+					<text headline="Parkplatz TWT" infotext="Parkplatz nahe des Zentrums für<br>Technologie- und Wissenstransfer"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="0" y="0" z="0" zRotate="0"/>
+					<startposition x="-50" y="-70" z="0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="120"/>
+				</detailview>
+			</building>
+			<building>
+				<position x="760" y="-250" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames name="parkplatz_Atrium" lodNum="1"/>
+				<flags drawLines="1" zFade="0"/>
+				<colspheres>
+					<sphere x="0" y="0" z="0" radius="100"/>
+				</colspheres>
+				<information>
+					<indentifier buildingnumber="P5"/>
+					<text headline="Parkplatz Atrium" infotext="Parkplatz neben dem Atrium"/>
+				</information>
+				<detailview>
+					<roomCoordOrigin x="0" y="0" z="0" zRotate="0"/>
+					<startposition x="-50" y="-70" z="0"/>
+					<rotation flyAroundCenterHeight="12" flyAroundRadius="135"/>
+				</detailview>
+			</building>
+		 </buildings>
+
+		
+		<environment>
+
+		<!-- Environment Objekte sind abgespeckte Buildings, z.B. Straßen oder Bäume
+		Die Eigenschaften sind ähnlich der Buildings.
+		Der modelname absolut angegeben, es gibt nur ein Detaillevel
+		hideOnTour beschreibt, ob das Model versteckt werden soll, wenn eine Detailview eines Gebäudes läuft -->
+			<envobject>
+				<position x="0" y="0" z="0"/>
+				<scale x="1.0" y="1.0" z="1.0"/>
+				<rotation x="1.571" y="3.142" z="0.0"/>
+				<modelnames lod0="Strassen.gz"/>
+				<flags drawLines="0" zFade="0" hideOnTour="0"/>
+			</envobject>
+
+		</environment>
+
+	</worldObjects>
+
+</objects>

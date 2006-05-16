@@ -1,0 +1,9 @@
+PHP Code vervollständigen
+Modelle undurchsichtig machen(Wände hinter Fenstern erstellen)
+Collisionspheres für alle Gebäude erstellen
+Parkplätze modellieren und einbinden
+Touren fertig machen
+Content (Touren etc) erstellen
+Intro mit 3D-Logo umsetzen
+Zeuch wir Bäume
+Farbkonzept für den 3D Bereich ausdenken und umsetzen
