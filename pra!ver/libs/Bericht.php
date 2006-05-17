@@ -284,7 +284,7 @@
 			}
 
 			
-			$querystring  = "SELECT b.berichtID, u.Name, br.Name, u.adrOrt, sg.name, b.FreigabeID, b.Keywords FROM bericht b ";
+			$querystring  = "SELECT b.berichtID, u.Name, br.Name, u.adrOrt, sg.name, b.FreigabeID, b.Keywords, b.BearbeitungszustandID FROM bericht b ";
 			$querystring .= "LEFT JOIN unternehmen u ON (u.UnternehmenID=b.UnternehmenID) ";
 			$querystring .= "LEFT JOIN branche br ON (u.BrancheID=br.BrancheID) ";
 			$querystring .= "LEFT JOIN student st ON (st.MatrNr=b.Matrikelnummer) ";
@@ -433,19 +433,23 @@
       	}
       	
 		private static function fuelleZeileMitBericht($r, $gruppenid) {
-			$link = '<a class="db" href="bericht_ausgabe.php?berichtid='.$r[0].$gruppenid.'">';
-			$zeile .= '<tr>';
-
-			$zeile .= '<td valign="top">'.$link.$r[1].'</a><br><br></td>';
-			$zeile .= '<td valign="top"> &nbsp;<br><br></td>';
-
-			$zeile .= '<td valign="top">'.$link.$r[2].'</a><br><br></td>';
-			$zeile .= '<td valign="top">&nbsp;<br><br></td>';
-			$zeile .= '<td valign="top">'.$link.$r[3].'</a><br><br></td>';
-			$zeile .= '<td valign="top">&nbsp;<br><br></td>';
-			$zeile .= '<td valign="top">'.$link.$r[4].'</a><br><br></td>';
-			$zeile .= '</tr>';
-			return $zeile;
+			if ($r[7] == Bericht::FERTIG)
+			{
+				$link = '<a class="db" href="bericht_ausgabe.php?berichtid='.$r[0].$gruppenid.'">';
+				$zeile .= '<tr>';
+	
+				$zeile .= '<td valign="top">'.$link.$r[1].'</a><br><br></td>';
+				$zeile .= '<td valign="top"> &nbsp;<br><br></td>';
+	
+				$zeile .= '<td valign="top">'.$link.$r[2].'</a><br><br></td>';
+				$zeile .= '<td valign="top">&nbsp;<br><br></td>';
+				$zeile .= '<td valign="top">'.$link.$r[3].'</a><br><br></td>';
+				$zeile .= '<td valign="top">&nbsp;<br><br></td>';
+				$zeile .= '<td valign="top">'.$link.$r[4].'</a><br><br></td>';
+				$zeile .= '</tr>';
+				return $zeile;
+			}
+			return "";
 		}
       
       public static function zeigeBerichtInternExtern(Connection $conn, ErrorQueue $err, $berichtid, $matrikelNr) {
@@ -628,11 +632,11 @@
       	$html_bericht  = "";
       	$html_bericht .= '<table border="0" cellspacing="0" cellpadding="0" width="420">';
 	  	
-      	if($bericht->getFreigabeStudent() == 1){
+      	if($bericht->getFreigabeStudent() == Bericht::FREIGABE_KEINE){
       		
       		$html_bericht .=  '<span style="color:#FF0000">Achtung! Der Student möchte  aus persönlichen Gründen nicht, dass Informationen zu seinem Bericht im Internet veröffentlicht werden! Deswegen wird die Freigabe automatisch gesetzt.</span> ';
       	
-      	}else if($bericht->getFreigabeStudent() == 0){
+      	}else {
 
 			$html_bericht .= '<tr><td><p>Geben Sie bitte die Freigabeform des Berichts an</p>'; 	  
 	  	    $html_bericht .= '<p><input type="radio" name="freigabe" value="beides"> den internen und den öffentlichen Teil freigeben<br>';		

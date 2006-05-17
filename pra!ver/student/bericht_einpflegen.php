@@ -250,11 +250,11 @@
 				$input_email_betreuer = ($_POST['input_email_betreuer']);
 				$bericht->setEmailBetreuer($input_email_betreuer);
 			}
-			$keineveroeffentlichung = Bericht::FREIGABE_KEINE;
+			$keineveroeffentlichung = Bericht::FREIGABE_INT_EXT;
 			if (isset($_POST['keineveroeffentlichungchecked'])) {
 				$keineveroeffentlichungtemp = ($_POST['keineveroeffentlichungchecked']);
 				if ($keineveroeffentlichungtemp == 'on')
-					$keineveroeffentlichung = Bericht::FREIGABE_INT_EXT;
+					$keineveroeffentlichung = Bericht::FREIGABE_KEINE;
 				$bericht->setFreigabeStudent($keineveroeffentlichung);
 			}
 		}
@@ -932,12 +932,12 @@
       						
 	      					
 	      					if (!$student->getStudiengang()->getMitarbeiterID()) {
-	      						$bericht->setBearbeitungszustand(3);
+	      						$bericht->setBearbeitungszustand(Bericht::BEIM_PROFESSOR);
 	      						$dozent_daten = $student->getStudiengang()->getSachbearbeiter();
 	      						Mailer::mailit($dozent_daten[1], "Neuer Bericht zum BpS", $student->getNameKomplett()." hat einen Bericht zum Berufspraktischen Semester abgegeben.\nBitte überprüfen Sie diesen unter \r\n ".Config::PRAVER_ROOT_URL." \r\n");
 	      					}
 	      					else {
-	      						$bericht->setBearbeitungszustand(2);
+	      						$bericht->setBearbeitungszustand(Bericht::BEIM_MITARBEITER);
 	      						$mitarbeiter_daten = $student->getStudiengang()->getMitarbeiter();
 	      						Mailer::mailit($mitarbeiter_daten[1], "Neuer Bericht zum BpS", $student->getNameKomplett()." hat einen Bericht zum Berufspraktischen Semester abgegeben.\nBitte überprüfen Sie diesen unter \r\n ".Config::PRAVER_ROOT_URL." \r\n");
 

@@ -69,13 +69,13 @@
 				$aktion = "";
 			} else if ($zeugnisvorhanden == "Ja" && $datenkorrekt == "Ja" && $zeiteingehalten == "Ja") {
 				$aktion = "erfolgreich";
-				$bericht->setBearbeitungszustand(3);
+				$bericht->setBearbeitungszustand(Bericht::BEIM_PROFESSOR);
 				$bericht->updateDatenbank();
 			} else {
 				$aktion = "fehlerhaft";
 				//TODO: schreibe mail
 				if (!($zeugnisvorhanden == "Nein" && $datenkorrekt == "Ja" && $zeiteingehalten == "Ja")) {
-					$bericht->setBearbeitungszustand(1);
+					$bericht->setBearbeitungszustand(Bericht::BEIM_STUDENT);
 					$bericht->updateDatenbank();
 				}
 			}

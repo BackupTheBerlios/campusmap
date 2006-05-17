@@ -30,7 +30,7 @@
 		
 		$subj = "Bericht zum BpS wurde abgelehnt!";
 		$email = $student->getEmail();
-		$bericht->setBearbeitungszustand(1);
+		$bericht->setBearbeitungszustand(Bericht::BEIM_STUDENT);
 		$bericht->updateDatenbank();
 		$text .= "\n\nBitte korrigiere Deinen Bericht gegebenfalls unter \r\n ".Config::PRAVER_ROOT_URL." \r\n";
 		Mailer::mailit($email, $subj, $text);	

@@ -87,7 +87,7 @@
 	$freigabe = "";
 	if (isset($_POST['freigabe'])) {
 		$freigabe =($_POST['freigabe']);
-	}else if($bericht->getFreigabeStudent()== 1)
+	}else if($bericht->getFreigabeStudent()== Bericht::FREIGABE_KEINE)
 		$freigabe = "auto";
 	else
 		$freigabe = "keineAuswahl";
@@ -110,7 +110,7 @@
 		}else{
 			$schritt = 6;
 			
-			$bericht->setBearbeitungszustand("4");
+			$bericht->setBearbeitungszustand(Bericht::FERTIG);
 			$freigabe_text = "";
 			
 			switch ($freigabe) {
