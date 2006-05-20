@@ -34,7 +34,7 @@ public class Explications extends JPanel implements Runnable{
 	private String buffer;
 	Matcher matchString;
 	private Pattern coordFinder = Pattern.compile("([a-z]{0,2})Coords (\\w{1,3}-[\\d{0,2}|k|K].\\w{1,3} )*([^a-z ]*) *([^a-z ]*) (Tour)*");
-	private Environment env; 
+	protected Environment env; 
 	private EventListener browserEventListener;
 	
 	
@@ -128,7 +128,7 @@ public class Explications extends JPanel implements Runnable{
 	 */
 
 	
-	private void getTextForInput(URL input)
+	public void getTextForInput(URL input, boolean lookForCoords)
 	{
 		System.out.println(input);
 		actualText = new String();
@@ -158,7 +158,7 @@ public class Explications extends JPanel implements Runnable{
 				env.increaseLoadingBar();
 				
 				matchString = coordFinder.matcher(buffer);
-				if(!found){
+				if(!found && buffer!=""){
 					found = matchString.find();
 					if(found){
 						System.out.println("gefunden:"+matchString.group(0));

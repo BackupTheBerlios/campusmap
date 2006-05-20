@@ -288,8 +288,8 @@ public class Environment extends JApplet{
 	
 	public static void setBrowserUrl(String url) {
 		try {
-			infoBox.textDisplay.setPage(url);
-		} catch (IOException e) {}
+			infoBox.getTextForInput(new URL(url), false);
+		} catch (Exception e) {e.printStackTrace();}
 	}
 	
 }
