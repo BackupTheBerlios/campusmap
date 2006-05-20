@@ -32,6 +32,7 @@ public class Explications extends JPanel implements Runnable{
 	private int threadCounter=0;
 	private BufferedReader in; 
 	private String buffer;
+	private boolean lookForCoordsThisRun=false;
 	Matcher matchString;
 	private Pattern coordFinder = Pattern.compile("([a-z]{0,2})Coords (\\w{1,3}-[\\d{0,2}|k|K].\\w{1,3} )*([^a-z ]*) *([^a-z ]*) (Tour)*");
 	protected Environment env; 
@@ -100,7 +101,7 @@ public class Explications extends JPanel implements Runnable{
 	              protected void submitData (String data) {
 	      	    	env.setToolTip("loading", 0);
 	      	    	try{
-	      	    		getTextForInput(new URL(folderPrefix+"index.php?"+data));
+	      	    		getTextForInput(new URL(folderPrefix+"index.php?"+data), true);
 	      	    	}catch(MalformedURLException e){
 	      	    		e.printStackTrace();
 	      	    	}
@@ -119,7 +120,7 @@ public class Explications extends JPanel implements Runnable{
         		
     	    	Environment.setToolTip("loading", 0);
 	            JEditorPane pane = (JEditorPane) e.getSource();
-	            getTextForInput(e.getURL());
+	            getTextForInput(e.getURL(), true);
 	        }
 	    }
 	} 
@@ -132,6 +133,7 @@ public class Explications extends JPanel implements Runnable{
 	{
 		System.out.println(input);
 		actualText = new String();
+		lookForCoordsThisRun = lookForCoords;
 		
 		env.showLoadingLayer("please wait while loading new text-content");
 		try{
@@ -157,18 +159,20 @@ public class Explications extends JPanel implements Runnable{
 				actualText+=buffer;
 				env.increaseLoadingBar();
 				
-				matchString = coordFinder.matcher(buffer);
-				if(!found && buffer!=""){
-					found = matchString.find();
-					if(found){
-						System.out.println("gefunden:"+matchString.group(0));
-					   	if(!((String)matchString.group(1)).equals("no")){
-					   		getCoordsFromUrl(buffer);
-				    	} else {
-				    		env.theContent.setTouring(false);
-				    		Environment.clearToolTip();
-				    	}
-			        }
+				if(lookForCoordsThisRun){
+					matchString = coordFinder.matcher(buffer);
+					if(!found && buffer!=""){
+						found = matchString.find();
+						if(found){
+							System.out.println("gefunden:"+matchString.group(0));
+						   	if(!((String)matchString.group(1)).equals("no")){
+						   		getCoordsFromUrl(buffer);
+					    	} else {
+					    		env.theContent.setTouring(false);
+					    		Environment.clearToolTip();
+					    	}
+				        }
+					}
 				}
 			}
 			in.close();
