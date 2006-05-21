@@ -10,6 +10,7 @@ import javax.swing.BorderFactory;
 import java.io.IOException;
 import java.net.*;
 
+import javax.swing.text.*;
 /**
  * @author kriegerischerKämpfer
  *
@@ -48,7 +49,7 @@ public class Environment extends JApplet{
 	static Explications infoBox;
 	private JLayeredPane layeredPane;
 	private boolean loadingLabelShowing=false;
-    JTextArea loadingLabel;
+    JTextPane loadingLabel;
 
 	// Content Holder
 	static JPanel contentHolder;
@@ -136,11 +137,11 @@ public class Environment extends JApplet{
 		SpringLayout layout = new SpringLayout();
 		toolTipPanel.setLayout(layout);    //Adjust constraints for the label so it's at (5,5).
 		
-		layout.putConstraint(SpringLayout.WEST, toolTipTextfield,35,SpringLayout.WEST, toolTipPanel);
+		layout.putConstraint(SpringLayout.WEST, toolTipTextfield,290,SpringLayout.WEST, toolTipPanel);
 		layout.putConstraint(SpringLayout.NORTH, toolTipTextfield,0,SpringLayout.NORTH, toolTipPanel);
 //		layout.putConstraint(SpringLayout.WEST, detailButton,5,SpringLayout.EAST, toolTipTextfield);
 //		layout.putConstraint(SpringLayout.NORTH, toolTipTextfield,5,SpringLayout.NORTH, toolTipPanel);
-	    layout.putConstraint(SpringLayout.EAST, toolTipPanel,270,SpringLayout.EAST, toolTipTextfield);
+	    layout.putConstraint(SpringLayout.EAST, toolTipPanel,10,SpringLayout.EAST, toolTipTextfield);
 	    layout.putConstraint(SpringLayout.SOUTH, toolTipPanel,5,SpringLayout.SOUTH, toolTipTextfield);
 
 		infoBox = new Explications(this);
@@ -158,9 +159,15 @@ public class Environment extends JApplet{
 		layeredPane.add(infoBoxScrollPane, JLayeredPane.DEFAULT_LAYER);
 		layeredPane.setPreferredSize(new Dimension(400,400));
 		
-        loadingLabel = new JTextArea();
-        loadingLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
-        loadingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loadingLabel = new JTextPane();
+        StyledDocument doc = loadingLabel.getStyledDocument();
+        
+		//  Set alignment to be centered for all paragraphs
+ 
+		MutableAttributeSet standard = new SimpleAttributeSet();
+		StyleConstants.setAlignment(standard, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(0, 0, standard, true);
+ 
         loadingLabel.setOpaque(true);
         loadingLabel.setBackground(Environment.bg_Color);
         loadingLabel.setForeground(Color.black);
@@ -249,7 +256,7 @@ public class Environment extends JApplet{
 		layeredPane.remove(loadingLabel);
 		loadingLabelShowing=false;
 		System.out.println("loading Layer hidden");
-//		layeredPane.validate();
+		layeredPane.repaint();
 	}
 	
 	/**
@@ -316,7 +323,7 @@ class CpmPanel extends JPanel{
 		setForeground(Environment.bg_Color);
 		g.fillRect(0,0, this.getWidth(), this.getHeight());
 		//g.fillRect(0,0, 15, this.getHeight());
-		if(bgImg1!=null)g.drawImage(bgImg1, this.getWidth()-270, 5, this);
+		if(bgImg1!=null)g.drawImage(bgImg1, -350, 5, this);
 		if(bgImg2!=null)g.drawImage(bgImg2, -10, this.getHeight()-40, this);
 	}
 }
