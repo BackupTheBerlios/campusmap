@@ -115,7 +115,7 @@ class StreamingFile extends Thread {
 	
 	boolean done = true;
 	boolean notify= false;
-	StreamingManager streamManage;
+	StreamingManager streamManager;
 	int lodToLoad = 0;
 	ObjectOfInterest modelToLoad;
 	int runNumber = 0;
@@ -125,9 +125,10 @@ class StreamingFile extends Thread {
 		/**/
 	}
 
-	public StreamingFile(CampusMap p_applet, StreamingManager p_streamManage){
-		streamManage = p_streamManage; 
+	public StreamingFile(CampusMap p_applet, StreamingManager p_streamManager){
+		streamManager = p_streamManager; 
 		applet = p_applet;
+		setPriority(Thread.MIN_PRIORITY);
 	}
 	
 	public void startModelLoading(ObjectOfInterest p_modelToLoad, int p_lodToLoad) {
@@ -153,7 +154,7 @@ class StreamingFile extends Thread {
 		modelToLoad.loadModel(lodToLoad);
 		//System.out.println("Thread is running the "+(++runNumber)+"st time with file:"+modelToLoad.modelsToLoad[lodToLoad]);
 		done = true;
-		if(notify)streamManage.notifyInitedObj();
+		if(notify)streamManager.notifyInitedObj();
 	}
 	
 	public boolean isDone() {
