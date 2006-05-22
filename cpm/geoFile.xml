@@ -92,6 +92,8 @@
 					<sphere x="140" y="785" z="191" radius="200"/>
 					<sphere x="-525" y="785" z="191" radius="200"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="1"/>
 					<text headline="Gebäude 1 / Atrium" infotext="Mönkhofer Weg 136 - 140<br>23562 Lübeck<br><br>Cafeteria Studierende<br>Cafeteria Mitarbeiter<br>Hausmeister<br><br>Fachschaft:<br><ul><li>Elektrotechnik</li><li>Maschinenbau</li><li>Wirtschaftsingenieurwesen</li></ul>"/>
@@ -118,6 +120,8 @@
 					<sphere x="90" y="-350" z="135" radius="435"/>
 					<sphere x="610" y="-350" z="115" radius="350"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="2"/>
 					<text headline="Gebäude 2" infotext="Fachbereich:<br><ul><li>Elektrotechnik</li><li>Maschinenbau</li><li>Wirtschaftsingenieurwesen</li></ul><br><br>Dekanate<br>Sekretariate<br>Prüfungsämter<br><br>Grosse Hörsäle"/>
@@ -140,6 +144,8 @@
 					<sphere x="-240" y="130" z="135" radius="235"/>
 					<sphere x="220" y="130" z="135" radius="235"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="3"/>
 					<text headline="Gebäude 3" infotext="Bessemer Str. 7<br>23562 Lübeck<br><br>Technologie-Transfer<br>PROJEKT - GmbH<br>Forschungs- und Entwicklungszentrum<br>Existenzgründung<br>FHL-Akademie<br>"/>
@@ -169,6 +175,8 @@
 					<sphere x="1380" y="-7" z="78" radius="225"/>
 					<sphere x="1710" y="-7" z="78" radius="225"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="4"/>
 					<text headline="Gebäude 4" infotext="Laboratorien Elektrotechnik<br>Fotolabor"/>
@@ -203,6 +211,8 @@
 					<sphere x="1390" y="-110" z="35" radius="220"/>
 					<sphere x="1390" y="205" z="35" radius="220"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="5"/>
 					<text headline="Gebäude 5" infotext="Versuchswerkstatt<br>Maschinenhalle"/>
@@ -223,6 +233,8 @@
 					<sphere x="110" y="-50" z="120" radius="235"/>
 					<sphere x="-175" y="-50" z="120" radius="235"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="6"/>
 					<text headline="Gebäude 6" infotext="Kesselhaus<br>Strömungslehre"/>
@@ -242,6 +254,8 @@
 				<colspheres>
 					<sphere x="18" y="10" z="65" radius="185"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="7"/>
 					<text headline="Gebäude 7" infotext="Hausmeisterwohnung"/>
@@ -262,6 +276,8 @@
 					<sphere x="45" y="-240" z="55" radius="165"/>
 					<sphere x="45" y="22" z="55" radius="165"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="8"/>
 					<text headline="Gebäude 8" infotext="Lager"/>
@@ -284,6 +300,8 @@
 					<sphere x="-5" y="165" z="140" radius="210"/>
 					<sphere x="-5" y="450" z="140" radius="210"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="9"/>
 					<text headline="Gebäude 9" infotext="Existenzszentrum<br>Vorlesungsräume"/>
@@ -305,6 +323,8 @@
 					<sphere x="0" y="9" z="20" radius="250"/>
 					<sphere x="0" y="-395" z="20" radius="250"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="10"/>
 					<text headline="Gebäude 10" infotext="Labor Arbeitswissenschaften<br>Vorlesungsräume"/>
@@ -330,6 +350,8 @@
 					<sphere x="-520" y="60" z="205" radius="280"/>
 					<sphere x="-520" y="-320" z="205" radius="280"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="11"/>
 					<text headline="Gebäude 11" infotext="Physikalische Technik"/>
@@ -361,6 +383,8 @@
 					<sphere x="-455" y="-595" z="145" radius="195"/>
 					<sphere x="-455" y="145" z="145" radius="195"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="13"/>
 					<text headline="Gebäude 13" infotext="Stephensonstraße 3<br>23562 Lübeck<br><br>Rekorat<br>Kanzler<br>Öffentlichkeitsarbeit<br>Hausdruckerei<br><br>Fachbereich Angewandte Naturwissenschaften<br><ul><li>Dekanat und Sekretariat</li><li>Chemieingenieurwesen</li></ul>"/>
@@ -383,6 +407,8 @@
 					<sphere x="-45" y="400" z="250" radius="470"/>
 					<sphere x="-45" y="1060" z="250" radius="470"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="14"/>
 					<text headline="Gebäude 14" infotext="Stephensonstraße 1<br>23562 Lübeck<br><br>Fachbereich Bauwesen<ul><li>Dekanat</li><li>Sekretariat</li><li>Fotolabor</li></ul><br><br><Frauenbeauftragte<br>ASTA"/>
@@ -405,6 +431,8 @@
 					<sphere x="-103" y="130" z="40" radius="160"/>
 					<sphere x="310" y="130" z="40" radius="160"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="14a"/>
 					<text headline="Gebäude 14a" infotext="Vorlesungsräume"/>
@@ -436,6 +464,8 @@
 					<sphere x="226" y="700" z="130" radius="240"/>
 					<sphere x="226" y="1200" z="65" radius="240"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="15"/>
 					<text headline="Gebäude 15" infotext="Fachbereich Bauwesen<br>Laborgebäude Baustoffprüfstelle"/>
@@ -456,6 +486,8 @@
 					<sphere x="105" y="-52" z="40" radius="240"/>
 					<sphere x="-200" y="-52" z="40" radius="240"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="16"/>
 					<text headline="Gebäude 16" infotext="Wohnung Hausmeister"/>
@@ -482,6 +514,8 @@
 					<sphere x="16" y="1605" z="320" radius="110"/>
 					<sphere x="16" y="1605" z="90" radius="110"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="17"/>
 					<text headline="Gebäude 17" infotext="Stephensonstraße 5<br>23562 Lübeck<br><br>Laborgebäude:<br><ul><li>Angewandte Naturwissenschaften</li><li>Wirtschaftsingenieurwesen</li></ul>"/>
@@ -508,6 +542,8 @@
 					<sphere x="16" y="1605" z="320" radius="110"/>
 					<sphere x="16" y="1605" z="90" radius="110"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="18"/>
 					<text headline="Gebäude 18" infotext="Stephensonstraße 7<br>23562 Lübeck<br><br>Rechenzentrum (RIK-RZ)<br>Rechnernetze<br>Informations- und Kommunikationsdienste<br><br>Laborgebäude:<br><ul><li>Angewandte Naturwissenschaften</li><li>Elektrotechnik</li></ul>"/>
@@ -532,6 +568,8 @@
 					<sphere x="175" y="-3" z="110" radius="207"/>
 					<sphere x="175" y="260" z="110" radius="207"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="19"/>
 					<text headline="Gebäude 19" infotext="Hochspannungslabor /EMV<br>Verteilerstation"/>
@@ -552,6 +590,8 @@
 					<sphere x="228" y="0" z="110" radius="290"/>
 					<sphere x="-240" y="0" z="110" radius="290"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="19a"/>
 					<text headline="Gebäude 19a" infotext="Hochspannungslabor /EMV<br>Verteilerstation"/>
@@ -573,6 +613,8 @@
 					<sphere x="55" y="80" z="115" radius="230"/>
 					<sphere x="55" y="-215" z="115" radius="230"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="20"/>
 					<text headline="Gebäude 20" infotext="Bessemer Str. 2<br>23562 Lübeck<br><br>Solarhaus"/>
@@ -594,6 +636,8 @@
 					<sphere x="-10" y="31" z="290" radius="415"/>
 					<sphere x="-10" y="570" z="290" radius="415"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="21"/>
 					<text headline="Gebäude 21" infotext="Bessemer Str. 5<br>23562 Lübeck<br><br>Zulassungsstelle<br>Akadem. Auslandsamt<br><br>Laboratorien der Fachbereiche:<br><ul><li>Elektrotechnik</li><li>Maschinenbau</li><li>Physik.Technik</li>></ul>"/>
@@ -625,6 +669,8 @@
 					<sphere x="415" y="-450" z="140" radius="90"/>
 					<sphere x="255" y="-610" z="140" radius="90"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="36"/>
 					<text headline="Gebäude 36" infotext="Mönkhofer Weg 239<br>23562 Lübeck<br><br>Virtuelle Fachhochschule<br><br>Gebäudemanagement<br>Zweigniederlassung Lübeck"/>
@@ -652,6 +698,8 @@
 					<sphere x="18" y="340" z="167" radius="290"/>
 					<sphere x="325" y="-123" z="167" radius="290"/>
 				</colspheres>
+				<colrectangles>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="MFC"/>
 					<text headline="Multifunktionscenter (MFC)" infotext="Gesamtfläche: 6.000 m<sup>2</sup><br>Laborflächen: rd. 2- 3.000 m<sup>2</sup><br>Büroflächen: rd. 1 - 2.000 m<sup>2</sup><br>Werkstattflächen: 500m<sup>2</sup><br>Konferenz/Ausstellungsfl.: 500 m<sup>2</sup>"/>
@@ -689,6 +737,9 @@
 					<sphere x="480" y="-560" z="0" radius="140"/>
 					<sphere x="700" y="-560" z="0" radius="140"/>
 				</colspheres>
+				<colrectangles>
+					<rectangle x="400" y="400" z="15" a="-400" b="-400" c="15" AlignedToAxis="2"/>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="P1"/>
 					<text headline="Parkplatz Labore" infotext="Parkplatz nahe der Labore vom<br>Fachbereich Angewandte Naturwissenschaften"/>
@@ -727,6 +778,9 @@
 					<sphere x="700" y="-560" z="0" radius="140"/>
 					<sphere x="950" y="-560" z="0" radius="140"/>
 				</colspheres>
+				<colrectangles>
+					<rectangle x="400" y="400" z="15" a="-400" b="-400" c="15" AlignedToAxis="2"/>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="P2"/>
 					<text headline="Parkplatz Maschinenbau" infotext="Parkplatz nahe des Fachbereich<br>Maschinenbau / Wirtschaftingenieurwesen"/>
@@ -757,6 +811,9 @@
 					<sphere x="-1720" y="-1780" z="0" radius="100"/>
 					<sphere x="-1720" y="-2140" z="0" radius="100"/>
 				</colspheres>
+				<colrectangles>
+					<rectangle x="400" y="400" z="15" a="-400" b="-400" c="15" AlignedToAxis="2"/>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="P3"/>
 					<text headline="Parkplatz MFC/FB BAU" infotext="Parkplatz nahe des Multifunktionscenters<br>und des Fachbereichs Bau"/>
@@ -777,6 +834,9 @@
 				<colspheres>
 					<sphere x="0" y="0" z="0" radius="100"/>
 				</colspheres>
+				<colrectangles>
+					<rectangle x="400" y="400" z="15" a="-400" b="-400" c="15" AlignedToAxis="2"/>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="P4"/>
 					<text headline="Parkplatz RZ/Rektorat" infotext="Parkplatz nahe des Rektorats<br>und Rechenzentrums"/>
@@ -797,6 +857,9 @@
 				<colspheres>
 					<sphere x="0" y="0" z="0" radius="100"/>
 				</colspheres>
+				<colrectangles>
+					<rectangle x="400" y="400" z="15" a="-400" b="-400" c="15" AlignedToAxis="2"/>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="P5"/>
 					<text headline="Parkplatz TWT" infotext="Parkplatz nahe des Zentrums für<br>Technologie- und Wissenstransfer"/>
@@ -816,6 +879,9 @@
 				<colspheres>
 					<sphere x="0" y="0" z="0" radius="100"/>
 				</colspheres>
+				<colrectangles>
+					<rectangle x="400" y="400" z="15" a="-400" b="-400" c="15" AlignedToAxis="2"/>
+				</colrectangles>
 				<information>
 					<indentifier buildingnumber="P5"/>
 					<text headline="Parkplatz Atrium" infotext="Parkplatz neben dem Atrium"/>
@@ -833,7 +899,7 @@
 
 		<!-- Environment Objekte sind abgespeckte Buildings, z.B. Straßen oder Bäume
 		Die Eigenschaften sind ähnlich der Buildings.
-		Der modelname absolut angegeben, es gibt nur ein Detaillevel
+		Der ist modelname absolut angegeben, es gibt nur ein Detaillevel
 		hideOnTour beschreibt, ob das Model versteckt werden soll, wenn eine Detailview eines Gebäudes läuft -->
 			<envobject>
 				<position x="0" y="0" z="0"/>
