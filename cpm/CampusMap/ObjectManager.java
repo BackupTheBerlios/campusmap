@@ -318,6 +318,7 @@ public class ObjectManager{
 		XMLElement modelnames;
 		XMLElement flags;
 		XMLElement colspheres;
+		XMLElement colrects;
 		Enumeration information;
 		Enumeration detailview;
 		
@@ -334,6 +335,7 @@ public class ObjectManager{
 				modelnames	= (XMLElement)builChildEnum.nextElement();
 				flags		= (XMLElement)builChildEnum.nextElement();
 				colspheres	= (XMLElement)builChildEnum.nextElement();
+				colrects	= (XMLElement)builChildEnum.nextElement();
 				information	= ((XMLElement)builChildEnum.nextElement()).enumerateChildren();
 				detailview	= ((XMLElement)builChildEnum.nextElement()).enumerateChildren();
 				
@@ -367,6 +369,24 @@ public class ObjectManager{
 					((Building)worldObjects.lastElement()).collisionSpheres[n].rotateModelSpaceXYZ(new FVector(PConstants.PI, 0, 0));
 					((Building)worldObjects.lastElement()).collisionSpheres[n].scaleAbout(builSca.multiply(uniScale));
 					((Building)worldObjects.lastElement()).collisionSpheres[n].moveAbout(builPos.multiply(uniScale));
+				}
+				
+//				Collision Rectangles
+				int numberOfColRects = colrects.countChildren();
+				Enumeration rectEnum = colrects.enumerateChildren();
+				((Building)worldObjects.lastElement()).collisionRectangles = new CollisionRectangle[numberOfColRects];
+				for (int n = 0; n < numberOfColRects; n++)
+				{
+					XMLElement rect = (XMLElement) rectEnum.nextElement();
+					FVector p1 = getFVectorFromChild(rect);
+					FVector p2 = new FVector(getFloatAttribute(rect, "a"), getFloatAttribute(rect, "b"), getFloatAttribute(rect, "c"));
+					p1.printMe();
+					p2.printMe();
+					((Building)worldObjects.lastElement()).collisionRectangles[n]
+					     = new CollisionRectangle(p1, p2, rect.getIntAttribute("AlignedToAxis"));
+					//((Building)worldObjects.lastElement()).collisionRectangles[n].rotateToNewAxisAlignment(2);
+					((Building)worldObjects.lastElement()).collisionRectangles[n].scaleAbout(builSca.multiply(uniScale));
+					((Building)worldObjects.lastElement()).collisionRectangles[n].moveAbout(builPos.multiply(uniScale));
 				}
 				
 				//Informations

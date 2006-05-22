@@ -137,17 +137,17 @@ public class CollisionSphere {
 	}
 	
 	public void debugDraw(CampusMap applet) {
-		FVector pos = getPosition();
 		applet.fill(255, 100, 100, 255);
-		applet.pushMatrix();
-		applet.translate(pos.getX(), pos.getY(), pos.getZ());
-		applet.sphere(m_fRadius);
-		applet.popMatrix();
+		finalDebugDraw(applet);
 	}
 	
 	public void debugDraw(CampusMap applet, int color) {
-		FVector pos = getPosition();
 		applet.fill(color);
+		finalDebugDraw(applet);
+	}
+	
+	private void finalDebugDraw(CampusMap applet) {
+		FVector pos = getPosition();
 		applet.pushMatrix();
 		applet.translate(pos.getX(), pos.getY(), pos.getZ());
 		applet.sphere(m_fRadius);

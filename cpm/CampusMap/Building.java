@@ -24,6 +24,7 @@ public class Building extends ObjectOfInterest {
 	final static float	roomAlpha	= 0.5f;
 	
 	public	CollisionSphere collisionSpheres[];
+	public	CollisionRectangle collisionRectangles[];
 	//private int currentDetailLevel;
 	private	boolean		mouseOver;
 	public	FVector		entrancePosition;
@@ -74,6 +75,15 @@ public class Building extends ObjectOfInterest {
 			collisionSpheres[i] = new CollisionSphere(vPosition, fRadius);
 	}
 	
+	public void initColRectangleArray(int i) {
+		collisionRectangles = new CollisionRectangle[i];
+	}
+	
+	public void addColRectangle(int i, FVector p1, FVector p2, int alignedToAxis) {
+		if (i<collisionRectangles.length)
+			collisionRectangles[i] = new CollisionRectangle(p1, p2, alignedToAxis);
+	}
+	
 	public CollisionSphere testColSpheresWithPoint(FVector point, float distance) {
 		for (int i = 0; i < collisionSpheres.length; i++) {
 			CollisionSphere sphere = collisionSpheres[i].testPoint(point, distance);
@@ -82,7 +92,7 @@ public class Building extends ObjectOfInterest {
 		return null;
 	}
 	
-	private boolean testColSpheresWithMouse() {
+	private boolean testColWithMouse() {
 		if (onScreen) {
 			FVector mouseRay = myParentApplet.theCamera.getMousePointRay();
 			FVector camerPos = myParentApplet.theCamera.getPos();
@@ -90,6 +100,14 @@ public class Building extends ObjectOfInterest {
 			if (myParentApplet.controls.getThreeDeeControlEnabled()) {
 				for (int i = 0; i < collisionSpheres.length; i++) {
 					if (collisionSpheres[i].testRay(camerPos, mouseRay)) {
+						mouseOver = true;
+						myModels[currentDetailLevel].setLineColor(red);
+						Environment.setToolTip(shortDescription, 0);
+						return true;
+					}
+				}
+				for (int i = 0; i < collisionRectangles.length; i++) {
+					if (collisionRectangles[i].testRay(camerPos, mouseRay)) {
 						mouseOver = true;
 						myModels[currentDetailLevel].setLineColor(red);
 						Environment.setToolTip(shortDescription, 0);
@@ -105,6 +123,8 @@ public class Building extends ObjectOfInterest {
 	}
 	
 	private boolean testColSpheresWithFrustum() {
+		if (collisionSpheres == null || collisionSpheres.length==0)
+			return true;
 		FVector cameraLeft = myParentApplet.theCamera.getLeft();
 		FVector cameraUp = myParentApplet.theCamera.getUp();
 		for (int i = 0; i < collisionSpheres.length; i++) {
@@ -132,7 +152,7 @@ public class Building extends ObjectOfInterest {
 		switch (e.getID()) {
 	    case MouseEvent.MOUSE_MOVED:
 	    	if (onScreen)
-	    		testColSpheresWithMouse();
+	    		testColWithMouse();
 	    	break;
 	    case MouseEvent.MOUSE_CLICKED:
 	    	if (mouseOver && myParentApplet.controls.getThreeDeeControlEnabled()) {
@@ -213,6 +233,12 @@ public class Building extends ObjectOfInterest {
 				collisionSpheres[i].debugDraw(myDrawApplet, myParentApplet.color(100, 255, 100));
 			else
 				collisionSpheres[i].debugDraw(myDrawApplet);
+		}
+		for (int i = 0; i < collisionRectangles.length; i++) {
+			if (mouseOver)
+				collisionRectangles[i].debugDraw(myDrawApplet, myParentApplet.color(100, 255, 100));
+			else
+				collisionRectangles[i].debugDraw(myDrawApplet);
 		}
 		myDrawApplet.noHint(PApplet.DISABLE_DEPTH_TEST);
 	}

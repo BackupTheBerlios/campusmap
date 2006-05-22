@@ -2,55 +2,6 @@ package CampusMap;
 
 public class FMath {
 	
-	public static boolean TestSphereRay(FVector center, FVector start, FVector dir, float radius)
-	{
-		FVector	lineToSphere;
-		float	s, t, q,
-				l2, 
-				r2,				
-				m2,
-				len;
-
-		dir.normalizeMe();
-
-		lineToSphere = center.subtract(start);
-
-		s  = lineToSphere.dotProduct(dir);
-		l2 = lineToSphere.magnitudeSqr();
-		r2 = radius * radius;
-
-		if(l2 <= r2)
-		{
-			// Ray starts inside or on the sphere
-			return true;
-		}
-
-		if(s < 0.0f)
-		{
-			// Ray heading in wrong direction
-			return false;
-		}
-
-		m2 = l2 - (s*s);
-		if(m2 > r2)
-		{
-			// Ray will never hit the sphere
-			return false;
-		}
-
-		q = (float)(Math.sqrt(r2 - m2));
-		t = s - q;
-
-		len = (float)(Math.sqrt(l2));
-		if(t > len)
-		{
-			// Ray hits beyond the far point of the line
-			return false;
-		}
-
-		return true;
-	}
-	
 	//calculates the current accelerated value for the current animation (calculates the accelerated interpolation value) 
 	public static float calcAcceleration(float timePassedOfTotal, int accelIdent) {
 		switch (accelIdent) {
