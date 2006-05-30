@@ -249,7 +249,7 @@
 
 	<div class="titelGanz">
 			<img border="0" src="../images/<?php if($ok==30) echo 'ico_ok_dark.gif'; else if ($ok==31) echo 'ico_x_dark.gif'; else echo 'ico_inhalt.gif'; ?>">
-			VORHANDENE BRANCHEN
+			VORHANDENE DOZENTEN
 		
 	</div>
 

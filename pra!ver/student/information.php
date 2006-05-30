@@ -66,7 +66,7 @@ Ausbildungsförderung, Krankenversicherung und Studentenwerksbeitrag sind wie in 
 
 	<div class="inhaltGanz">
 		<div class="normAbstand">
-      		PRA|VER entstand im Rahmen eines eines Semesterprojektes im Studiengang Informationstechnologie und Gestaltung international an der FH-L&uuml;beck.<br>
+      		PRA|VER entstand als Semesterprojekt im Studiengang Informationstechnologie und Gestaltung international<br>an der FH-L&uuml;beck.<br>
       		Treten Fragen während der Benutzung auf, kannst Du entweder mit Deinem zuständigen Praktikumssachbearbeiter oder mit den Entwicklern dieses Tools in Verbindung treten:<br>
       		<br>
       	Zuständiger Sachbearbeiter:

@@ -21,7 +21,7 @@
 		const DEBUGGING = 0; //
 		
 		// Systemfehler werden an die adresse gemailt.
-		const SEND_DEBUG_INFORMATION_TO_EMAIL = '';//hristozk@stud.fh-luebeck.de';
+		const SEND_DEBUG_INFORMATION_TO_EMAIL = 'praver@millbridge.de';//hristozk@stud.fh-luebeck.de';
 		
 	} // class
 

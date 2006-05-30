@@ -119,8 +119,8 @@
 	
 	<div class="inhaltGanz">
 		<div class="normAbstand">
-      		PRA|VER entstand im Rahmen eines eines Semesterprojektes im Studiengang Informationstechnologie und Gestaltung international an der FH-L&uuml;beck.<br>
-      		Treten Fragen während der Benutzung auf, bitten wir Sie, mit den Entwicklern dieses Tools in Verbindung treten:<br>
+      		PRA|VER entstand als Semesterprojekt im Studiengang Informationstechnologie und Gestaltung international<br>an der FH-L&uuml;beck.<br>
+      		Treten Fragen während der Benutzung auf, bitten wir Sie, mit den Entwicklern dieses Tools in Verbindung zu treten:<br>
       		<br>
       	Entwickler: David Hübner und Christian Burghoff | <a href='mailto:praver@millbridge.de'>praver@millbridge.de</a>
 		</div>

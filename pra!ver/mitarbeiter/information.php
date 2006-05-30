@@ -112,8 +112,8 @@
 
 	<div class="inhaltGanz">
 		<div class="normAbstand">
-      		PRA|VER entstand im Rahmen eines eines Semesterprojektes im Studiengang Informationstechnologie und Gestaltung international an der FH-L&uuml;beck.<br>
-      		Treten Fragen während der Benutzung auf, bitten wir Sie, entweder mit dem zuständigen Praktikumssachbearbeiter des Studiengangs oder mit den Entwicklern dieses Tools in Verbindung treten:<br>
+      		PRA|VER entstand als Semesterprojekt im Studiengang Informationstechnologie und Gestaltung international<br>an der FH-L&uuml;beck.<br>
+      		Treten Fragen während der Benutzung auf, bitten wir Sie, entweder mit dem zuständigen Praktikumssachbearbeiter des Studiengangs oder mit den Entwicklern dieses Tools in Verbindung zu treten:<br>
       		<br>
       	<?php
       		$select_query = new DBQuery("SELECT s.name, d.Name, d.EMail, d.Telefon FROM studiengang s LEFT JOIN dozent d ON (d.PDozentID=s.PraktikaSachbearbeiterID) LEFT JOIN mitarbeiter m ON (m.Username=s.PraktikaMitarbeiterUsername) WHERE m.Username='".$mitarbeiter->getUsername()."' ORDER BY s.name");      	

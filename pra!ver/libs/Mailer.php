@@ -13,14 +13,21 @@
 			$headers  = "MIME-Version: 1.0\r\n";
 			$headers .= "Content-type: text/plain; charset=iso-8859-1\r\n";
 			$headers .= "From: praver@{$_SERVER['SERVER_NAME']}\r\n";
+			$headers .= "Reply-To: PRA|VER <praver@millbridge.de>\r\n";
+			$headers .= "Return-Path: PRA|VER <praver@millbridge.de>\r\n";
+			$now = time();
+			$headers .= "Message-ID: <".$now."@".$_SERVER['SERVER_NAME'].">\r\n";
+			$headers .= "X-Mailer: PHP v".phpversion()."\r\n";
 			
 			/* and now mail it */
 
 			//echo "Mail to: ".$email."<br>";
 			//echo "Subject: ".$subj."<br>";
 			//echo $text."<br ><br >";
+			//echo "Mail wurde verschickt!<br>".$email." ".$subj." ".$text." ".$headers."<br>";
 			
 			mail($email, $subj, $text, $headers);
+			//mail("david@millbridge.de", "mail wurde endlich mal verschickt", $text, $headers);
 			
 		} // mailit
 		
@@ -34,7 +41,7 @@
 			$headers .= "From: praver@{$_SERVER['SERVER_NAME']}\r\n";
 			
 			/* and now mail it */
-			//mail($email, $subj, $text, $headers);
+			mail($email, $subj, $text, $headers);
 		}
 
 

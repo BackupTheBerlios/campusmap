@@ -34,39 +34,44 @@
 				<img border="0" src="images/ico_inhalt.gif">
 				BENUTZERGRUPPE AUSWÄHLEN
 			</div>
-			<div class="inhaltHalb">
-					<table border="0" cellpadding="0" cellspacing="0" class="startTable">
+			<div class="inhaltHalb" style="height:250px;">
+					<table border="0" cellpadding="0" cellspacing="0">
 					  <tr>
-							<td><a class="startlink" href="student/">Studierende</a></td>
+							<td><a href="student/">Studierende</a><br><br></td>
 					  </tr>
 					  <tr>
-							<td><a class="startlink" href="dozent/">Dozenten</a></td>
+							<td><a href="dozent/">Dozenten</a><br><br></td>
 					  </tr>
 					  <tr>
-							<td><a class="startlink" href="mitarbeiter/">Mitarbeiter</a></td>
+							<td><a href="mitarbeiter/">Mitarbeiter</a><br><br></td>
 					  </tr>
 					  <tr>
-							<td><a class="startlink" href="extern/information.php?gruppe=1">Studieninteressierte</a></td>
+							<td><a href="extern/information.php?gruppe=1">Studieninteressierte</a><br><br></td>
 					  </tr>
 					  <tr>
-							<td><a class="startlink" href="extern/information.php?gruppe=2">Presse/Besucher</a></td>
+							<td><a href="extern/information.php?gruppe=2">Presse/Besucher</a><br><br></td>
 					  </tr>
 					  <tr>
-					  		<td><a class="startlink" href="extern/information.php?gruppe=3">Wirtschaft</a></td>
+					  		<td><a href="extern/information.php?gruppe=3">Wirtschaft</a><br><br></td>
 					  </tr>
 					 
-					</table>
+					</table><br><br><br><br><br>
 			</div>
 		</div>	
 		<div class="floatleft">
-			<div class="titelHalb">
+			<div class="titelHalb"">
 				<img border="0" src="images/ico_inhalt.gif">
 				PRAKTIKA | VERWALTUNGSSYSTEM
 			</div>
-			<div class="inhaltHalb">
+			<div class="inhaltHalb" style="height:250px;">
 					<table border="0" cellpadding="0" cellspacing="0" class="startTable">
 					  <tr>
-							<td>Herzlich Willkommen bei PRA|VER!<br><br>PRA|VER ist ein Tool zur Abgabe und Recherche von Berichten für das Berufspraktische Semester der Fachhochschule Lübeck.<br><br>In einer umfangreichen Datenbank stellt PRA|VER Informationen und Kontakte zu möglichen Praktikumsunternehmen der einzelnen<br>Studiengänge zur Verfügung.<br></td>
+							<td>
+								PRA|VER ist ein Tool, um über das Berufspraktische Semester (BPS) der FHL, also ein Semester beruf- licher Praxis in Unternehmen, zu berichten. Das Praxissemester ist in allen Studiengängen der Fachhochschule Lübeck im Hauptstudium zu absolvieren.
+								<br><br>Die Praktika erfassen wir jetzt mit PRA|VER in einer neu aufgesetzten Datenbank, die sich zunehmend füllen soll.<br>
+								PRA|VER bietet den Zugriff auf die Datenbank oder freigegebene Teile davon, stellt Informationen bereit und öffnet den Kontakt zu Firmen, bei denen schon Praktika gelaufen sind. In begrenztem Umfang stellt es diese Firmen auch vor oder macht neugierig.
+								<br><br>Schauen Sie sich gerne in unserer &quot;Datenbank&quot; um.<br>
+							</td>
 					  </tr>
 					  
 					 
