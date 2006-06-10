@@ -47,7 +47,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link rel="stylesheet" href="../styles/main.css" type="text/css">
 <link rel="stylesheet" href="../styles/menu.css" type="text/css">
-<link rel="stylesheet" href="../styles/mitarbeiter.css" type="text/css">
+<?
+              switch ($gruppe) {
+              	case 1:
+              		echo '<link rel="stylesheet" href="../styles/studieninteressierte.css" type="text/css">';
+              		break;
+              	case 2:
+              		echo '<link rel="stylesheet" href="../styles/presse_besucher.css" type="text/css">';
+              		break;
+              	case 3:
+              		echo '<link rel="stylesheet" href="../styles/wirtschaft.css" type="text/css">';
+              		break;
+              	default:
+              		echo '<link rel="stylesheet" href="../styles/start.css" type="text/css">';
+              		break;
+							}
+              	
+?>
 </head>
 
 <body leftmargin="0" topmargin="0">

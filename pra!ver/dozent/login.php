@@ -80,7 +80,7 @@
 		<div class="inhaltHalb">
 	
 		
-			<form name="form1" method="post" action="datenbank.php">
+			<form name="form1" method="post" action="berichteliste_abgegeben.php">
 			    <table border="0" cellspacing="0">
 			      <tr> 
 			        <td>Benutzername:</td>

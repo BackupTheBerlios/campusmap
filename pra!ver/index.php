@@ -67,7 +67,7 @@
 					<table border="0" cellpadding="0" cellspacing="0" class="startTable">
 					  <tr>
 							<td>
-								PRA|VER ist ein Tool, um über das Berufspraktische Semester (BPS) der FHL, also ein Semester beruf- licher Praxis in Unternehmen, zu berichten. Das Praxissemester ist in allen Studiengängen der Fachhochschule Lübeck im Hauptstudium zu absolvieren.
+								PRA|VER ist ein Tool, um über das Berufspraktische Semester (BPS) der FHL, also ein Semester beruflicher Praxis in Unternehmen, zu berichten. Das Praxissemester ist in allen Studiengängen der Fachhochschule Lübeck im Hauptstudium zu absolvieren.
 								<br><br>Die Praktika erfassen wir jetzt mit PRA|VER in einer neu aufgesetzten Datenbank, die sich zunehmend füllen soll.<br>
 								PRA|VER bietet den Zugriff auf die Datenbank oder freigegebene Teile davon, stellt Informationen bereit und öffnet den Kontakt zu Firmen, bei denen schon Praktika gelaufen sind. In begrenztem Umfang stellt es diese Firmen auch vor oder macht neugierig.
 								<br><br>Schauen Sie sich gerne in unserer &quot;Datenbank&quot; um.<br>
