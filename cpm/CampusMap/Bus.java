@@ -127,6 +127,7 @@ public class Bus extends MovingObject{
 	//constructor
 	public Bus(CampusMap drawApplet, int routeNo, int busNumber) {
 		super(drawApplet, new FVector(3));
+		drawApplet.env.objectInitDisplay.setText("Busses");
 		myRouteNo = routeNo;
 		myBusNumber = "" + busNumber;
 		if (myBusNumber.length()>1) {

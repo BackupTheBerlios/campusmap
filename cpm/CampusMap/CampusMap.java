@@ -74,8 +74,12 @@ public class CampusMap extends PApplet{
 	int runNum;
 	
 	PFont myFont;
+	PImage overlay;
 	
 	int ropeSlideIndex=0;
+	
+	int detailBraceIndex = 0; 
+	int detailBraceMulti=1;
 	
 	// temp for testing
 	public	Vector		spheres;
@@ -102,7 +106,7 @@ public class CampusMap extends PApplet{
 		theCamera.lookAtNow(new FVector(-500.51917f, 851.8057f, 0));
 		
 		// Camera Rotate Reference
-		letters = new OBJModel(this);
+		//letters = new OBJModel(this);
 		
 		naturalFactor = new NaturalFactor(this);
 		
@@ -124,6 +128,8 @@ public class CampusMap extends PApplet{
 		locator = new Locator(this);
 
 		noLoop();
+		
+		overlay = /*new PImage(env.bgImg);*/loadImage(Environment.address+Environment.ressourceFolder+"arrows01.png");
 		
 		/* GUI-Elements
 		detailButton = new Button(450, 300, 30, 30, "detailModusButton.gif", new int[] {0,0}, false, "Beenden des Detailmodus");
@@ -272,6 +278,7 @@ public class CampusMap extends PApplet{
 					popMatrix();
 				}
 			}
+			
 	
 			// clearZBuffer();
 			hint(DISABLE_DEPTH_TEST);
@@ -306,9 +313,9 @@ public class CampusMap extends PApplet{
 			// The second time all gets painted
 			if (runNum==3){
 				try{
-				noStroke();
-				getOverviewShut();
-				env.addThem();
+					noStroke();
+					getOverviewShut();
+					env.addThem();
 				}catch(Throwable t){
 					env.setErrorDisplay("Das Applet konnte nicht gestartet werden. Eventuell ist dies ein Speicherproblem. Bitte stoppen sie alle anderen Java-Anwendungen. GGf. muss der Browser neu gestartet werden um den Cache zu leeren.");
 				}
@@ -326,7 +333,13 @@ public class CampusMap extends PApplet{
 			// ****************************************
 			renderSlideCases(mouseX, mouseY);
 			// **************************************
+
+			if(touring){
+				paintTouringRope();
+				drawDetailBraces();
+			}
 			
+			image(overlay, 0, 250);
 			
 			// lights();
 			// buttons.evaluate(mouseX, mouseY, controls.mouseJustReleased,
@@ -335,7 +348,6 @@ public class CampusMap extends PApplet{
 	
 			theCamera.drawFramerate();
 			
-			if(touring)paintTouringRope();
 	
 			
 			// clean up and similar
@@ -357,6 +369,22 @@ public class CampusMap extends PApplet{
 		overviewImage=new PImage(buffer, width, height, RGB);
 		// overviewImage.save("image.tif");
 		System.out.println("shut for overview");
+	}
+	
+	private void drawDetailBraces(){
+		stroke(255,0,0);
+		pushMatrix();
+		translate(285, 175);
+		scale(1-(float)(detailBraceIndex*0.01));
+		line(-250,-150,-240,-150);
+		line(-250,-150,-250,150);
+		line(-250,150,-240,150);
+		line(250,-150,240,-150);
+		line(250,-150,250,150);
+		line(250,150,240,150);
+		popMatrix();
+		detailBraceIndex+=detailBraceMulti;
+		if(detailBraceIndex>5||detailBraceIndex<0)detailBraceMulti*=-1;
 	}
 	
 	public void setTouring(boolean p_touring){
@@ -416,6 +444,7 @@ public class CampusMap extends PApplet{
 	
 	public void renderSlideCases(int mouseX, int mouseY){
 		// ObjectManager slideCases
+		tint(200,10,10,200);
 		for(int caseIndex=0;caseIndex<objectManager.drawers.size(); caseIndex++){
 			// Get Values from SlideCase
 			((SlideCase)objectManager.drawers.get(caseIndex)).evalMouse(mouseX, mouseY, mousePressed, controls.mouseJustReleased);
@@ -426,11 +455,11 @@ public class CampusMap extends PApplet{
 				FVector imgPos = ((SlideCase)objectManager.drawers.get(caseIndex)).getPos();
 				// System.out.println("left2: "+imgPos.getX());
 				PImage img = ((SlideCase)objectManager.drawers.get(caseIndex)).getPixels();
-				tint(200,10,10,200);
 				image(img, imgPos.getX(), imgPos.getY());
 			}// if Pixels exist
 			else System.out.println("No Pixels!");
 		}// for
+//		tint(255,255,255,200);
 	}
 	
 	// public void paint(){/**/}
@@ -501,5 +530,6 @@ public class CampusMap extends PApplet{
 	public void sayHello() {
 		System.out.println("Hello");
 	}
+
 }	
 

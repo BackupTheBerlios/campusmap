@@ -16,6 +16,7 @@ public class ObjectOfInterest{
 	protected boolean selectable;
 	protected boolean drawLines;
 	protected boolean zFade;
+	private boolean notifying;               // notifying initial drawing!!
 	protected FVector myPos;
 	protected FVector myRot;
 	protected FVector myScale;
@@ -44,10 +45,11 @@ public class ObjectOfInterest{
 	
 	public ObjectOfInterest(CampusMap drawApplet, FVector p_myPos, FVector p_myScale, FVector p_myRot, String[] p_modelsToLoad, String p_address, boolean p_selectable, boolean p_drawLines, boolean p_zFade){
 		myParentApplet = (CampusMap)drawApplet;
-		myParentApplet.env.objectInitDisplay.setText("Objects of Interest");
+		myParentApplet.env.objectInitDisplay.setText("ObjectsOfInterest");
 		selectable = p_selectable;
 		drawLines = p_drawLines;
 		zFade = p_zFade; 
+		notifying = false;
 		
 		//oldDetailLevel=-1;
 		currentDetailLevel=OVERVIEW;
@@ -76,6 +78,28 @@ public class ObjectOfInterest{
 		return false;
 	}
 	
+	public void setLodModelLoaded(int modelNo) {
+		modelsLoaded[modelNo] = true;
+		modelsBeingLoaded[modelNo] = false;
+		System.out.println("Model "+modelsToLoad[modelNo]+" is loaded.");
+		if(notifying){
+			System.out.println("start draw");
+			myParentApplet.startDrawing();//invokeDisplay call should be here
+			notifying=false;
+		}
+	}
+	public void setLodModelLoadFailed(int modelNo) {
+		modelsLoaded[modelNo] = false;
+		modelsBeingLoaded[modelNo] = false;
+		System.out.println("Modelloading has failed for "+modelsToLoad[modelNo]+".");
+	}
+
+	public void notifyInitedObj(){
+		System.out.println("request start draw");
+		notifying=true;
+	}
+	
+	
 	public boolean getLodModelBeingLoaded(int lod) {
 		if (lod > (getNumberOfLodModels()-1) || modelsBeingLoaded[lod])
 			return true;
@@ -89,16 +113,19 @@ public class ObjectOfInterest{
 	}	
 	
 	// Model loading
-	public void loadModel(int modelNo){
-		myModels[modelNo] = new OBJModel(myParentApplet);
-		myModels[modelNo].load(address, modelsToLoad[modelNo]);
-		//myModels[modelNo].load(myParentApplet.getClass().getResourceAsStream("data/"+modelsToLoad[modelNo]));
-		myModels[modelNo].drawMode(processing.core.PConstants.TRIANGLES);
-		myModels[modelNo].setLineDrawing(drawLines);
-		myModels[modelNo].setZFade(zFade);
-		myModels[modelNo].setFadeMidPoint(new float[]{0.0f, 0.0f, 0.0f});
-		modelsLoaded[modelNo] = true;
-		modelsBeingLoaded[modelNo] = false;
+	public void loadModel(int lod){
+		try{
+			myModels[lod] = new OBJModel(myParentApplet, this, lod);
+			myModels[lod].load(address, modelsToLoad[lod]);
+			//myModels[modelNo].load(myParentApplet.getClass().getResourceAsStream("data/"+modelsToLoad[modelNo]));
+			myModels[lod].drawMode(processing.core.PConstants.TRIANGLES);
+			myModels[lod].setLineDrawing(drawLines);
+			myModels[lod].setZFade(zFade);
+			myModels[lod].setFadeMidPoint(new float[]{0.0f, 0.0f, 0.0f});
+		}catch(ArrayIndexOutOfBoundsException e){
+			System.err.println("not so many models for this object: "+modelsToLoad[lod-1]);
+			e.printStackTrace();
+		}
 	}
 
 	// draw method

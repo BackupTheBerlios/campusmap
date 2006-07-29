@@ -19,6 +19,17 @@ import javax.swing.text.*;
  */
 public class Environment extends JApplet{
 
+	private final class BrowserCoverImage extends JComponent {
+		public BrowserCoverImage(){
+			setSize(300,300);
+			setOpaque(false);
+		}
+		public void paint(Graphics g){
+			g.drawImage(bgImg, 0, -160, this);
+//			System.out.println("Componentdraw");
+		}
+	}
+
 	public static boolean adminMode = false;
 	
 	public static String address;
@@ -41,11 +52,11 @@ public class Environment extends JApplet{
 	
 	// Contents
 	// Beginning Labels
-	JLabel initDisplay;
-	JLabel objectInitDisplay;
+	public JLabel initDisplay;
+	public JLabel objectInitDisplay;
 	
 	// Project contents
-	CampusMap theContent;
+	public CampusMap theContent;
 	static Explications infoBox;
 	private JLayeredPane layeredPane;
 	private boolean loadingLabelShowing=false;
@@ -55,8 +66,9 @@ public class Environment extends JApplet{
 	static JPanel contentHolder;
 
 	// Containertree
-	CpmPanel toolTipPanel;
+	JPanel toolTipPanel;
 	static CpmTextArea toolTipTextfield;
+	public Image bgImg=null;
 
 	JScrollPane infoBoxScrollPane;
 	
@@ -117,7 +129,18 @@ public class Environment extends JApplet{
 		toolTipTextfield.setEditable(false);
 		toolTipTextfield.setMinimumSize(new Dimension(250, 30));
 
-		toolTipPanel = new CpmPanel((JApplet)this, "logotype.png");
+		try{
+			bgImg=getImage(new URL(Environment.address+Environment.ressourceFolder), "arrows01.png");
+		}catch(MalformedURLException e){
+			System.out.println("Error loading backgroundimage");
+		}
+		toolTipPanel = new JPanel(){
+			public void paintComponent(Graphics g){
+				setForeground(Environment.bg_Color);
+				g.fillRect(0,0, this.getWidth(), this.getHeight());
+				if(bgImg!=null)g.drawImage(bgImg, 0, -110, this);
+			}
+		};
 		toolTipPanel.setBorder(grayline);
 		toolTipPanel.add(toolTipTextfield);
 		
@@ -154,18 +177,23 @@ public class Environment extends JApplet{
 		area = new Dimension(570, 250);
 		infoBoxScrollPane.setMinimumSize(area);
 		
+
+		/************************************
+		 *  Layered Pane
+		 * 
+		 ***********************************/
 		layeredPane = new JLayeredPane();
 		infoBoxScrollPane.setSize(570, 250);
 		layeredPane.add(infoBoxScrollPane, JLayeredPane.DEFAULT_LAYER);
+		layeredPane.add(new BrowserCoverImage(), new Integer(250));
 		layeredPane.setPreferredSize(new Dimension(400,400));
 		
         loadingLabel = new JTextPane();
         StyledDocument doc = loadingLabel.getStyledDocument();
-        
-		//  Set alignment to be centered for all paragraphs
- 
-		MutableAttributeSet standard = new SimpleAttributeSet();
+        //  Set alignment to be centered for all paragraphs
+ 		MutableAttributeSet standard = new SimpleAttributeSet();
 		StyleConstants.setAlignment(standard, StyleConstants.ALIGN_CENTER);
+		StyleConstants.setFontFamily(standard, "Script");
 		doc.setParagraphAttributes(0, 0, standard, true);
  
         loadingLabel.setOpaque(true);
@@ -279,8 +307,7 @@ public class Environment extends JApplet{
 	}
 	
 	public void repaintEnv(){
-		//this.validate();
-		layeredPane.revalidate();
+//		layeredPane.revalidate();
 	}
 	
 
@@ -301,32 +328,6 @@ public class Environment extends JApplet{
 	
 }
 
-
-class CpmPanel extends JPanel{
-	
-	Image bgImg1;
-	Image bgImg2;
-	
-	public CpmPanel(){/**/}
-	
-	public CpmPanel(JApplet loadApplet, String imgName){
-		try{
-			bgImg1=loadApplet.getImage(new URL(Environment.address+Environment.ressourceFolder), imgName);
-			bgImg2=loadApplet.getImage(new URL(Environment.address+Environment.ressourceFolder), "Stewardess.gif");
-		}catch(MalformedURLException e){
-			System.out.println("Error loading backgroundimage");
-		}
-	}
-	
-	public void paintComponent(Graphics g){
-		//setForeground(Environment.fh_CI_Color);
-		setForeground(Environment.bg_Color);
-		g.fillRect(0,0, this.getWidth(), this.getHeight());
-		//g.fillRect(0,0, 15, this.getHeight());
-		if(bgImg1!=null)g.drawImage(bgImg1, -350, 5, this);
-		if(bgImg2!=null)g.drawImage(bgImg2, -10, this.getHeight()-40, this);
-	}
-}
 
 class CpmTextArea extends JTextArea implements Runnable{
     int frame=0;

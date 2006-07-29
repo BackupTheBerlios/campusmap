@@ -2,6 +2,7 @@ package CampusMap;
 
 import java.util.*;
 import processing.core.PApplet;
+//import javax.swing.*;
 
 /** Class to manage all streaming elements that get loaded into the applet while it is running.
  *  -Models
@@ -9,10 +10,11 @@ import processing.core.PApplet;
  */
 public class StreamingManager extends Thread {
 	
-	static	final	int	SIMULTAN_FILES		= 2;
+	static	final	int	SIMULTAN_FILES		= 3;
 	static	final	int	MAX_LOD_LEVEL		= 3;
 	PApplet applet;
 	Vector worldObjects;
+	Vector currLodObjectsStillToLoad; 
 	StreamingFile streamingFiles[];
 	int numLoadedFiles = 0;
 	int numFilesToLoad = 0;
@@ -22,11 +24,14 @@ public class StreamingManager extends Thread {
 	boolean load2Loaded = false;
 	final int initMinLod = 0;
 	boolean initMinLodReached;
+	//JFrame ladeFenster;
 	
 	public StreamingManager(PApplet p_applet, Vector p_worldObjects) {
 		applet = p_applet;
+		((CampusMap)applet).env.objectInitDisplay.setText("StreamingManager");
 		initMinLodReached=false;
 		worldObjects = p_worldObjects;
+		currLodObjectsStillToLoad = new Vector();
 		numObjectsToLoad = worldObjects.size();
 		numFilesToLoad = findNumberOfFiles();
 		streamingFiles = new StreamingFile[SIMULTAN_FILES];
@@ -48,51 +53,45 @@ public class StreamingManager extends Thread {
 	private void findNewFileToLoad(int slot) {
 		int fileNo = 0;
 		boolean foundModel = false;
-		while (!foundModel && fileNo < numFilesToLoad && lodToLoad < MAX_LOD_LEVEL) {
-			int i = 0;
-			for (/*void*/; i < numObjectsToLoad; i++) {
-				//System.out.println("is Thread for model " + i + " with lod " + lodToLoad+" already done?");
-				if ((!((ObjectOfInterest)(worldObjects.elementAt(i))).getLodModelBeingLoaded(lodToLoad)) && (!((ObjectOfInterest)(worldObjects.elementAt(i))).getLodModelLoaded(lodToLoad))) {
-					numLoadedFiles++;
-					foundModel = true;
-					//System.out.println("using slot " + slot + " to load model " + i + " with lod " + lodToLoad + ".  So far " + numLoadedFiles + " of " + numFilesToLoad + " files loaded.");
-					((ObjectOfInterest)(worldObjects.elementAt(i))).setLodModelBeingLoaded(lodToLoad, true);
-					if(applet instanceof CampusMap)
-						streamingFiles[slot] = new StreamingFile((CampusMap)applet, this);
-					else streamingFiles[slot] = new StreamingFile();
+		
+		Vector leftToLoad = leftToLoadInThisLod();
+			if (leftToLoad.size()>0) {		
+					
+					((CampusMap)applet).env.objectInitDisplay.setText(((ObjectOfInterest)(leftToLoad.elementAt(0))).modelsToLoad[lodToLoad]);
+					((ObjectOfInterest)(leftToLoad.elementAt(0))).setLodModelBeingLoaded(lodToLoad, true);
+					streamingFiles[slot] = new StreamingFile((CampusMap)applet, this);
 					streamingFiles[slot].setPriority(MIN_PRIORITY);
-					if (i == numObjectsToLoad || isLastModelInThisLod(i)) {
-						streamingFiles[slot].registerNotify();
+					
+					if (leftToLoad.size()==1) {
+						if(lodToLoad == initMinLod)streamingFiles[slot].registerNotify();
 					}
-					streamingFiles[slot].startModelLoading(((ObjectOfInterest)worldObjects.elementAt(i)), lodToLoad);
-					break;
-				}
-			}
-			if (i == numObjectsToLoad || isLastModelInThisLod(i)) {
+					streamingFiles[slot].startModelLoading(((ObjectOfInterest)leftToLoad.elementAt(0)), lodToLoad);
+			}else if (leftToLoad.size()==0){
 				System.out.println("Level "+lodToLoad+" loaded");
-				streamingFiles[slot].registerNotify();
 				lodToLoad++;
 			}
-		}
 	}
 	
-	public void notifyInitedObj(){
-		((CampusMap)applet).startDrawing();//invokeDisplay call should be here
-	}
-	
-	private boolean isLastModelInThisLod(int modelNo) {
-		modelNo++;
-		for (/*void*/; modelNo < numObjectsToLoad; modelNo++) {
-			if (((ObjectOfInterest)worldObjects.elementAt(modelNo)).getNumberOfLodModels()>=lodToLoad) {
-				return false;
+	private Vector leftToLoadInThisLod() {
+		Vector rueckgabe=new Vector();
+		for (int testIndex=0; testIndex < numObjectsToLoad; testIndex++) {
+			// if all others return "loaded"
+			if (((ObjectOfInterest)(worldObjects.elementAt(testIndex))).getNumberOfLodModels()>lodToLoad &&
+				(!((ObjectOfInterest)(worldObjects.elementAt(testIndex))).getLodModelBeingLoaded(lodToLoad)) && 
+				(!((ObjectOfInterest)(worldObjects.elementAt(testIndex))).getLodModelLoaded(lodToLoad)) ){
+				rueckgabe.add(worldObjects.elementAt(testIndex));
+			}else{
+				numLoadedFiles++;
 			}
 		}
-		return true;
+//		System.out.println("arraygroesse"+rueckgabe.size());
+		return rueckgabe;
 	}
 	
 	public void run() {
-		//System.out.println("load lods loop started: " + numLoadedFiles + " of " + numFilesToLoad + " files loaded.");
+		((CampusMap)applet).env.initDisplay.setText("loading geometry files");
 		while (numLoadedFiles != numFilesToLoad && lodToLoad < MAX_LOD_LEVEL) {
+//			System.out.println("load lods loop started: " + numLoadedFiles + " of " + numFilesToLoad + " files loaded.");
 			for (int i = 0; i < SIMULTAN_FILES; i++) {
 				if (streamingFiles[i] == null || streamingFiles[i].isDone()) {
 					//System.out.println("slot " + i + " is empty and can now be used.");
@@ -100,15 +99,14 @@ public class StreamingManager extends Thread {
 				}
 			}
 			try {
-				Thread.sleep(150);
-			} catch(InterruptedException ie) {
+				Thread.sleep(300);
+			} catch(InterruptedException ie) { 
 				System.err.println("Insomnia @ StreamingManager");
 			}
 		}
 		//Environment.setToolTip("Geometrie komplett geladen.", 0); 
 		// Commented because overrides error message if internet connection doesn't work
 	}
-
 }
 
 class StreamingFile extends Thread {
@@ -151,10 +149,10 @@ class StreamingFile extends Thread {
 	}
 	
 	public void run() {
+		if(notify)modelToLoad.notifyInitedObj();
 		modelToLoad.loadModel(lodToLoad);
 		//System.out.println("Thread is running the "+(++runNumber)+"st time with file:"+modelToLoad.modelsToLoad[lodToLoad]);
 		done = true;
-		if(notify)streamManager.notifyInitedObj();
 	}
 	
 	public boolean isDone() {

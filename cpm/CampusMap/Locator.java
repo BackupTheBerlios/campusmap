@@ -33,6 +33,7 @@ class Locator {
 
 	public Locator(CampusMap p_applet) {
 		applet = p_applet;
+		applet.env.objectInitDisplay.setText("Locator");
 		position = new FVector(3);
 		lastStoredPosition = new FVector(3);
 		active = false;

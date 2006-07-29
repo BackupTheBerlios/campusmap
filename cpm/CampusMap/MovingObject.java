@@ -22,6 +22,7 @@ public class MovingObject{
 	//constructor
 	public MovingObject(CampusMap drawApplet, FVector position) {
 		myDrawApplet = drawApplet;
+		myDrawApplet.env.objectInitDisplay.setText("Explications");
 		myPos	= position;
 		//myPos.setZ(myPos.getZ()+MOVE_Z);
 		myRot	= new FVector(1, 0, 0);

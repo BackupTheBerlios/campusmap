@@ -165,7 +165,8 @@ public class Explications extends JPanel implements Runnable{
 						found = matchString.find();
 						if(found){
 							System.out.println("gefunden:"+matchString.group(0));
-						   	if(!((String)matchString.group(1)).equals("no")){
+						   	if(!((String)matchString.group(1)).equals("no") &&
+						   				 matchString.groupCount()>=4){
 						   		getCoordsFromUrl(buffer);
 					    	} else {
 					    		env.theContent.setTouring(false);
@@ -194,50 +195,58 @@ public class Explications extends JPanel implements Runnable{
 	public void getCoordsFromUrl(String locator){
 		//System.out.println(buffer);
 		env.theContent.setTouring(true);
-		/************************************
-		 *  roomnumber parsing
-		 */
-		String roomNumber = matchString.group(2);
-		int firstSeperator = roomNumber.indexOf('-');
-		int secondSeperator = roomNumber.indexOf('.');
-
-		String buildingNumber = roomNumber.substring(0,firstSeperator);
-		String levelNumberString = roomNumber.substring(firstSeperator+1, secondSeperator);
-		float levelNumber = 0;
-		if (levelNumberString.equalsIgnoreCase("K")) //Keller
-			levelNumber = -0.6f;
-		else
-			levelNumber = Integer.parseInt(levelNumberString);
-		int thisRoomHeight = 0;//
-		System.out.println("buildingNumber:"+buildingNumber+", levelNumber:  "+levelNumber+", thisRoomHeight: "+thisRoomHeight);
-		/************************************
-		 *  Coordinates from the database. Here, life on stage!
-		 */
-		float x = Float.parseFloat(matchString.group(3).replace(',','.'))/100;
-		float y = Float.parseFloat(matchString.group(4).replace(',','.'))/100;
-//    		System.out.println(matchString.group(5)+" "+matchString.group(3)+" "+matchString.group(4));
-		/************************************
-		 * Is this a tour?!
-		 */
-    	if(matchString.group(5)!=null) {
-    		Environment.setToolTip("Tour läuft.", 9999);
-    	}else Environment.setToolTip("Raumansicht. Bitte Knopf unten drücken um weiter zu navigieren.", 9999);
-		/************************************
-		 * invoking the move
-		 */
-		FVector roomPos = new FVector(x,y,thisRoomHeight);
-		Building tempBuild = env.theContent.objectManager.getBuildingByNumber(buildingNumber);
-		System.out.println("building: "+tempBuild);
-		if(tempBuild!=null){
-			//System.out.println("buildigng exists");
-			//env.theContent.spheres.add(tempBuild.myPos.multiply(env.theContent.getBuildingUniformScale()));
-			tempBuild.myPos.multiply(env.theContent.getBuildingUniformScale()).printMe("myPos");
-			FVector convRoomPos = tempBuild.myPos.multiply(env.theContent.getBuildingUniformScale()).add(tempBuild.convertDatabasePos(roomPos));
-			//convRoomPos.printMe("convRoomPos");
-			//env.theContent.spheres.add(convRoomPos);
-			convRoomPos.setZ(levelNumber*12 + 6);
-			env.theContent.theCamera.flyToRoom(buildingNumber, convRoomPos, true);
+		try{
+			/************************************
+			 *  roomnumber parsing
+			 */
+			String roomNumber = matchString.group(2);
+			int firstSeperator = roomNumber.indexOf('-');
+			int secondSeperator = roomNumber.indexOf('.');
+	
+			String buildingNumber = roomNumber.substring(0,firstSeperator);
+			String levelNumberString = roomNumber.substring(firstSeperator+1, secondSeperator);
+			float levelNumber = 0;
+			if (levelNumberString.equalsIgnoreCase("K")) //Keller
+				levelNumber = -0.6f;
+			else
+				levelNumber = Integer.parseInt(levelNumberString);
+			int thisRoomHeight = 0;//
+			System.out.println("buildingNumber:"+buildingNumber+", levelNumber:  "+levelNumber+", thisRoomHeight: "+thisRoomHeight);
+			/************************************
+			 *  Coordinates from the database. Here, life on stage!
+			 */
+			float x = Float.parseFloat(matchString.group(3).replace(',','.'))/100;
+			float y = Float.parseFloat(matchString.group(4).replace(',','.'))/100;
+	//    		System.out.println(matchString.group(5)+" "+matchString.group(3)+" "+matchString.group(4));
+	
+			/************************************
+			 * Is this a tour?!
+			 */
+	    	if(matchString.group(5)!=null) {
+	    		Environment.setToolTip("Tour läuft. Bitte einen Knopf unten drücken um weiter zu navigieren.", 9999);
+	    	}else Environment.setToolTip("Raumansicht. Bitte Knopf unten drücken um weiter zu navigieren.", 9999);
+			/************************************
+			 * invoking the move
+			 */
+			FVector roomPos = new FVector(x,y,thisRoomHeight);
+			Building tempBuild = env.theContent.objectManager.getBuildingByNumber(buildingNumber);
+			System.out.println("building: "+tempBuild);
+			if(tempBuild!=null){
+				//System.out.println("buildigng exists");
+				//env.theContent.spheres.add(tempBuild.myPos.multiply(env.theContent.getBuildingUniformScale()));
+				tempBuild.myPos.multiply(env.theContent.getBuildingUniformScale()).printMe("myPos");
+				FVector convRoomPos = tempBuild.myPos.multiply(env.theContent.getBuildingUniformScale()).add(tempBuild.convertDatabasePos(roomPos));
+				//convRoomPos.printMe("convRoomPos");
+				//env.theContent.spheres.add(convRoomPos);
+				convRoomPos.setZ(levelNumber*12 + 6);
+				env.theContent.theCamera.flyToRoom(buildingNumber, convRoomPos, true);
+			}
+		}catch(NumberFormatException e){
+			e.printStackTrace();
+			env.theContent.setTouring(false);
+			Environment.setToolTip("Fehler bei der Datenbehandlung. Entschuldigen Sie bitte und benachrichtigen Sie den Administrator.", 3);
 		}
+
 	}
 
 } // end Explications

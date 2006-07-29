@@ -37,6 +37,7 @@ class Houses {
 	public Houses(CampusMap p_applet, int p_numHouses) {
 		
 		applet = p_applet;
+		applet.env.objectInitDisplay.setText("Explications");
 
 		numHouses = p_numHouses;
 	

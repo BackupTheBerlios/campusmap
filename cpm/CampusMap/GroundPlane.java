@@ -41,6 +41,7 @@ public class GroundPlane {
 
 	public GroundPlane(CampusMap p_applet) {
 		applet = p_applet;
+		applet.env.objectInitDisplay.setText("Explications");
 	}
 
 	public void draw(){

@@ -37,6 +37,7 @@ class Boxes {
 
 	public Boxes(CampusMap p_applet) {
 		applet = p_applet;
+		applet.env.objectInitDisplay.setText("Boxes");
 	}
 
 	public void draw() {

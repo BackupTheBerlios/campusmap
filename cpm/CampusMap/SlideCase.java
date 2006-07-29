@@ -67,6 +67,7 @@ public class SlideCase extends PApplet {
 	public SlideCase(CampusMap p_applet, String p_name, int side, int shift, 
 			int p_occupyOnSide, int p_slideOut){
 		applet= p_applet;
+		applet.env.objectInitDisplay.setText("SlideCases");
 		name=p_name;
 		state=SHIFTED_IN;
 		mousePressed=true;

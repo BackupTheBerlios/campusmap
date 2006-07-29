@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="E:/arbeiten/david/Downloads/processing-0111-expert/lib/core.jar"/>
+	<classpathentry kind="lib" path="E:/arbeiten/david/Downloads/nanoxml-lite-2.2.1.jar"/>
+	<classpathentry kind="lib" path="E:/arbeiten/david/Downloads/fog/fog/library/fog.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>

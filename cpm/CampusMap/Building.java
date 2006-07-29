@@ -93,7 +93,7 @@ public class Building extends ObjectOfInterest {
 	}
 	
 	private boolean testColWithMouse() {
-		if (onScreen) {
+		if (onScreen && collisionSpheres!=null && collisionRectangles!=null) {
 			FVector mouseRay = myParentApplet.theCamera.getMousePointRay();
 			FVector camerPos = myParentApplet.theCamera.getPos();
 			myModels[currentDetailLevel].setLineColor(gray);

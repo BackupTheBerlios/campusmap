@@ -39,12 +39,13 @@ public class ObjectManager{
 		theCamera		= _theCamera;
 		
 		applet			= _applet;
+		applet.env.objectInitDisplay.setText("ObjectManager");
 		//sliderHolder 	= new GuiHolder(200, 200);
 		if(applet instanceof CampusMap){
-			//applet.env.objectInitDisplay.setText("ObjectManager");
 			guiObjects = new GuiManager();
 		}
 		worldObjects	= new Vector();
+		
 		drawers = new Vector();
 		buildingReferences= new Hashtable();
 		
@@ -324,8 +325,9 @@ public class ObjectManager{
 		
 		int numBuildings = buildings.countChildren();
 		//buildingReferences = new Building[numBuildings];
+		int buildingIndex=0;
 		try {
-			for(int i = 0; i < numBuildings;i++){
+			for(buildingIndex = 0; buildingIndex < numBuildings;buildingIndex++){
 				
 				buildingobject	= (XMLElement) childEnum.nextElement();
 				Enumeration builChildEnum = buildingobject.enumerateChildren();
@@ -373,20 +375,22 @@ public class ObjectManager{
 				
 //				Collision Rectangles
 				int numberOfColRects = colrects.countChildren();
-				Enumeration rectEnum = colrects.enumerateChildren();
 				((Building)worldObjects.lastElement()).collisionRectangles = new CollisionRectangle[numberOfColRects];
-				for (int n = 0; n < numberOfColRects; n++)
-				{
-					XMLElement rect = (XMLElement) rectEnum.nextElement();
-					FVector p1 = getFVectorFromChild(rect);
-					FVector p2 = new FVector(getFloatAttribute(rect, "a"), getFloatAttribute(rect, "b"), getFloatAttribute(rect, "c"));
-					p1.printMe();
-					p2.printMe();
-					((Building)worldObjects.lastElement()).collisionRectangles[n]
-					     = new CollisionRectangle(p1, p2, rect.getIntAttribute("AlignedToAxis"));
-					//((Building)worldObjects.lastElement()).collisionRectangles[n].rotateToNewAxisAlignment(2);
-					((Building)worldObjects.lastElement()).collisionRectangles[n].scaleAbout(builSca.multiply(uniScale));
-					((Building)worldObjects.lastElement()).collisionRectangles[n].moveAbout(builPos.multiply(uniScale));
+				if(numberOfColRects < 0){
+					Enumeration rectEnum = colrects.enumerateChildren();
+					for (int n = 0; n < numberOfColRects; n++)
+					{
+						XMLElement rect = (XMLElement) rectEnum.nextElement();
+						FVector p1 = getFVectorFromChild(rect);
+						FVector p2 = new FVector(getFloatAttribute(rect, "a"), getFloatAttribute(rect, "b"), getFloatAttribute(rect, "c"));
+						p1.printMe();
+						p2.printMe();
+						((Building)worldObjects.lastElement()).collisionRectangles[n]
+						     = new CollisionRectangle(p1, p2, rect.getIntAttribute("AlignedToAxis"));
+						//((Building)worldObjects.lastElement()).collisionRectangles[n].rotateToNewAxisAlignment(2);
+						((Building)worldObjects.lastElement()).collisionRectangles[n].scaleAbout(builSca.multiply(uniScale));
+						((Building)worldObjects.lastElement()).collisionRectangles[n].moveAbout(builPos.multiply(uniScale));
+					}
 				}
 				
 				//Informations
@@ -416,8 +420,9 @@ public class ObjectManager{
 
 				
 			}
-		} catch(XMLParseException xpe) {
-				System.err.println("ObjectManager::initBuildings() - attribute does not exist: " + xpe);
+		} catch(Exception xpe) {
+				System.err.println("ObjectManager::initBuildings() - attribute does not exist for building "+buildingIndex+": ");
+				xpe.printStackTrace();
 		}
 		
 	}

@@ -29,6 +29,7 @@ class MovingObjectsManager {
 	
 	public MovingObjectsManager(CampusMap p_applet) {
 		applet = p_applet;
+		applet.env.objectInitDisplay.setText("MovingObjectsManager");
 		movingObjects = new Vector();
 		
 		//create humans
