@@ -98,7 +98,7 @@ class Camera{
 	
 	private Slider	m_heightSlider = null;
 	
-	private String	m_iLastCircleViewBuilding;
+	private Building	m_iLastCircleViewBuilding;
 	
 	
 	//constructor
@@ -164,7 +164,7 @@ class Camera{
 		m_bDrawFramerate	= true;
 		m_iLastSecond		= 0;
 		
-		m_iLastCircleViewBuilding = "-1";
+		m_iLastCircleViewBuilding = null;
 	}
 	
 	//queues one of the camera's Methods
@@ -598,12 +598,12 @@ class Camera{
 		return lookDirection;
 	}
 	
-	public void flyToRoom(String buildingNo, FVector roomPosition, boolean showRoom) {
-		Building targetBuilding = applet.objectManager.getBuildingByNumber(buildingNo);
-		if (buildingNo.equals(getLastCircleViewBuilding())) { //do not change building
+	public void flyToRoom(Building targetBuilding, FVector roomPosition, boolean showRoom) {
+//		Building targetBuilding = applet.objectManager.getBuildingByNumber(buildingNo);
+		if (targetBuilding.equals(getLastCircleViewBuilding())) { //do not change building
 			FVector vecToPos = getPos().subtract(targetBuilding.getCenterPosition());
 			targetBuilding.showPositionInBuilding(roomPosition);
-			applet.objectManager.makeBuildingsInvisible(buildingNo);
+			applet.objectManager.makeBuildingsInvisible(targetBuilding);
 			FVector flatCenterPoint = targetBuilding.getCenterPosition().cloneMe();
 			flatCenterPoint.setZ(0);
 			FVector vecToRoomPos = roomPosition.subtract(flatCenterPoint);
@@ -615,12 +615,12 @@ class Camera{
 			rotateToInter(new Float(requiredRotation), new Float(newHeight), new Integer(2000), new Integer(1));
 		}
 		else {
-			flyToRoomInBuilding(roomPosition, targetBuilding.getCenterPosition(), targetBuilding.flyAroundRadius, 3500, 2000, targetBuilding, showRoom);
+			flyToPosInBuilding(roomPosition, targetBuilding.getCenterPosition(), targetBuilding.flyAroundRadius, 3500, 2000, targetBuilding, showRoom);
 		}
-		setLastCircleViewBuilding(buildingNo);
+		setLastCircleViewBuilding(targetBuilding);
 	}
 	
-	public void flyToRoomInBuilding(FVector roomPosition, FVector centerPoint, float radius, int durationFlyInto, int durationCircleAround, Building targetBuilding, boolean showRoom) {
+	public void flyToPosInBuilding(FVector roomPosition, FVector centerPoint, float radius, int durationFlyInto, int durationCircleAround, Building targetBuilding, boolean showRoom) {
 		//applet.spheres.add(roomPosition);
 		setInstantCircleView(Boolean.valueOf(false));
 		FVector vecToPos = flyIntoCircleView(centerPoint, radius, 0.0f, durationFlyInto);
@@ -693,15 +693,15 @@ class Camera{
 		}
 			setInstantCircleView(Boolean.valueOf(!showRoom.booleanValue()));
 		targetBuilding.setForceSelectedModel(true);
-		applet.objectManager.makeBuildingsInvisible(targetBuilding.myBuildingNo);
+		applet.objectManager.makeBuildingsInvisible(targetBuilding);
 	}
 	
-	public void setLastCircleViewBuilding(String buildingNo) {
+	public void setLastCircleViewBuilding(Building building) {
 		//System.out.println("setLastCircleViewBuilding oldbuildingno: " + m_iLastCircleViewBuilding + "   newbuildingno: " + buildingNo);
-		m_iLastCircleViewBuilding = buildingNo;
+		m_iLastCircleViewBuilding = building;
 	}
 	
-	public String getLastCircleViewBuilding() {
+	public Building getLastCircleViewBuilding() {
 		return m_iLastCircleViewBuilding;
 	}
 	

@@ -26,7 +26,7 @@ public class ObjectManager{
 	public	Vector 		drawers;
 	public	GuiManager	guiObjects;
 	public	Vector		worldObjects;	//the vector containing all world objects
-	private	Hashtable	buildingReferences;
+	public	Hashtable	buildingReferences;
 	
 	//list of other objects
 	CampusMap	applet;
@@ -467,21 +467,23 @@ public class ObjectManager{
 		return (Building)returnValue;
 	}
 	
-	public void makeBuildingsInvisible(String exception) {
-		Enumeration keys = buildingReferences.keys();
-		for (int i = 0; i < buildingReferences.size(); i++) {
-			Object actKey = keys.nextElement();
-			if(buildingReferences.containsKey(actKey))
-				if (actKey.equals(exception))
-					((Building)buildingReferences.get(actKey)).drawingActive = true;
-				else
-					((Building)buildingReferences.get(actKey)).drawingActive = false;
-		}
+	public void makeBuildingsInvisible(Building exception) {
+//		Enumeration keys = buildingReferences.keys();
+//		for (int i = 0; i < buildingReferences.size(); i++) {
+//			Object actKey = keys.nextElement();
+//			if(buildingReferences.containsKey(actKey))
+//				if (actKey.equals(exception))
+//					((Building)buildingReferences.get(actKey)).drawingActive = true;
+//				else
+//					((Building)buildingReferences.get(actKey)).drawingActive = false;
+//		}
 		for(int i = 0;i < worldObjects.size(); i++) {
-			if (!(((ObjectOfInterest)(worldObjects.elementAt(i))).selectable) && ((ObjectOfInterest)(worldObjects.elementAt(i))).hideOnTour) {
+			if (( (((ObjectOfInterest)(worldObjects.elementAt(i))).hideOnTour ) || 
+				( !worldObjects.elementAt(i).equals(exception) )) ){
 				((ObjectOfInterest)(worldObjects.elementAt(i))).drawingActive = false;
 			}
 		}
+		System.out.println("now!");
 	}
 	
 	public void resetBuildings() {

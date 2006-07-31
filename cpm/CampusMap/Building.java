@@ -158,7 +158,9 @@ public class Building extends ObjectOfInterest {
 	    	if (mouseOver && myParentApplet.controls.getThreeDeeControlEnabled()) {
 	    		FVector		centerPosition	=  getCenterPosition();
 				centerPosition.setZ(flyAroundCenterHeight);
-				myParentApplet.theCamera.flyToRoomInBuilding(entrancePosition, centerPosition, flyAroundRadius, 2000, 2000, this, false);
+//				myParentApplet.theCamera.flyToPosInBuilding(entrancePosition, centerPosition, flyAroundRadius, 2000, 2000, this, false);
+				myParentApplet.setTouring(true, this);
+				myParentApplet.prepareForDetailDraw(entrancePosition, false);
 				String header = new String("");
 				String content = new String("");
 //				try {
@@ -166,7 +168,6 @@ public class Building extends ObjectOfInterest {
 					content = URLEncoder.encode(longDescription);
 //				} catch (UnsupportedEncodingException excep) {}
 				Environment.setToolTip(" Beenden des Detailmodus durch Button unten.", 4);
-				myParentApplet.setTouring(true);
 				Environment.setBrowserUrl(Environment.phpRoot + "index.php?javatemplate=dummy&headline=" + header + "&content=" + content);
 	    	}
 	    	break;
@@ -178,7 +179,7 @@ public class Building extends ObjectOfInterest {
 	}
 	
 	//debug
-	public void draw(CampusMap myDrawApplet){
+	public void draw(CampusMap myDrawApplet, boolean drawGrey){
 		if (onScreen && drawingActive) {
 			//draw room position or alike inside model
 			if (showPosition!=null) {
@@ -195,7 +196,7 @@ public class Building extends ObjectOfInterest {
 				myDrawApplet.popMatrix();
 			}
 			//draw model
-			super.draw(myDrawApplet);
+			super.draw(myDrawApplet, drawGrey);
 		}
 		
 		FVector cameraPosFloatArray=new FVector(0,0,0);

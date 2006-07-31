@@ -44,14 +44,15 @@ public class GroundPlane {
 		applet.env.objectInitDisplay.setText("Explications");
 	}
 
-	public void draw(){
+	public void draw(boolean drawGrey){
 		//coordinate system :)
     	applet.noStroke();
     	//applet.fill(50,80,255,20);
     	//applet.fill(117,148,117,255);
     	//applet.fill(167,198,167,255);
     	//applet.fill(255,255,240,255);
-    	applet.fill(245,251,213,255);
+    	if(!drawGrey)applet.fill(245,251,213);
+    	else applet.fill(240);
     	applet.pushMatrix();
     	applet.translate(0,0,-2);
     	applet.ellipse(0, 0, elipseSize, elipseSize);

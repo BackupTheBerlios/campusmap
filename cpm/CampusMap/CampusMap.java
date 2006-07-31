@@ -40,6 +40,7 @@ public class CampusMap extends PApplet{
 	GroundPlane groundPlane;
 	ObjectManager objectManager;
 	MovingObjectsManager movingObjectsManager;
+	Building selectedBuilding;
 	OBJModel	letters;
 	Boxes		boxes;
 	PGraphics3	g3;
@@ -60,8 +61,13 @@ public class CampusMap extends PApplet{
 	int notifyInterval;
 	int intervalBegin;
 
-	// touring vaiable for disabling the controls etc
+	// touring variable for disabling the controls etc
 	private boolean returnChanges;
+	private boolean preparingForTouring=false;
+	private boolean showroom=false;
+	private int numStepsForPreparing = 10;
+	private int preparingIndex=0;
+	private FVector pos2Fly2AfterPrep;
 	private boolean touring=false;
 	boolean notify = false;
 	boolean inited = false;
@@ -213,7 +219,7 @@ public class CampusMap extends PApplet{
 			naturalFactor.putIntoEffect();
 	
 			// korrdinatensystem
-			groundPlane.draw();
+			groundPlane.draw(touring);
 			clearZBuffer();
 			
 			// houses.draw();
@@ -229,8 +235,10 @@ public class CampusMap extends PApplet{
 			locator.draw();
 			
 			if(touring){
-				
-				//System.out.println("Touring");
+				if(preparingForTouring){
+					detailPreparingStep();
+//					System.out.println("Touring");
+				}
 			}
 			
 	
@@ -245,10 +253,9 @@ public class CampusMap extends PApplet{
 			// draw models (not the transparent ones
 			for(int i = 0;i < objectManager.worldObjects.size(); i++) {
 				if (((ObjectOfInterest)(objectManager.worldObjects.elementAt(i))).selectable) {
-					if (!(((Building)(objectManager.worldObjects.elementAt(i))).myAlpha < 1.0f))
-						((Building)(objectManager.worldObjects.elementAt(i))).draw(this);
+					((Building)(objectManager.worldObjects.elementAt(i))).draw(this, touring);
 				}
-				else ((ObjectOfInterest)(objectManager.worldObjects.elementAt(i))).draw(this);
+				else ((ObjectOfInterest)(objectManager.worldObjects.elementAt(i))).draw(this, touring);
 			}
 			popMatrix();
 			
@@ -270,13 +277,20 @@ public class CampusMap extends PApplet{
 			naturalFactor.applySurroundings();
 			
 			// 2nd draw models, only for transparent ones
-			for(int i = 0;i < objectManager.worldObjects.size(); i++) {
-				if (((ObjectOfInterest)(objectManager.worldObjects.elementAt(i))).selectable && ((Building)(objectManager.worldObjects.elementAt(i))).myAlpha < 1.0f) {
-					pushMatrix();
-					scale(buildingUniScale);
-					((Building)(objectManager.worldObjects.elementAt(i))).draw(this);
-					popMatrix();
-				}
+//			for(int i = 0;i < objectManager.worldObjects.size(); i++) {
+//				if (((ObjectOfInterest)(objectManager.worldObjects.elementAt(i))).selectable && ((Building)(objectManager.worldObjects.elementAt(i))).myAlpha < 1.0f) {
+//					pushMatrix();
+//					scale(buildingUniScale);
+//					((Building)(objectManager.worldObjects.elementAt(i))).draw(this, false);
+//					popMatrix();
+//					break;
+//				}
+//			}
+			if(selectedBuilding!=null){
+				pushMatrix();
+				scale(buildingUniScale);
+				selectedBuilding.draw(this, false);
+				popMatrix();
 			}
 			
 	
@@ -387,7 +401,40 @@ public class CampusMap extends PApplet{
 		if(detailBraceIndex>5||detailBraceIndex<0)detailBraceMulti*=-1;
 	}
 	
-	public void setTouring(boolean p_touring){
+	public void prepareForDetailDraw(FVector pos2Fly2AfterPrep_p, boolean showroom_p){
+		preparingForTouring=true;
+		pos2Fly2AfterPrep=pos2Fly2AfterPrep_p;
+		showroom =showroom_p; 
+		detailPreparingStep();
+	}
+
+	public void prepareForNextBuildingDetail(FVector pos2Fly2AfterPrep_p, boolean showroom_p){
+		preparingForTouring=true;
+		pos2Fly2AfterPrep=pos2Fly2AfterPrep_p;
+		showroom =showroom_p; 
+		detailPreparingStep();
+	}
+
+	private void detailPreparingStep(){
+		if(preparingIndex<=numStepsForPreparing){
+			float currAlpha = 1.0f - ((1.0f/numStepsForPreparing )* preparingIndex);
+			System.out.println("Alpha="+currAlpha);
+			for(int i = 0;i < objectManager.worldObjects.size(); i++) {
+				Object currObject = objectManager.worldObjects.elementAt(i);
+				if (currObject instanceof Building && !currObject.equals(selectedBuilding)) {
+						((Building)(objectManager.worldObjects.elementAt(i))).setAlpha(currAlpha);
+				}
+			}
+			preparingIndex++;
+		}else{
+			env.theContent.theCamera.flyToRoom(selectedBuilding, pos2Fly2AfterPrep, showroom);
+			preparingForTouring=false;
+			preparingIndex=0;
+		}
+	}
+	
+	public void setTouring(boolean p_touring, Building selectedBuilding_p){
+		selectedBuilding = selectedBuilding_p;
 		controls.setEnabled(!p_touring);
 		SlideCase.setActive(!p_touring);
 		
@@ -398,15 +445,14 @@ public class CampusMap extends PApplet{
 			hideSlideCases();
 		} else {
 			theCamera.setInstantCircleView(Boolean.valueOf(false));
-			theCamera.setLastCircleViewBuilding("-1");
+			theCamera.setLastCircleViewBuilding(null);
 			Environment.contentHolder.setBorder(Environment.redline);
 			Object[] actionObjects = {};
 			theCamera.queueAction("resetBuildings", 1000, actionObjects);
-			Environment.contentHolder.setBorder(Environment.grayline);
 			theCamera.guaranteeMinInteractiveCameraHeight();
-		}
-		
 
+			Environment.contentHolder.setBorder(Environment.grayline);
+		}
 	}
 	
 	public void hideSlideCases(){
@@ -530,6 +576,7 @@ public class CampusMap extends PApplet{
 	public void sayHello() {
 		System.out.println("Hello");
 	}
+
 
 }	
 

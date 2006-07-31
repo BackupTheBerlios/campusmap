@@ -129,7 +129,7 @@ public class ObjectOfInterest{
 	}
 
 	// draw method
-	public void draw(PApplet myDrawApplet){
+	public void draw(PApplet myDrawApplet, boolean drawGrey){
 		// drawing of the instance
 		if (drawingActive && modelsLoaded[currentDetailLevel]) {
 			myDrawApplet.pushMatrix();
@@ -140,8 +140,7 @@ public class ObjectOfInterest{
 			myDrawApplet.rotateY(myRot.getZ());
 			myModels[currentDetailLevel].setParentApplet(myDrawApplet);
 			
-			
-			myModels[currentDetailLevel].draw(myAlpha);
+			myModels[currentDetailLevel].draw(myAlpha, drawGrey);
 			myDrawApplet.popMatrix();
 			
 			//First time drawing invokes the showing.

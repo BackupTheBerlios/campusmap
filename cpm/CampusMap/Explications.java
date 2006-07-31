@@ -169,7 +169,7 @@ public class Explications extends JPanel implements Runnable{
 						   				 matchString.groupCount()>=4){
 						   		getCoordsFromUrl(buffer);
 					    	} else {
-					    		env.theContent.setTouring(false);
+					    		env.theContent.setTouring(false, null);
 					    		Environment.clearToolTip();
 					    	}
 				        }
@@ -194,7 +194,6 @@ public class Explications extends JPanel implements Runnable{
 	
 	public void getCoordsFromUrl(String locator){
 		//System.out.println(buffer);
-		env.theContent.setTouring(true);
 		try{
 			/************************************
 			 *  roomnumber parsing
@@ -220,7 +219,7 @@ public class Explications extends JPanel implements Runnable{
 	//    		System.out.println(matchString.group(5)+" "+matchString.group(3)+" "+matchString.group(4));
 	
 			/************************************
-			 * Is this a tour?!
+			 * Is this a REAL tour? (multiple buildungs in a row)
 			 */
 	    	if(matchString.group(5)!=null) {
 	    		Environment.setToolTip("Tour läuft. Bitte einen Knopf unten drücken um weiter zu navigieren.", 9999);
@@ -230,20 +229,25 @@ public class Explications extends JPanel implements Runnable{
 			 */
 			FVector roomPos = new FVector(x,y,thisRoomHeight);
 			Building tempBuild = env.theContent.objectManager.getBuildingByNumber(buildingNumber);
-			System.out.println("building: "+tempBuild);
 			if(tempBuild!=null){
-				//System.out.println("buildigng exists");
+//				System.out.println("building: "+tempBuild);
+				env.theContent.setTouring(true, tempBuild);
 				//env.theContent.spheres.add(tempBuild.myPos.multiply(env.theContent.getBuildingUniformScale()));
 				tempBuild.myPos.multiply(env.theContent.getBuildingUniformScale()).printMe("myPos");
+				
+				// Calculate the virtual floor height
 				FVector convRoomPos = tempBuild.myPos.multiply(env.theContent.getBuildingUniformScale()).add(tempBuild.convertDatabasePos(roomPos));
 				//convRoomPos.printMe("convRoomPos");
 				//env.theContent.spheres.add(convRoomPos);
 				convRoomPos.setZ(levelNumber*12 + 6);
-				env.theContent.theCamera.flyToRoom(buildingNumber, convRoomPos, true);
+				
+				env.theContent.theCamera.guaranteeMinInteractiveCameraHeight();
+				env.theContent.objectManager.resetBuildings();
+				env.theContent.prepareForDetailDraw(convRoomPos, true);
 			}
 		}catch(NumberFormatException e){
 			e.printStackTrace();
-			env.theContent.setTouring(false);
+			env.theContent.setTouring(false, null);
 			Environment.setToolTip("Fehler bei der Datenbehandlung. Entschuldigen Sie bitte und benachrichtigen Sie den Administrator.", 3);
 		}
 
