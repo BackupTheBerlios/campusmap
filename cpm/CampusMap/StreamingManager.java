@@ -55,21 +55,20 @@ public class StreamingManager extends Thread {
 		boolean foundModel = false;
 		
 		Vector leftToLoad = leftToLoadInThisLod();
-			if (leftToLoad.size()>0) {		
-					
-					((CampusMap)applet).env.objectInitDisplay.setText(((ObjectOfInterest)(leftToLoad.elementAt(0))).modelsToLoad[lodToLoad]);
-					((ObjectOfInterest)(leftToLoad.elementAt(0))).setLodModelBeingLoaded(lodToLoad, true);
-					streamingFiles[slot] = new StreamingFile((CampusMap)applet, this);
-					streamingFiles[slot].setPriority(MIN_PRIORITY);
-					
-					if (leftToLoad.size()==1) {
-						if(lodToLoad == initMinLod)streamingFiles[slot].registerNotify();
-					}
-					streamingFiles[slot].startModelLoading(((ObjectOfInterest)leftToLoad.elementAt(0)), lodToLoad);
-			}else if (leftToLoad.size()==0){
-				System.out.println("Level "+lodToLoad+" loaded");
-				lodToLoad++;
-			}
+		if (leftToLoad.size()>0) {		
+				((CampusMap)applet).env.objectInitDisplay.setText(((ObjectOfInterest)(leftToLoad.elementAt(0))).modelsToLoad[lodToLoad]);
+				((ObjectOfInterest)(leftToLoad.elementAt(0))).setLodModelBeingLoaded(lodToLoad, true);
+				streamingFiles[slot] = new StreamingFile((CampusMap)applet, this);
+				streamingFiles[slot].setPriority(MIN_PRIORITY);
+
+				if (leftToLoad.size()==1) {
+					if(lodToLoad == initMinLod)streamingFiles[slot].registerNotify();
+				}
+				streamingFiles[slot].startModelLoading(((ObjectOfInterest)leftToLoad.elementAt(0)), lodToLoad);
+		}else if (leftToLoad.size()==0){
+			System.out.println("Level "+lodToLoad+" loaded");
+			lodToLoad++;
+		}
 	}
 	
 	private Vector leftToLoadInThisLod() {

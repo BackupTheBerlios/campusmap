@@ -603,7 +603,7 @@ class Camera{
 		if (targetBuilding.equals(getLastCircleViewBuilding())) { //do not change building
 			FVector vecToPos = getPos().subtract(targetBuilding.getCenterPosition());
 			targetBuilding.showPositionInBuilding(roomPosition);
-			applet.objectManager.makeBuildingsInvisible(targetBuilding);
+//			applet.objectManager.makeBuildingsInvisible(targetBuilding);
 			FVector flatCenterPoint = targetBuilding.getCenterPosition().cloneMe();
 			flatCenterPoint.setZ(0);
 			FVector vecToRoomPos = roomPosition.subtract(flatCenterPoint);

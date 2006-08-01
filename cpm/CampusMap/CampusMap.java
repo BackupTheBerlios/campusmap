@@ -12,6 +12,7 @@ package CampusMap;
 import processing.core.*;
 import objLoader.OBJModel;
 import java.util.Vector;
+import java.awt.image.PixelGrabber;
 //import processing.opengl.*;
 
 import javax.swing.border.LineBorder;
@@ -41,6 +42,7 @@ public class CampusMap extends PApplet{
 	ObjectManager objectManager;
 	MovingObjectsManager movingObjectsManager;
 	Building selectedBuilding;
+	Building lastSelectedBuilding;
 	OBJModel	letters;
 	Boxes		boxes;
 	PGraphics3	g3;
@@ -135,7 +137,6 @@ public class CampusMap extends PApplet{
 
 		noLoop();
 		
-		overlay = /*new PImage(env.bgImg);*/loadImage(Environment.address+Environment.ressourceFolder+"arrows01.png");
 		
 		/* GUI-Elements
 		detailButton = new Button(450, 300, 30, 30, "detailModusButton.gif", new int[] {0,0}, false, "Beenden des Detailmodus");
@@ -330,6 +331,14 @@ public class CampusMap extends PApplet{
 					noStroke();
 					getOverviewShut();
 					env.addThem();
+
+					int bgWidth = env.bgImg.getWidth(env);
+					int bgHeight =  env.bgImg.getHeight(env);
+					int[] bgPixels = new int[bgWidth*bgHeight];
+					PixelGrabber pg = new PixelGrabber(env.bgImg, 0, 0, bgWidth, bgHeight, bgPixels, 0, bgWidth);
+					for(int i=0;i<bgPixels.length;i++)
+						if(bgPixels[i]!=0) System.out.print(bgPixels[i]);
+					overlay = new PImage(bgPixels, bgWidth, bgHeight, ARGB);//loadImage(Environment.address+Environment.ressourceFolder+"arrows01.png");
 				}catch(Throwable t){
 					env.setErrorDisplay("Das Applet konnte nicht gestartet werden. Eventuell ist dies ein Speicherproblem. Bitte stoppen sie alle anderen Java-Anwendungen. GGf. muss der Browser neu gestartet werden um den Cache zu leeren.");
 				}
@@ -353,7 +362,10 @@ public class CampusMap extends PApplet{
 				drawDetailBraces();
 			}
 			
-			image(overlay, 0, 250);
+			if(overlay!=null){
+//				System.out.println("bgImage groesse: "+bgPixels[50]);
+				image(overlay, 0, 250);
+			}
 			
 			// lights();
 			// buttons.evaluate(mouseX, mouseY, controls.mouseJustReleased,
@@ -402,17 +414,23 @@ public class CampusMap extends PApplet{
 	}
 	
 	public void prepareForDetailDraw(FVector pos2Fly2AfterPrep_p, boolean showroom_p){
-		preparingForTouring=true;
 		pos2Fly2AfterPrep=pos2Fly2AfterPrep_p;
 		showroom =showroom_p; 
-		detailPreparingStep();
+		if(lastSelectedBuilding!=selectedBuilding){
+			preparingForTouring=true;
+			objectManager.resetBuildings();
+			detailPreparingStep();
+		} else readyPrepared();
 	}
 
 	public void prepareForNextBuildingDetail(FVector pos2Fly2AfterPrep_p, boolean showroom_p){
-		preparingForTouring=true;
 		pos2Fly2AfterPrep=pos2Fly2AfterPrep_p;
 		showroom =showroom_p; 
-		detailPreparingStep();
+		if(lastSelectedBuilding!=selectedBuilding){
+			preparingForTouring=true;
+			objectManager.resetBuildings();
+			detailPreparingStep();
+		} else readyPrepared();
 	}
 
 	private void detailPreparingStep(){
@@ -427,10 +445,16 @@ public class CampusMap extends PApplet{
 			}
 			preparingIndex++;
 		}else{
-			env.theContent.theCamera.flyToRoom(selectedBuilding, pos2Fly2AfterPrep, showroom);
+			objectManager.makeBuildingsInvisible(selectedBuilding);
 			preparingForTouring=false;
 			preparingIndex=0;
+			readyPrepared();
 		}
+	}
+	
+	private void readyPrepared(){
+		System.out.println("ready!");
+		env.theContent.theCamera.flyToRoom(selectedBuilding, pos2Fly2AfterPrep, showroom);
 	}
 	
 	public void setTouring(boolean p_touring, Building selectedBuilding_p){
@@ -446,7 +470,6 @@ public class CampusMap extends PApplet{
 		} else {
 			theCamera.setInstantCircleView(Boolean.valueOf(false));
 			theCamera.setLastCircleViewBuilding(null);
-			Environment.contentHolder.setBorder(Environment.redline);
 			Object[] actionObjects = {};
 			theCamera.queueAction("resetBuildings", 1000, actionObjects);
 			theCamera.guaranteeMinInteractiveCameraHeight();

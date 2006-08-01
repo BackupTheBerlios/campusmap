@@ -130,7 +130,7 @@ public class Environment extends JApplet{
 		toolTipTextfield.setMinimumSize(new Dimension(250, 30));
 
 		try{
-			bgImg=getImage(new URL(Environment.address+Environment.ressourceFolder), "arrows01.png");
+			bgImg=getImage(new URL(Environment.address+Environment.ressourceFolder), "arrows01.gif");
 		}catch(MalformedURLException e){
 			System.out.println("Error loading backgroundimage");
 		}

@@ -242,9 +242,8 @@ public class Explications extends JPanel implements Runnable{
 				convRoomPos.setZ(levelNumber*12 + 6);
 				
 				env.theContent.theCamera.guaranteeMinInteractiveCameraHeight();
-				env.theContent.objectManager.resetBuildings();
 				env.theContent.prepareForDetailDraw(convRoomPos, true);
-			}
+			} else Environment.setToolTip("Das Gebaeude wurde noch nicht geladen.", 2);
 		}catch(NumberFormatException e){
 			e.printStackTrace();
 			env.theContent.setTouring(false, null);

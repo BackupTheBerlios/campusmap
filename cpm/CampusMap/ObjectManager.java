@@ -27,6 +27,7 @@ public class ObjectManager{
 	public	GuiManager	guiObjects;
 	public	Vector		worldObjects;	//the vector containing all world objects
 	public	Hashtable	buildingReferences;
+	private boolean 	buildingsInvisible=false;
 	
 	//list of other objects
 	CampusMap	applet;
@@ -468,6 +469,7 @@ public class ObjectManager{
 	}
 	
 	public void makeBuildingsInvisible(Building exception) {
+		if(!buildingsInvisible){
 //		Enumeration keys = buildingReferences.keys();
 //		for (int i = 0; i < buildingReferences.size(); i++) {
 //			Object actKey = keys.nextElement();
@@ -477,13 +479,15 @@ public class ObjectManager{
 //				else
 //					((Building)buildingReferences.get(actKey)).drawingActive = false;
 //		}
-		for(int i = 0;i < worldObjects.size(); i++) {
-			if (( (((ObjectOfInterest)(worldObjects.elementAt(i))).hideOnTour ) || 
-				( !worldObjects.elementAt(i).equals(exception) )) ){
-				((ObjectOfInterest)(worldObjects.elementAt(i))).drawingActive = false;
+			for(int i = 0;i < worldObjects.size(); i++) {
+				if (( (((ObjectOfInterest)(worldObjects.elementAt(i))).hideOnTour ) || 
+					( !worldObjects.elementAt(i).equals(exception) )) ){
+					((ObjectOfInterest)(worldObjects.elementAt(i))).drawingActive = false;
+				}
 			}
-		}
-		System.out.println("now!");
+			buildingsInvisible=true;
+			System.out.println("Buildings are invisible");
+		}else System.out.println("Buildings were already invisible");
 	}
 	
 	public void resetBuildings() {
@@ -501,6 +505,8 @@ public class ObjectManager{
 				((ObjectOfInterest)(worldObjects.elementAt(i))).drawingActive = true;
 			}
 		}
+		System.out.println("Building alpha reset");
+		buildingsInvisible=false;
 	}
 
 	
