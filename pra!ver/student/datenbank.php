@@ -57,6 +57,9 @@
 		if (isset($_GET['seite'])) {
 			$seite = intval($_GET['seite']);
 		}
+		if (isset($_GET['region'])) {
+			$region = intval($_GET['region']);
+		}
 		if (isset($_GET['groesse'])) {
 			$groesse = intval($_GET['groesse']);
 		}
