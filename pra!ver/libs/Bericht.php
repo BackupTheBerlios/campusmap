@@ -377,25 +377,26 @@
       		      		}
       		      		$vorhandene_berichte .= '</td></tr>';
       			    }
+					$restLink = '&region='.$region.'&groesse='.$groesse.'&branche='.$branche.'&fachbereich='.$fachbereich.'&studiengang='.$studiengang.'&keyword='.$keyword;
       		      	if ($sortierenach==0)
-      		      	  $vorhandene_berichte .= '<tr><td width="20%" valign="bottom"  ><a class="dick" href="datenbank.php?sortierenach=0&sortierrichtung='.!($sortierrichtung).$gruppenid.'&aufzu='.$aufzu.'">Unternehmen&nbsp;&nbsp;<img src="../images/ico_arr_'.!($sortierrichtung).'.gif" border="0" width="20" height="20"></a></td>';
+      		      	  $vorhandene_berichte .= '<tr><td width="20%" valign="bottom"  ><a class="dick" href="datenbank.php?sortierenach=0&sortierrichtung='.!($sortierrichtung).$gruppenid.'&aufzu='.$aufzu.$restLink.'">Unternehmen&nbsp;&nbsp;<img src="../images/ico_arr_'.!($sortierrichtung).'.gif" border="0" width="20" height="20"></a></td>';
       		      	else
-      		      	  $vorhandene_berichte .= '<tr><td width="20%" valign="bottom" ><a class="dick" href="datenbank.php?sortierenach=0'.$gruppenid.'&aufzu='.$aufzu.'">Unternehmen</a></td>';
+      		      	  $vorhandene_berichte .= '<tr><td width="20%" valign="bottom" ><a class="dick" href="datenbank.php?sortierenach=0'.$gruppenid.'&aufzu='.$aufzu.$restLink.'">Unternehmen</a></td>';
       		      	$vorhandene_berichte .= '<td width="2%" valign="bottom"  ></td>';
       		      	if ($sortierenach==1)
-      		      	  $vorhandene_berichte .= '<td width="20%"  valign="bottom" ><a class="dick" href="datenbank.php?sortierenach=1&sortierrichtung='.!($sortierrichtung).$gruppenid.'&aufzu='.$aufzu.'">Branche&nbsp;&nbsp;<img src="../images/ico_arr_'.!($sortierrichtung).'.gif" border="0" width="20" height="20"></a></td>';
+      		      	  $vorhandene_berichte .= '<td width="20%"  valign="bottom" ><a class="dick" href="datenbank.php?sortierenach=1&sortierrichtung='.!($sortierrichtung).$gruppenid.'&aufzu='.$aufzu.$restLink.'">Branche&nbsp;&nbsp;<img src="../images/ico_arr_'.!($sortierrichtung).'.gif" border="0" width="20" height="20"></a></td>';
       		      	else
-       		      	  $vorhandene_berichte .= '<td width="20%" valign="bottom"  ><a class="dick" href="datenbank.php?sortierenach=1'.$gruppenid.'&aufzu='.$aufzu.'">Branche</a></td>';
+       		      	  $vorhandene_berichte .= '<td width="20%" valign="bottom"  ><a class="dick" href="datenbank.php?sortierenach=1'.$gruppenid.'&aufzu='.$aufzu.$restLink.'">Branche</a></td>';
        		      	$vorhandene_berichte .= '<td width="2%" valign="bottom"  ></td>';
 					if ($sortierenach==2)
-      		      	  $vorhandene_berichte .= '<td width="20%" valign="bottom"  ><a class="dick" href="datenbank.php?sortierenach=2&sortierrichtung='.!($sortierrichtung).$gruppenid.'&aufzu='.$aufzu.'">Ort&nbsp;&nbsp;<img src="../images/ico_arr_'.!($sortierrichtung).'.gif" border="0" width="20" height="20"></a></td>';
+      		      	  $vorhandene_berichte .= '<td width="20%" valign="bottom"  ><a class="dick" href="datenbank.php?sortierenach=2&sortierrichtung='.!($sortierrichtung).$gruppenid.'&aufzu='.$aufzu.$restLink.'">Ort&nbsp;&nbsp;<img src="../images/ico_arr_'.!($sortierrichtung).'.gif" border="0" width="20" height="20"></a></td>';
       		      	else
-      		      	  $vorhandene_berichte .= '<td width="20%" valign="bottom"  ><a class="dick" href="datenbank.php?sortierenach=2'.$gruppenid.'&aufzu='.$aufzu.'">Ort</a></td>';
+      		      	  $vorhandene_berichte .= '<td width="20%" valign="bottom"  ><a class="dick" href="datenbank.php?sortierenach=2'.$gruppenid.'&aufzu='.$aufzu.$restLink.'">Ort</a></td>';
       		      	$vorhandene_berichte .= '<td width="2%" valign="bottom"  ></td>';
       		      	if ($sortierenach==3)
-      		      	  $vorhandene_berichte .= '<td width="36%" valign="bottom"  ><a class="dick" href="datenbank.php?sortierenach=3&sortierrichtung='.!($sortierrichtung).$gruppenid.'&aufzu='.$aufzu.'">Studiengang&nbsp;&nbsp;<img src="../images/ico_arr_'.!($sortierrichtung).'.gif" border="0" width="20" height="20"></a></td></tr>';
+      		      	  $vorhandene_berichte .= '<td width="36%" valign="bottom"  ><a class="dick" href="datenbank.php?sortierenach=3&sortierrichtung='.!($sortierrichtung).$gruppenid.'&aufzu='.$aufzu.$restLink.'">Studiengang&nbsp;&nbsp;<img src="../images/ico_arr_'.!($sortierrichtung).'.gif" border="0" width="20" height="20"></a></td></tr>';
       		      	else
-      		      	  $vorhandene_berichte .= '<td width="36%" valign="bottom"  ><a class="dick" href="datenbank.php?sortierenach=3'.$gruppenid.'&aufzu='.$aufzu.'">Studiengang</a></td></tr>';
+      		      	  $vorhandene_berichte .= '<td width="36%" valign="bottom"  ><a class="dick" href="datenbank.php?sortierenach=3'.$gruppenid.'&aufzu='.$aufzu.$restLink.'">Studiengang</a></td></tr>';
       		      	$vorhandene_berichte .= '<tr><td colspan ="7">&nbsp;</td></tr>';
       		      	if ($berichtanzahl<=Bericht::BERICHTE_PRO_SEITE) {
 	      				while ($r = $result->getNextRow()) {
