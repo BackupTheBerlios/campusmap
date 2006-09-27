@@ -501,7 +501,9 @@
 		   	$html_bericht .= '<tr><td class="dick">Ort:</td><td>'.$bericht->getUnternehmen()->getAdrPLZ().' '.$bericht->getUnternehmen()->getAdrOrt().'</td></tr>';
 		   	$html_bericht .= '<tr><td class="dick">Staat:</td><td>'.$bericht->getUnternehmen()->getStaatName().'</td></tr>';
 		   	$html_bericht .= '<tr><td class="dick">Keywords:</td><td>'.$bericht->getKeywords().'</td></tr>';
-		    $html_bericht .= '<tr><td>&nbsp;</td><td>&nbsp;</td></tr></table>';
+		   	$html_bericht .= '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>';
+		   	$html_bericht .= '<tr><td colspan="2">Der interne Teil dieses Berichts ist nicht freigegeben worden.<br>Email für Bewerbungsanfragen, Abstrakt und Fazit werden daher nicht gezeigt.</td></tr>';
+		    $html_bericht .= '</table>';
       	} else
       		$html_bericht  = "Dieser Bericht ist nicht freigegeben. Er darf nur von authentifizierten Personen betrachtet werden";
        	
