@@ -77,9 +77,7 @@
 			<img border="0" src="../images/<?php if($ok==30) echo 'ico_ok_dark.gif'; else if ($ok==31) echo 'ico_x_dark.gif'; else echo 'ico_inhalt.gif'; ?>">
 			DOZENTENANMELDUNG
 		</div>
-		<div class="inhaltHalb">
-	
-		
+		<div class="inhaltHalb" style="height:150px;">
 			<form name="form1" method="post" action="berichteliste_abgegeben.php">
 			    <table border="0" cellspacing="0">
 			      <tr> 
@@ -98,6 +96,22 @@
 			</form>
 		</div>
 	</div>
+		<div class="floatleft">
+			<div class="titelHalb"">
+				<img border="0" src="../images/ico_inhalt.gif">
+				HINWEIS
+			</div>
+			<div class="inhaltHalb" style="height:150px;">
+					<table border="0" cellpadding="0" cellspacing="0" class="startTable">
+					  <tr>
+							<td>
+								Die Benutzernamen von PRA|VER entsprechen nicht Ihren gängigen FHL-Benutzerdaten. Sofern sie kein Praktikumssachbearbeiter sind oder bereits mit SemSys gearbeitet haben, werden sie daher wahrscheinlich keinen Login zu PRA|VER besitzen.<br><br>
+								Möchten Sie dennoch einen Login bekommen, um weitere Details über die gesammelten Praktika zu erfahren, so würden wir uns sehr freuen, Ihnen diesen einzurichten. Bitte schreiben Sie uns dazu eine Mail an <a href="mailto:praver@millbridge.de?subject=NeuerDozentLogin">praver@millbridge.de</a>.<br>
+							</td>
+					  </tr>
+					</table>
+			</div>
+		</div>	
 
 </div>
 <br><br><br>
