@@ -52,7 +52,11 @@
 	$fehlertext = "Der angegebene Bericht existiert nicht.";
 	
 	if ($bericht->getInited()) {
-		$fehlertext = $bericht->leiteDateiDurch();
+		$student = Student::readStudent($conn, $err, $bericht->getMatrNr());
+		if ($student->getStudiengang()->getSachbearbeiterID() == $dozent->getID())
+			$fehlertext = $bericht->leiteDateiDurch();
+		else
+			$fehlertext = "Sie sind nicht als Sachbearbeiter für den Studiengang des Berichtes eingetragen und haben daher leider keinen Zugriff auf die Berichtdatei.";
 	}
 			
 		
@@ -99,7 +103,7 @@
 	
 	</div>
 
-	<div class="inhaltHalb">
+	<div class="inhaltGanz">
 
 		<table border="0" cellspacing="0" class="parallelTable">
 	    <tr>

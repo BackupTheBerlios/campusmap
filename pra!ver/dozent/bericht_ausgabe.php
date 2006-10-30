@@ -87,6 +87,7 @@
 	              
 	              if ($student->getStudiengang()->getSachbearbeiterID() == $dozent->getID()){
 	              
+	              	echo Bericht::zeigeBerichtFile($conn, $err, $bericht);
 	             	$html_bericht .= '<table border="0" cellspacing="0" cellpadding="0" >';
 	             	$html_bericht .= '<tr><td width="200" class="dick" valign="top" >Freigabeform:</td><td valign="bottom"><form method="get" action="bericht_ausgabe.php">'; 
 					$html_bericht .= '<input type="hidden" name="berichtid" value="'.$berichtid.'"><select name="freigabeauswahl">';
