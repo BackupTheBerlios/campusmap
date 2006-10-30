@@ -79,7 +79,7 @@
 					  $bericht->initAusDatenbank($berichtid);
 					  
 					  if ($bericht && $bericht->getInited() && $bericht->getMatrNr() == $student->getMatrNr())
-		              echo Bericht::zeigeBerichtFile($conn,$err,$bericht);
+		             	 echo Bericht::zeigeBerichtFile($conn,$err,$bericht);
 		          ?>
 		      		
 		      		
