@@ -571,10 +571,15 @@
 		
 		return $html_bericht;
      }
+   
+	 public static function zeigeBerichtFile(Connection $conn, ErrorQueue $err, $bericht) {
+        $html_bericht .= '<table border="0" cellspacing="0" cellpadding="0">';
+  	    $html_bericht .= '<tr><td width="200" class="dick">Berichtdatei:</td><td><a  href="'.$bericht->kreiereLinkZurDatei().'" target="_blank">'.$bericht->getDateiname().' </a></td></tr>';
+  	    $html_bericht .= '</table>';
+  	  return $html_bericht;
+     }
           
      public static function zeigeBerichtFileKontakt(Connection $conn, ErrorQueue $err, $bericht) {
-
-      	$student = Student::readStudent($conn, $err, $bericht->getMatrNr());
         $html_bericht .= '<table border="0" cellspacing="0" cellpadding="0" width="420">';
   	    $html_bericht .= '<tr><td width="150" class="dick">Kontaktadresse:</td><td>Bei Fragen bezüglich des Praktikumsunternehmes können Sie sich an <a href="mailto:'.$bericht->getEmailBetreuer().'">'.$bericht->getEmailBetreuer().' </a> wenden.</td></tr>';
   	    $html_bericht .= '<tr><td class="dick">Berichtdatei:</td><td><a  href="'.$bericht->kreiereLinkZurDatei().'" target="_blank">'.$bericht->getDateiname().' </a></td></tr>';
