@@ -74,6 +74,12 @@
 		      	
 		      		<? //hier die funktion zur ausgabe aufrufen
 		              echo Bericht::zeigeBerichtInternExtern($conn,$err,$berichtid, $student->getMatrNr());
+		              
+		              $bericht = new Bericht($conn);
+					  $bericht->initAusDatenbank($berichtid);
+					  
+					  if ($bericht && $bericht->getInited() && $bericht->getMatrNr() == $student->getMatrNr())
+		              echo Bericht::zeigeBerichtFile($conn,$err,$bericht);
 		          ?>
 		      		
 		      		
