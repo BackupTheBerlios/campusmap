@@ -33,6 +33,7 @@ import java.util.Vector;
 import processing.core.PApplet;
 import processing.core.PImage;
 import CampusMap.Color;
+import CampusMap.ObjectOfInterest;
 
 /**
  * 
@@ -51,6 +52,8 @@ public class OBJModel {
 	Vector normv;
 	Hashtable materials;
 	PApplet parent;
+	ObjectOfInterest myWrap;
+	int lod;
 	PImage texture; // texture image
 	int mode = PApplet.POLYGON; // render mode (ex. POLYGON, POINTS ..)
 	boolean flagTexture = true;
@@ -69,8 +72,10 @@ public class OBJModel {
 	boolean drawLines = false;
 	Color	lineColor;
 
-	public OBJModel(PApplet parent) {
+	public OBJModel(PApplet parent, ObjectOfInterest myWrap_p, int lod_p) {
 		this.parent = parent;
+		myWrap = myWrap_p;
+		lod=lod_p;
 		vertexes = new Vector();
 		texturev = new Vector();
 		normv = new Vector();
@@ -90,8 +95,8 @@ public class OBJModel {
 		// do something cool
 	}
 
-	public void draw(float matAlphaMultiplier) {
-		drawModel(matAlphaMultiplier);
+	public void draw(float matAlphaMultiplier, boolean greyed_p) {
+		drawModel(matAlphaMultiplier, greyed_p);
 	}
 
 	public void showModelInfo() {
@@ -160,7 +165,7 @@ public class OBJModel {
 		lineColor = p_lineColor;
 	}
 
-	public void drawModel(float matAlphaMultiplier) {
+	public void drawModel(float matAlphaMultiplier, boolean greyed) {
 		float alphaMultiplier = 1;
 		try {
 			Vertex v = null, vt = null, vn = null, endV = null;
@@ -185,7 +190,10 @@ public class OBJModel {
 						System.out.println("material: "+tmpgroup.mtlName);
 					}
 				}
-				parent.fill(colors[0],colors[1],colors[2],colors[3]);
+				if(!greyed)parent.fill(colors[0],colors[1],colors[2],colors[3]);
+				else{
+					parent.fill( (colors[0]+colors[1]+colors[2]) /3);
+				}
 				// debug("hogehoge2");
 				// check texture availability
 				if (texture != null) {
@@ -231,7 +239,7 @@ public class OBJModel {
 
 /**
  *  {{added by Gunnar
- */
+ 
 						// z-fading enabled?
 						if(fadeFlag==true){
 							if(fadeMidPoint==null)
@@ -260,22 +268,22 @@ public class OBJModel {
 								else if(mediaDistance<fadeDistance+fadeSpace){
 									alphaMultiplier = ((mediaDistance-fadeDistance)/(float)fadeSpace); 
 									alphaMultiplier=alphaMultiplier<0?1:(alphaMultiplier>1?0:1-alphaMultiplier);
-								} /*
+								} 
 								if(f==10){
 									debug("alphaMultiplier: "+alphaMultiplier);
 									parent.fill(255,0,0,colors[3]*alphaMultiplier);
-								}else{ */
+								}else{ 
 									float[] fadeColor = {167,198,167};
 									float[] colorBuffer = new float[3];
 									for(int u=0;u<3;u++)
-										/*colorBuffer[u]=(float)(colors[u]+(255-colors[u])*(1.0-alphaMultiplier));*/
+										colorBuffer[u]=(float)(colors[u]+(255-colors[u])*(1.0-alphaMultiplier));
 										colorBuffer[u]=(float)(colors[u]+(fadeColor[u]-colors[u])*(1.0-alphaMultiplier));
 									parent.fill(colorBuffer[0],colorBuffer[1],colorBuffer[2],colors[3]);
 									parent.noStroke();
 								//}
 							}
 						}
-						if(alphaMultiplier!=0){
+*/						if(alphaMultiplier!=0){
 /**
 *  }}added by Gunnar
 */
@@ -323,7 +331,7 @@ public class OBJModel {
 	// Same procedure to draw just the lines in question
 							if(drawLines){
 								parent.noFill();
-								parent.stroke(lineColor.r, lineColor.g, lineColor.b, 255*alphaMultiplier);
+								parent.stroke(lineColor.r, lineColor.g, lineColor.b, 255*matAlphaMultiplier);
 								if (tmpf.indexes.size() > 0) {
 									for (int fp = 0; fp < tmpf.indexes.size(); fp++) {
 		
@@ -362,214 +370,199 @@ public class OBJModel {
 		this.mode = mode;
 	}
 
-	public BufferedReader getBufferedReader(String filename) {
+	public BufferedReader getBufferedReader(String filename) throws Exception {
 
 		BufferedReader retval = null;
+		URL url = null;
 
-		try {
-
-			URL url = null;
-
-			if (filename.startsWith("http://")) {
-				try {
-					//System.out.println("loading file from url: " + filename);
-					url = new URL(filename);
-					//support for gunzip
-					if (filename.endsWith(".gz")) {
-						retval = new BufferedReader(
-									new InputStreamReader(
-											new GZIPInputStream(
-													url.openStream())));
-					} else {
-						retval = new BufferedReader(new InputStreamReader(url
-								.openStream()));
-					}
-					return retval;
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-					return null;
-				} catch (IOException ioe) {
-					ioe.printStackTrace();
-					return null;
-				}
+		if (filename.startsWith("http://")) {
+			//System.out.println("loading file from url: " + filename);
+			url = new URL(filename);
+			//support for gunzip
+			if (filename.endsWith(".gz")) {
+				retval = new BufferedReader(
+							new InputStreamReader(
+									new GZIPInputStream(
+											url.openStream())));
+			} else {
+				retval = new BufferedReader(new InputStreamReader(url
+						.openStream()));
 			}
-			else {
-				System.out.println("loading file from hd: " + filename);
-				return new BufferedReader(new InputStreamReader(parent.getClass().getResourceAsStream(filename)));
-			}
-
-		} catch (SecurityException se) {
-		} // online, whups
-
-		parent.die("Could not find .OBJ file " + filename, null);
-
+		}
+		else {
+			System.out.println("loading file from hd: " + filename);
+			return new BufferedReader(new InputStreamReader(parent.getClass().getResourceAsStream(filename)));
+		}
 		return retval;
+		
+//		Original Error handling
+//		parent.die("Could not find .OBJ file " + filename, null);
+
 	}
 
 	//public void load(InputStream filename) {
 	public void load(String url, String filename) {
 		myFileName=filename;
 		sourceFolderURL = url;
-		parseOBJ(getBufferedReader(sourceFolderURL + filename));
-		//parseOBJ(new BufferedReader(new InputStreamReader(filename)));
-		if (mtlfilename != null)
-		try{
-			//parseMTL(new BufferedReader(new InputStreamReader(parent.getClass().getResourceAsStream("data/"+mtlfilename))));
-			parseMTL(getBufferedReader(sourceFolderURL + mtlfilename));
-		}catch(NullPointerException e){
-			System.out.println("Material with problem: "+mtlfilename);
+		try {
+			BufferedReader readObject = getBufferedReader(sourceFolderURL + filename);
+			parseOBJ(readObject);
+			readObject.close();
+			//parseOBJ(new BufferedReader(new InputStreamReader(filename)));
+			if (mtlfilename != null)
+				//parseMTL(new BufferedReader(new InputStreamReader(parent.getClass().getResourceAsStream("data/"+mtlfilename))));
+				parseMTL(getBufferedReader(sourceFolderURL + mtlfilename));
+			debug("model loaded");
+			myWrap.setLodModelLoaded(lod);
+		} catch (Exception e) {
 			e.printStackTrace();
+			myWrap.setLodModelLoadFailed(lod);
 		}
-		debug("model loaded");
 	}
 
-	public void parseOBJ(BufferedReader bread) {
-		try {
-			String line;
-			Group currentGroup = null;
-			int ngCounter = 0;
-			int parseCounter=0;
-			while ((line = bread.readLine()) != null) {
+	public void parseOBJ(BufferedReader bread) throws Exception {
+		String line;
+		Group currentGroup = null;
+		int ngCounter = 0;
+		int parseCounter=0;
+		while ((line = bread.readLine()) != null) {
 //				parseCounter++;
 //				System.out.println("parseCounter: "+parseCounter);
 //				// debug(line);
-				// parse the line
-				String[] elements = line.split("\\s+");
-				if (elements.length > 0) {
-					// analyze the format
-					if (elements[0].equals("v")) {
-						Vertex tmpv = new Vertex();
-						tmpv.vx = Float.valueOf(elements[1]).floatValue();
-						tmpv.vy = Float.valueOf(elements[2]).floatValue();
-						tmpv.vz = Float.valueOf(elements[3]).floatValue();
-						vertexes.add(tmpv);
-					} else if (elements[0].equals("vn")) {
-						Vertex tmpv = new Vertex();
-						tmpv.vx = Float.valueOf(elements[1]).floatValue();
-						tmpv.vy = Float.valueOf(elements[2]).floatValue();
-						tmpv.vz = Float.valueOf(elements[3]).floatValue();
-						normv.add(tmpv);
-					} else if (elements[0].equals("g")
-							|| elements[0].equals("o")) {
-						Group tmpG = new Group();
-						currentGroup = tmpG;
-						if (elements.length <= 1) {
-							currentGroup.groupName = "tmp_named_" + ngCounter;
-							ngCounter++;
-						} else {
-							currentGroup.groupName = elements[1];
-						}
-						groups.add(currentGroup);
-					} else if (elements[0].equals("usemtl")) {
-						currentGroup = new Group();
-						currentGroup.groupName = "tmp_named_" + ngCounter++;
-						currentGroup.mtlName = elements[1];
-						groups.add(currentGroup);
-					} else if (elements[0].equals("f")) {
-						Facet tmpf = new Facet();
-						if (elements.length < 3) {
-							debug("Warning: potential model data error");
-						}
-						for (int i = 1; i < elements.length; i++) {
-							String seg = elements[i];
-							if (seg.indexOf("/") > 0) {
-								String[] forder = seg.split("/");
+			// parse the line
+			String[] elements = line.split("\\s+");
+			if (elements.length > 0) {
+				// analyze the format
+				if (elements[0].equals("v")) {
+					Vertex tmpv = new Vertex();
+					tmpv.vx = Float.valueOf(elements[1]).floatValue();
+					tmpv.vy = Float.valueOf(elements[2]).floatValue();
+					tmpv.vz = Float.valueOf(elements[3]).floatValue();
+					vertexes.add(tmpv);
+				} else if (elements[0].equals("vn")) {
+					Vertex tmpv = new Vertex();
+					tmpv.vx = Float.valueOf(elements[1]).floatValue();
+					tmpv.vy = Float.valueOf(elements[2]).floatValue();
+					tmpv.vz = Float.valueOf(elements[3]).floatValue();
+					normv.add(tmpv);
+				} else if (elements[0].equals("g")
+						|| elements[0].equals("o")) {
+					Group tmpG = new Group();
+					currentGroup = tmpG;
+					if (elements.length <= 1) {
+						currentGroup.groupName = "tmp_named_" + ngCounter;
+						ngCounter++;
+					} else {
+						currentGroup.groupName = elements[1];
+					}
+					groups.add(currentGroup);
+				} else if (elements[0].equals("usemtl")) {
+					currentGroup = new Group();
+					currentGroup.groupName = "tmp_named_" + ngCounter++;
+					currentGroup.mtlName = elements[1];
+					groups.add(currentGroup);
+				} else if (elements[0].equals("f")) {
+					Facet tmpf = new Facet();
+					if (elements.length < 3) {
+						debug("Warning: potential model data error");
+					}
+					for (int i = 1; i < elements.length; i++) {
+						String seg = elements[i];
+						if (seg.indexOf("/") > 0) {
+							String[] forder = seg.split("/");
 
-								if (forder.length > 2) {
-									if (forder[2].length() > 0) {
-										int tmpVal = Integer.valueOf(forder[2])
-												.intValue();
-										if (tmpVal < 0) {
-											tmpf.nindexes.add(new Integer(
-													vertexes.size() + tmpVal +1));
-										} else {
-											tmpf.nindexes.add(new Integer(
-													tmpVal));
-										}
-									}
-									if (forder[1].length() > 0) {
-										int tmpVal = Integer.valueOf(forder[1])
-												.intValue();
-										if (tmpVal < 0) {
-											tmpf.tindexes.add(new Integer(
-													vertexes.size() + tmpVal +1));
-										} else {
-											tmpf.tindexes.add(new Integer(
-													tmpVal));
-										}
-									}
-									if (forder[0].length() > 0) {
-										int tmpVal = Integer.valueOf(forder[0])
-												.intValue();
-										if (tmpVal < 0) {
-											tmpf.indexes.add(new Integer(
-													vertexes.size() + tmpVal +1));
-										} else {
-											tmpf.indexes
-													.add(new Integer(tmpVal));
-										}
-									}
-								} else if (forder.length > 1) {
-									if (forder[1].length() > 0) {
-										int tmpVal = Integer.valueOf(forder[1])
-												.intValue();
-										if (tmpVal < 0) {
-											tmpf.tindexes.add(new Integer(
-													vertexes.size() + tmpVal + 1));
-										} else {
-											tmpf.tindexes.add(new Integer(
-													tmpVal));
-										}
-									}
-									if (forder[0].length() > 0) {
-										int tmpVal = Integer.valueOf(forder[0])
-												.intValue();
-										if (tmpVal < 0) {
-											tmpf.indexes.add(new Integer(
-													vertexes.size() + tmpVal +1));
-										} else {
-											tmpf.indexes
-													.add(new Integer(tmpVal));
-										}
-									}
-								} else if (forder.length > 0) {
-									if (forder[0].length() > 0) {
-										int tmpVal = Integer.valueOf(forder[0])
-												.intValue();
-										if (tmpVal < 0) {
-											tmpf.indexes.add(new Integer(
-													vertexes.size() + tmpVal + 1));
-										} else {
-											tmpf.indexes
-													.add(new Integer(tmpVal));
-										}
+							if (forder.length > 2) {
+								if (forder[2].length() > 0) {
+									int tmpVal = Integer.valueOf(forder[2])
+											.intValue();
+									if (tmpVal < 0) {
+										tmpf.nindexes.add(new Integer(
+												vertexes.size() + tmpVal +1));
+									} else {
+										tmpf.nindexes.add(new Integer(
+												tmpVal));
 									}
 								}
-							} else {
-								if (seg.length() > 0)
-									tmpf.indexes.add(Integer.valueOf(seg));
+								if (forder[1].length() > 0) {
+									int tmpVal = Integer.valueOf(forder[1])
+											.intValue();
+									if (tmpVal < 0) {
+										tmpf.tindexes.add(new Integer(
+												vertexes.size() + tmpVal +1));
+									} else {
+										tmpf.tindexes.add(new Integer(
+												tmpVal));
+									}
+								}
+								if (forder[0].length() > 0) {
+									int tmpVal = Integer.valueOf(forder[0])
+											.intValue();
+									if (tmpVal < 0) {
+										tmpf.indexes.add(new Integer(
+												vertexes.size() + tmpVal +1));
+									} else {
+										tmpf.indexes
+												.add(new Integer(tmpVal));
+									}
+								}
+							} else if (forder.length > 1) {
+								if (forder[1].length() > 0) {
+									int tmpVal = Integer.valueOf(forder[1])
+											.intValue();
+									if (tmpVal < 0) {
+										tmpf.tindexes.add(new Integer(
+												vertexes.size() + tmpVal + 1));
+									} else {
+										tmpf.tindexes.add(new Integer(
+												tmpVal));
+									}
+								}
+								if (forder[0].length() > 0) {
+									int tmpVal = Integer.valueOf(forder[0])
+											.intValue();
+									if (tmpVal < 0) {
+										tmpf.indexes.add(new Integer(
+												vertexes.size() + tmpVal +1));
+									} else {
+										tmpf.indexes
+												.add(new Integer(tmpVal));
+									}
+								}
+							} else if (forder.length > 0) {
+								if (forder[0].length() > 0) {
+									int tmpVal = Integer.valueOf(forder[0])
+											.intValue();
+									if (tmpVal < 0) {
+										tmpf.indexes.add(new Integer(
+												vertexes.size() + tmpVal + 1));
+									} else {
+										tmpf.indexes
+												.add(new Integer(tmpVal));
+									}
+								}
 							}
+						} else {
+							if (seg.length() > 0)
+								tmpf.indexes.add(Integer.valueOf(seg));
 						}
-						if (currentGroup != null)
-							currentGroup.facets.add(tmpf);
+					}
+					if (currentGroup != null)
+						currentGroup.facets.add(tmpf);
 
-					} else if (elements[0].equals("vt")) {
-						Vertex tmpv = new Vertex();
-						tmpv.vx = Float.valueOf(elements[1]).floatValue();
-						// avoid negative values
-						//tmpv.vx = (tmpv.vx<0?-tmpv.vx:tmpv.vx);
-						tmpv.vy = Float.valueOf(elements[2]).floatValue();
-						texturev.add(tmpv);
-					} else if (elements[0].equals("mtllib")) {
-						mtlfilename = elements[1];
-						while (mtlfilename.startsWith("/") || mtlfilename.startsWith(".")){
-							mtlfilename = mtlfilename.substring(1,mtlfilename.length());
-						}
+				} else if (elements[0].equals("vt")) {
+					Vertex tmpv = new Vertex();
+					tmpv.vx = Float.valueOf(elements[1]).floatValue();
+					// avoid negative values
+					//tmpv.vx = (tmpv.vx<0?-tmpv.vx:tmpv.vx);
+					tmpv.vy = Float.valueOf(elements[2]).floatValue();
+					texturev.add(tmpv);
+				} else if (elements[0].equals("mtllib")) {
+					mtlfilename = elements[1];
+					while (mtlfilename.startsWith("/") || mtlfilename.startsWith(".")){
+						mtlfilename = mtlfilename.substring(1,mtlfilename.length());
 					}
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
