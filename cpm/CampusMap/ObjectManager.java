@@ -377,7 +377,7 @@ public class ObjectManager{
 //				Collision Rectangles
 				int numberOfColRects = colrects.countChildren();
 				((Building)worldObjects.lastElement()).collisionRectangles = new CollisionRectangle[numberOfColRects];
-				if(numberOfColRects < 0){
+				if(numberOfColRects > 0){
 					Enumeration rectEnum = colrects.enumerateChildren();
 					for (int n = 0; n < numberOfColRects; n++)
 					{
