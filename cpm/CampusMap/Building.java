@@ -129,7 +129,7 @@ public class Building extends ObjectOfInterest {
 
 	private boolean testColSpheresWithFrustum() {
 		if (collisionSpheres == null || collisionSpheres.length==0)
-			return true;
+			return false;
 		FVector cameraLeft = myParentApplet.theCamera.getLeft();
 		FVector cameraUp = myParentApplet.theCamera.getUp();
 		for (int i = 0; i < collisionSpheres.length; i++) {
@@ -144,6 +144,26 @@ public class Building extends ObjectOfInterest {
 		}
                 cameraLeft=null;
                 cameraUp=null;
+		return false;
+	}
+	
+	private boolean testColRectsWithFrustum() {
+		if (collisionRectangles == null || collisionRectangles.length==0)
+			return false;
+		for (int i = 0; i < collisionRectangles.length; i++) {
+			if (isPointInFrustum(collisionRectangles[i].getCorner1())) {
+				return true;
+			}
+			if (isPointInFrustum(collisionRectangles[i].getCorner2())) {
+				return true;
+			}
+			if (isPointInFrustum(collisionRectangles[i].getCorner3())) {
+				return true;
+			}
+			if (isPointInFrustum(collisionRectangles[i].getCorner4())) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -242,23 +262,26 @@ public class Building extends ObjectOfInterest {
 
 	public void debugDraw(CampusMap myDrawApplet) {
 		myDrawApplet.hint(PApplet.DISABLE_DEPTH_TEST);
+		for (int i = 0; i < collisionRectangles.length; i++) {
+			if (mouseOver)
+				collisionRectangles[i].debugDraw(myDrawApplet, myParentApplet.color(100, 150, 100));
+			else
+				collisionRectangles[i].debugDraw(myDrawApplet);
+		}
 		for (int i = 0; i < collisionSpheres.length; i++) {
 			if (mouseOver)
 				collisionSpheres[i].debugDraw(myDrawApplet, myParentApplet.color(100, 255, 100));
 			else
 				collisionSpheres[i].debugDraw(myDrawApplet);
 		}
-		for (int i = 0; i < collisionRectangles.length; i++) {
-			if (mouseOver)
-				collisionRectangles[i].debugDraw(myDrawApplet, myParentApplet.color(100, 255, 100));
-			else
-				collisionRectangles[i].debugDraw(myDrawApplet);
-		}
 		myDrawApplet.noHint(PApplet.DISABLE_DEPTH_TEST);
 	}
 
 	public void testIfOnScreen() {
-		onScreen  = testColSpheresWithFrustum();
+		if ( testColRectsWithFrustum() || testColSpheresWithFrustum() )
+			onScreen = true;
+		else
+			onScreen = false;
 	}
 
 
