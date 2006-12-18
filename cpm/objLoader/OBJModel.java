@@ -20,11 +20,11 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 //import java.io.File;
 //import java.io.FileReader;
-import java.io.IOException;
+//import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.zip.*;
 
-import java.net.MalformedURLException;
+//import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -45,11 +45,16 @@ import CampusMap.ObjectOfInterest;
 
 public class OBJModel {
 
-	Vector vertexes; // vertexes
+	Vector vertices; // vertexes
 	Vector groups;
 	Vector objects;
 	Vector texturev; // texture coordinates
 	Vector normv;
+	
+	float verticesArray[];
+	float texturevArray[];
+	float normvArray[];
+	
 	Hashtable materials;
 	PApplet parent;
 	ObjectOfInterest myWrap;
@@ -76,7 +81,7 @@ public class OBJModel {
 		this.parent = parent;
 		myWrap = myWrap_p;
 		lod=lod_p;
-		vertexes = new Vector();
+		vertices = new Vector();
 		texturev = new Vector();
 		normv = new Vector();
 		groups = new Vector();
@@ -102,17 +107,22 @@ public class OBJModel {
 	public void showModelInfo() {
 
 		debug("Total:");
-		debug("\tV  Size: " + vertexes.size());
-		debug("\tVt Size: " + texturev.size());
-		debug("\tVn Size: " + normv.size());
+		if (vertices == null)
+			debug("\tV  Size: " + verticesArray.length);
+		else
+			debug("\tV  Size: " + vertices.size());
+		if (texturev == null)
+			debug("\tVt Size: " + texturevArray.length);
+		else
+			debug("\tVt Size: " + texturev.size());
+		if (normv == null)
+			debug("\tVn Size: " + normvArray.length);
+		else
+			debug("\tVn Size: " + normv.size());
 		debug("\tG  Size: " + groups.size());
 
 		for (int g = 0; g < groups.size(); g++) {
 			Group tmpgroup = (Group) (groups.elementAt(g));
-			Material mtl;
-			if (tmpgroup.mtlName != null) {
-				mtl = (Material) materials.get(tmpgroup.mtlName);
-			}
 			debug("Group Name: " + tmpgroup.groupName);
 			debug("\tMtl: " + tmpgroup.mtlName);
 			debug("\tFacet Size: " + tmpgroup.facets.size());
@@ -168,7 +178,6 @@ public class OBJModel {
 	public void drawModel(float matAlphaMultiplier, boolean greyed) {
 		float alphaMultiplier = 1;
 		try {
-			Vertex v = null, vt = null, vn = null, endV = null;
 			int vtidx = 0, vnidx = 0, vidx = 0, vidx2=0;
 			PImage imgtex = null;
 			boolean bTexture = false;
@@ -293,34 +302,38 @@ public class OBJModel {
 	
 									vidx = tmpf.intIndexes[fp];
 									
-									v = (Vertex) vertexes.elementAt(vidx - 1);
-									if (v != null) {
+									//v = (Vertex) vertices.elementAt(vidx - 1);
+									//if (v != null) {
+									int vIdx = (vidx - 1)*3;
 										try {
 											if (tmpf.intNIndexes.length > 0) {
 												vnidx = tmpf.intNIndexes[fp];
-												vn = (Vertex) normv
-														.elementAt(vnidx - 1);
-												parent.normal(-vn.vx, -vn.vy,
-														-vn.vz);
+												int nIdx = (vnidx - 1)*3;
+												parent.normal(-normvArray[nIdx],
+														-normvArray[nIdx+1],
+														-normvArray[nIdx+2]);
 											}
 	
 											if (bTexture) {
 	
 												vtidx = tmpf.intTIndexes[fp];
 	
-												vt = (Vertex) texturev
-														.elementAt(vtidx - 1);
+												int tIdx = (vtidx - 1)*2;
 												
-												parent.vertex(-v.vx, v.vy, v.vz,
-														1.0f - vt.vx, vt.vy);
+												parent.vertex(-verticesArray[vIdx],
+														verticesArray[vIdx+1],
+														verticesArray[vIdx+2],
+														1.0f - texturevArray[tIdx], texturevArray[tIdx+1]);
 											} else
-												parent.vertex(-v.vx, v.vy, v.vz);
+												parent.vertex(-verticesArray[vIdx],
+														verticesArray[vIdx+1],
+														verticesArray[vIdx+2]);
 										} catch (Exception e) {
 											e.printStackTrace();
 										}
-									} else {
-										parent.vertex(-v.vx, v.vy, v.vz);
-									}
+									//} else {
+									//	parent.vertex(-v.vx, v.vy, v.vz);
+									//}
 	
 								}
 							}
@@ -338,12 +351,20 @@ public class OBJModel {
 										else
 											vidx2 = tmpf.intIndexes[0];
 										
-										v = (Vertex) vertexes.elementAt(vidx - 1);
-										endV = (Vertex) vertexes.elementAt(vidx2 - 1);
-										if (	v.vx==endV.vx && v.vz==endV.vz ||
-												v.vz==endV.vz && v.vy==endV.vy ||
-												v.vx==endV.vx && v.vy==endV.vy)
-											parent.line(-v.vx, v.vy, v.vz, -endV.vx, endV.vy, endV.vz);
+										int vIdx = (vidx - 1)*3;
+										int eIdx = (vidx2 - 1)*3;
+										if (	verticesArray[vIdx+0]==verticesArray[eIdx+0]
+										    &&	verticesArray[vIdx+2]==verticesArray[eIdx+2]
+										    ||	verticesArray[vIdx+2]==verticesArray[eIdx+2]
+										    &&	verticesArray[vIdx+1]==verticesArray[eIdx+1]
+										    ||	verticesArray[vIdx+0]==verticesArray[eIdx+0]
+										    &&	verticesArray[vIdx+1]==verticesArray[eIdx+1])
+											parent.line(-verticesArray[vIdx+0],
+													verticesArray[vIdx+1],
+													verticesArray[vIdx+2],
+													-verticesArray[eIdx+0],
+													verticesArray[eIdx+1],
+													verticesArray[eIdx+2]);
 									}
 								}
 								parent.endShape();
@@ -406,7 +427,7 @@ public class OBJModel {
 			if (mtlfilename != null)
 				//parseMTL(new BufferedReader(new InputStreamReader(parent.getClass().getResourceAsStream("data/"+mtlfilename))));
 				parseMTL(getBufferedReader(sourceFolderURL + mtlfilename));
-			makeFacesSmaller();
+			makeThingsSmaller();
 			debug("model loaded");
 			myWrap.setLodModelLoaded(lod);
 		} catch (Exception e) {
@@ -419,7 +440,6 @@ public class OBJModel {
 		String line;
 		Group currentGroup = null;
 		int ngCounter = 0;
-		int parseCounter=0;
 		while ((line = bread.readLine()) != null) {
 //				parseCounter++;
 //				System.out.println("parseCounter: "+parseCounter);
@@ -433,7 +453,7 @@ public class OBJModel {
 					tmpv.vx = Float.valueOf(elements[1]).floatValue();
 					tmpv.vy = Float.valueOf(elements[2]).floatValue();
 					tmpv.vz = Float.valueOf(elements[3]).floatValue();
-					vertexes.add(tmpv);
+					vertices.add(tmpv);
 				} else if (elements[0].equals("vn")) {
 					Vertex tmpv = new Vertex();
 					tmpv.vx = Float.valueOf(elements[1]).floatValue();
@@ -472,7 +492,7 @@ public class OBJModel {
 											.intValue();
 									if (tmpVal < 0) {
 										tmpf.nindexes.add(new Integer(
-												vertexes.size() + tmpVal +1));
+												vertices.size() + tmpVal +1));
 									} else {
 										tmpf.nindexes.add(new Integer(
 												tmpVal));
@@ -483,7 +503,7 @@ public class OBJModel {
 											.intValue();
 									if (tmpVal < 0) {
 										tmpf.tindexes.add(new Integer(
-												vertexes.size() + tmpVal +1));
+												vertices.size() + tmpVal +1));
 									} else {
 										tmpf.tindexes.add(new Integer(
 												tmpVal));
@@ -494,7 +514,7 @@ public class OBJModel {
 											.intValue();
 									if (tmpVal < 0) {
 										tmpf.indexes.add(new Integer(
-												vertexes.size() + tmpVal +1));
+												vertices.size() + tmpVal +1));
 									} else {
 										tmpf.indexes
 												.add(new Integer(tmpVal));
@@ -506,7 +526,7 @@ public class OBJModel {
 											.intValue();
 									if (tmpVal < 0) {
 										tmpf.tindexes.add(new Integer(
-												vertexes.size() + tmpVal + 1));
+												vertices.size() + tmpVal + 1));
 									} else {
 										tmpf.tindexes.add(new Integer(
 												tmpVal));
@@ -517,7 +537,7 @@ public class OBJModel {
 											.intValue();
 									if (tmpVal < 0) {
 										tmpf.indexes.add(new Integer(
-												vertexes.size() + tmpVal +1));
+												vertices.size() + tmpVal +1));
 									} else {
 										tmpf.indexes
 												.add(new Integer(tmpVal));
@@ -529,7 +549,7 @@ public class OBJModel {
 											.intValue();
 									if (tmpVal < 0) {
 										tmpf.indexes.add(new Integer(
-												vertexes.size() + tmpVal + 1));
+												vertices.size() + tmpVal + 1));
 									} else {
 										tmpf.indexes
 												.add(new Integer(tmpVal));
@@ -561,7 +581,7 @@ public class OBJModel {
 		}
 	}
 	
-	public void makeFacesSmaller() {
+	public void makeThingsSmaller() {
 		for (int g = 0; g < groups.size(); g++) {
 			Group tmpgroup = (Group) (groups.elementAt(g));
 			for (int f = 0; f < tmpgroup.facets.size(); f++) {
@@ -592,6 +612,39 @@ public class OBJModel {
 				tmpfacet.nindexes = null;
 			}
 		}
+		int numberOfVertices = vertices.size();
+		Vertex tmpVertex;
+		verticesArray = new float[numberOfVertices*3];
+		for (int v = 0; v < vertices.size(); v++) {
+			tmpVertex = (Vertex) (vertices.elementAt(v));
+			verticesArray[v*3 + 0] = tmpVertex.vx;
+			verticesArray[v*3 + 1] = tmpVertex.vy;
+			verticesArray[v*3 + 2] = tmpVertex.vz;
+		}
+		vertices.clear();
+		vertices = null;
+		
+		numberOfVertices = this.normv.size();
+		normvArray = new float[numberOfVertices*3];
+		for (int v = 0; v < normv.size(); v++) {
+			tmpVertex = (Vertex) (normv.elementAt(v));
+			normvArray[v*3 + 0] = tmpVertex.vx;
+			normvArray[v*3 + 1] = tmpVertex.vy;
+			normvArray[v*3 + 2] = tmpVertex.vz;
+		}
+		normv.clear();
+		normv = null;
+
+		numberOfVertices = this.texturev.size();
+		texturevArray = new float[numberOfVertices*2];
+		for (int v = 0; v < texturev.size(); v++) {
+			tmpVertex = (Vertex) (texturev.elementAt(v));
+			texturevArray[v*2 + 0] = tmpVertex.vx;
+			texturevArray[v*2 + 1] = tmpVertex.vy;
+		}
+		texturev.clear();
+		texturev = null;
+		
 	}
 
 	public void parseMTL(BufferedReader bread) {
@@ -655,15 +708,15 @@ public class OBJModel {
 	}
 
 	public int getVertexsize() {
-		return this.vertexes.size();
+		return this.vertices.size();
 	}
 
 	public Vertex getVertex(int i) {
-		return (Vertex) vertexes.elementAt(i);
+		return (Vertex) vertices.elementAt(i);
 	}
 
 	public void setVertex(int i, Vertex vertex) {
-		Vertex tmpv = (Vertex) vertexes.elementAt(i);
+		Vertex tmpv = (Vertex) vertices.elementAt(i);
 		tmpv.vx = vertex.vx;
 		tmpv.vy = vertex.vy;
 		tmpv.vz = vertex.vz;
