@@ -69,11 +69,7 @@ public class ObjectManager{
 
 			Enumeration childEnum = XMLObjects.enumerateChildren();
 
-	        initGuiObjects((XMLElement) childEnum.nextElement());
-
-	        // Init the SlideCases
-	        for(int initDrawers = 0;initDrawers<drawers.size();initDrawers++)
-	        	((SlideCase)drawers.get(initDrawers)).init();
+                        initGuiObjects((XMLElement) childEnum.nextElement());
 
 			//geography-file from url:
 			//******************************************************************************
@@ -88,7 +84,7 @@ public class ObjectManager{
 
 			Enumeration childEnum2 = XMLObjects.enumerateChildren();
 
-	        initWorldObjects((XMLElement) childEnum2.nextElement());
+                        initWorldObjects((XMLElement) childEnum2.nextElement());
 
 			//******************************************************************************
 		} catch(XMLParseException xpe) {
@@ -128,6 +124,7 @@ public class ObjectManager{
 				// get the Applet to give to the Element
 				GuiObject[] tempObject = initSliders(guiObjects);
 				tempCase.addContent(tempObject);
+                                tempCase.init();
 				System.out.println("inited tempObject "+tempObject);
 
 
