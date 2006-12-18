@@ -166,7 +166,7 @@ class Controls{
 	public void mouseMoved() {
 		mouseJustMoved=true;
 		if (circleControlEnabled) {
-			theCamera.rotateToNow(new Float((float)Math.toRadians((applet.mouseX - lastMouseX) * 1)), new Float(0.0f));
+			theCamera.rotateToNow(new Float((float)Math.toRadians((applet.mouseX - lastMouseX) * 0.5f)), new Float(0.0f));
 			lastMouseX = applet.mouseX;
 			//lastMouseY = applet.mouseY;
 			
