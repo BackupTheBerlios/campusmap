@@ -342,7 +342,7 @@
 				<modelnames name="11" lodNum="3"/>
 				<flags drawLines="1" zFade="0"/>
 				<colspheres>
-					<sphere x="770" y="570" z="52" radius="185"/>
+					<sphere x="470" y="520" z="52" radius="200"/>
 					<sphere x="395" y="60" z="205" radius="280"/>
 					<sphere x="395" y="-320" z="205" radius="280"/>
 					<sphere x="-71" y="60" z="205" radius="280"/>
@@ -718,27 +718,9 @@
 				<modelnames name="Parkplatz_ANLabore" lodNum="1"/>
 				<flags drawLines="1" zFade="0"/>
 				<colspheres>
-					<sphere x="-900" y="285" z="0" radius="140"/>
-					<sphere x="-580" y="285" z="0" radius="140"/>
-					<sphere x="-260" y="285" z="0" radius="140"/>
-					<sphere x="160" y="285" z="0" radius="140"/>
-					<sphere x="480" y="285" z="0" radius="140"/>
-					<sphere x="700" y="285" z="0" radius="140"/>
-					<sphere x="-900" y="-120" z="0" radius="140"/>
-					<sphere x="-580" y="-120" z="0" radius="140"/>
-					<sphere x="-260" y="-120" z="0" radius="140"/>
-					<sphere x="160" y="-120" z="0" radius="140"/>
-					<sphere x="480" y="-120" z="0" radius="140"/>
-					<sphere x="700" y="-120" z="0" radius="140"/>
-					<sphere x="-900" y="-560" z="0" radius="140"/>
-					<sphere x="-580" y="-560" z="0" radius="140"/>
-					<sphere x="-260" y="-560" z="0" radius="140"/>
-					<sphere x="160" y="-560" z="0" radius="140"/>
-					<sphere x="480" y="-560" z="0" radius="140"/>
-					<sphere x="700" y="-560" z="0" radius="140"/>
 				</colspheres>
 				<colrectangles>
-					<rectangle x="400" y="400" z="15" a="-400" b="-400" c="15" AlignedToAxis="2"/>
+					<rectangle x="-1150" y="750" z="15" a="940" b="-500" c="15" AlignedToAxis="2"/>
 				</colrectangles>
 				<information>
 					<indentifier buildingnumber="P1"/>
@@ -758,28 +740,10 @@
 				<modelnames name="Parkplatz_Maschbau" lodNum="1"/>
 				<flags drawLines="1" zFade="0"/>
 				<colspheres>
-					<sphere x="-900" y="285" z="0" radius="140"/>
-					<sphere x="-580" y="285" z="0" radius="140"/>
-					<sphere x="-260" y="285" z="0" radius="140"/>
-					<sphere x="160" y="285" z="0" radius="140"/>
-					<sphere x="480" y="285" z="0" radius="140"/>
-					<sphere x="700" y="285" z="0" radius="140"/>
-					<sphere x="-900" y="-120" z="0" radius="140"/>
-					<sphere x="-580" y="-120" z="0" radius="140"/>
-					<sphere x="-260" y="-120" z="0" radius="140"/>
-					<sphere x="160" y="-120" z="0" radius="140"/>
-					<sphere x="480" y="-120" z="0" radius="140"/>
-					<sphere x="700" y="-120" z="0" radius="140"/>
-					<sphere x="-900" y="-560" z="0" radius="140"/>
-					<sphere x="-580" y="-560" z="0" radius="140"/>
-					<sphere x="-260" y="-560" z="0" radius="140"/>
-					<sphere x="160" y="-560" z="0" radius="140"/>
-					<sphere x="480" y="-560" z="0" radius="140"/>
-					<sphere x="700" y="-560" z="0" radius="140"/>
-					<sphere x="950" y="-560" z="0" radius="140"/>
 				</colspheres>
 				<colrectangles>
-					<rectangle x="400" y="400" z="15" a="-400" b="-400" c="15" AlignedToAxis="2"/>
+					<rectangle x="-1200" y="700" z="15" a="700" b="-250" c="15" AlignedToAxis="2"/>
+					<rectangle x="700" y="400" z="15" a="1300" b="700" c="15" AlignedToAxis="2"/>
 				</colrectangles>
 				<information>
 					<indentifier buildingnumber="P2"/>
@@ -799,20 +763,10 @@
 				<modelnames name="Parkplatz_MFC_BAU" lodNum="1"/>
 				<flags drawLines="1" zFade="0"/>
 				<colspheres>
-					<sphere x="-1720" y="860" z="0" radius="100"/>
-					<sphere x="2600" y="860" z="0" radius="100"/>
-					<sphere x="-1720" y="530" z="0" radius="100"/>
-					<sphere x="-1720" y="200" z="0" radius="100"/>
-					<sphere x="-1720" y="-130" z="0" radius="100"/>
-					<sphere x="-1720" y="-460" z="0" radius="100"/>
-					<sphere x="-1720" y="-790" z="0" radius="100"/>
-					<sphere x="-1720" y="-1120" z="0" radius="100"/>
-					<sphere x="-1720" y="-1450" z="0" radius="100"/>
-					<sphere x="-1720" y="-1780" z="0" radius="100"/>
-					<sphere x="-1720" y="-2140" z="0" radius="100"/>
 				</colspheres>
 				<colrectangles>
-					<rectangle x="400" y="400" z="15" a="-400" b="-400" c="15" AlignedToAxis="2"/>
+					<rectangle x="-2020" y="2460" z="15" a="-1420" b="-800" c="15" AlignedToAxis="2"/>
+					<rectangle x="-1120" y="2460" z="15" a="-520" b="-800" c="15" AlignedToAxis="2"/>
 				</colrectangles>
 				<information>
 					<indentifier buildingnumber="P3"/>
@@ -832,10 +786,9 @@
 				<modelnames name="parkplatz_RZ" lodNum="1"/>
 				<flags drawLines="1" zFade="0"/>
 				<colspheres>
-					<sphere x="0" y="0" z="0" radius="100"/>
 				</colspheres>
 				<colrectangles>
-					<rectangle x="400" y="400" z="15" a="-400" b="-400" c="15" AlignedToAxis="2"/>
+					<rectangle x="2450" y="680" z="15" a="-2450" b="-120" c="15" AlignedToAxis="2"/>
 				</colrectangles>
 				<information>
 					<indentifier buildingnumber="P4"/>
@@ -855,10 +808,9 @@
 				<modelnames name="parkplatz_TWT" lodNum="1"/>
 				<flags drawLines="1" zFade="0"/>
 				<colspheres>
-					<sphere x="0" y="0" z="0" radius="100"/>
 				</colspheres>
 				<colrectangles>
-					<rectangle x="400" y="400" z="15" a="-400" b="-400" c="15" AlignedToAxis="2"/>
+					<rectangle x="1000" y="310" z="15" a="-1070" b="-490" c="15" AlignedToAxis="2"/>
 				</colrectangles>
 				<information>
 					<indentifier buildingnumber="P5"/>
@@ -877,10 +829,9 @@
 				<modelnames name="parkplatz_Atrium" lodNum="1"/>
 				<flags drawLines="1" zFade="0"/>
 				<colspheres>
-					<sphere x="0" y="0" z="0" radius="100"/>
 				</colspheres>
 				<colrectangles>
-					<rectangle x="400" y="400" z="15" a="-400" b="-400" c="15" AlignedToAxis="2"/>
+					<rectangle x="1680" y="850" z="15" a="-100" b="-300" c="15" AlignedToAxis="2"/>
 				</colrectangles>
 				<information>
 					<indentifier buildingnumber="P5"/>
