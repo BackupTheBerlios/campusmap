@@ -665,7 +665,6 @@ class Camera{
 
 	public FVector flyIntoCircleView(FVector centerPoint, float radius, float degree, int duration) {
 		FVector currentPos = getPos();
-		currentPos.setZ(centerPoint.getZ());
 		FVector dirFromCenterToPos = FVector.subtract(centerPoint, currentPos).normalize();
 		FVector dirFromCenterToSide = FVector.crossProduct(dirFromCenterToPos, new FVector(0,0,1));
 		FVector newCameraPos = FVector.add(centerPoint, FVector.multiply(dirFromCenterToSide, radius));
