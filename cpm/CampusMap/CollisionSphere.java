@@ -10,8 +10,8 @@ public class CollisionSphere {
 	private FVector m_vPositionModelSpace;
 	private	FVector m_vPositionWorldSpace;
         private FVector m_vCompundSpace;
-        private FVector	lineToSphere;
-        private float	s, t, q, l2, r2, m2, len; // vars for testray
+        private static FVector	lineToSphere;
+        private static float	s, t, q, l2, r2, m2, len; // vars for testray
 
 	private	float	m_fRadius;
 
@@ -69,8 +69,8 @@ public class CollisionSphere {
 	}
 
 	public void moveModelSpaceAbout(FVector about) {
-            FVector.add(m_vPositionModelSpace, about);
-            calcCompundSpace();
+		m_vPositionModelSpace.addMe(about);
+    	calcCompundSpace();
 	}
 
 	public void rotateModelSpaceXYZ(FVector rotation) {
@@ -131,9 +131,9 @@ public class CollisionSphere {
 
 	public CollisionSphere testPoint(FVector point, float distance)
 	{
-/*		if (FVector.subtract(getPosition(), point).magnitudeSqr() < (m_fRadius+distance)*(m_fRadius+distance))
+		if (FVector.subtract(getPosition(), point).magnitudeSqr() < (m_fRadius+distance)*(m_fRadius+distance))
 			return this;
-*/		return null;
+		return null;
 	}
 
 	public FVector getTangent(FVector point) {

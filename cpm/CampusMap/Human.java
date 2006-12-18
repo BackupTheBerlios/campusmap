@@ -20,7 +20,7 @@ public class Human extends MovingObject{
 		newRandomDirection();
 		fullSpeed = myDrawApplet.random(10, 20);
 		currentSpeed = fullSpeed;
-		if (myDrawApplet.random(0,2) < 1.0f)
+		if (myDrawApplet.random(0,3) < 1.0f)
 			interestedInMouse = true;
 
 	}

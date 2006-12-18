@@ -27,8 +27,8 @@ public class CollisionRectangle {
                                  m_vCorner2.setElementAt(m_nAlignedToAxis,                    // set and get
                                             (m_vCorner1.getElementAt(m_nAlignedToAxis) + m_vCorner2.getElementAt(m_nAlignedToAxis)/2))); // only get
 		}
-		m_vCorner1.printMe("mvCorner1 init");
-		m_vCorner2.printMe("mvCorner2 init");
+		//m_vCorner1.printMe("mvCorner1 init");
+		//m_vCorner2.printMe("mvCorner2 init");
 	}
 
 	public void moveAbout(FVector about) {
@@ -37,8 +37,8 @@ public class CollisionRectangle {
                 m_vCorner1.addMe(about);
                 m_vCorner2.addMe(about);
 
-		m_vCorner1.printMe("mvCorner1 moved");
-		m_vCorner2.printMe("mvCorner2 moved");
+		//m_vCorner1.printMe("mvCorner1 moved");
+		//m_vCorner2.printMe("mvCorner2 moved");
 	}
 
 	public void scaleAbout(FVector scaleValue) {
