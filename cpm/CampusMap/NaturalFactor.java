@@ -47,9 +47,9 @@ class NaturalFactor {
 		//blue		= new Color(105, 155, 204);
 		//white		= new Color(255, 255, 255);
 		sun = new Sun(applet);
-//		myFog = new fog(applet);
-//		myFog.setupFog(2000,8000);
-//		myFog.setColor(lightBlue.getP5Color());
+		myFog = new fog(applet);
+		myFog.setupFog(2000,8000);
+		myFog.setColor(lightBlue.getP5Color());
 		fogColors = new Color[17];
 		fogDistances = new int[17][2];
 		fogColors[0] = new Color( 11,  11,  37);
@@ -86,12 +86,12 @@ class NaturalFactor {
 		fogDistances[15][0] = 5000; fogDistances[15][1] = 8000;
 		fogColors[16] = new Color(011, 011, 037);
 		fogDistances[16][0] = 3000; fogDistances[16][1] = 6000;
-//		fogColors = new Color[10000];
-//		fogDistances = new int[10000][2];
-//		for (int i = 0; i < fogColors.length; i++) {
-//			fogColors[i] = realFogColors[i%7];
-//			fogDistances[i] = realFogDistances[i%7];
-//		}
+		//fogColors = new Color[10000];
+		//fogDistances = new int[10000][2];
+		//for (int i = 0; i < fogColors.length; i++) {
+		//	fogColors[i] = realFogColors[i%7];
+		//	fogDistances[i] = realFogDistances[i%7];
+		//}
 		stars = new Stars(applet, 150, 30000, 300);
 
 		update();
@@ -113,7 +113,7 @@ class NaturalFactor {
 
 	public void applySurroundings() {
 		//enlightenSky();
-		//myFog.doFog();
+		myFog.doFog();
 		if (((int)fogNumber) != 0 && ((int)fogNumber) != fogDistances.length-1) {
 			//System.out.println("sun draw");
 			sun.draw();
@@ -131,12 +131,12 @@ class NaturalFactor {
 		if (currentTimeFromSunrise < 0) currentTimeFromSunrise = 0;
 		else if (currentTimeFromSunrise > (t_suns - t_sunr)*3600000) currentTimeFromSunrise = (int)((t_suns - t_sunr)*3600000);
 		fogNumber = (float)(currentTimeFromSunrise / lengthInMsPerFogColor);
-		//System.out.println(" fognumber: " + fogNumber);
+		System.out.println(" fognumber: " + fogNumber + " of " + fogColors.length + " in total.");
 		fogColor = fogColors[(int)fogNumber].combine(fogColors[((int)fogNumber)>fogColors.length-2?0:((int)fogNumber)+1], fogNumber - ((int)fogNumber));
 		int fogNearDist	= (int)(fogDistances[(int)fogNumber][0] * (1.0f - (fogNumber - ((int)fogNumber))) + fogDistances[((int)fogNumber)>fogColors.length-2?0:((int)fogNumber)+1][0] * (fogNumber - ((int)fogNumber)));
 		int fogFarDist	= (int)(fogDistances[(int)fogNumber][1] * (1.0f - (fogNumber - ((int)fogNumber))) + fogDistances[((int)fogNumber)>fogColors.length-2?0:((int)fogNumber)+1][1] * (fogNumber - ((int)fogNumber)));
-//		myFog.setupFog(fogNearDist, fogFarDist);
-//		myFog.setColor(fogColor.getP5Color());
+		myFog.setupFog(fogNearDist, fogFarDist);
+		myFog.setColor(fogColor.getP5Color());
 		//System.out.println("fogNearDist " + fogNearDist + " fogFarDist " + fogFarDist + "color: " + fogColor.getP5Color() + " " + fogColor.r + " " + fogColor.g + " " + fogColor.b);
 	}
 
