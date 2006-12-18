@@ -83,7 +83,7 @@ public class CollisionRectangle {
 	}
 
 	public void debugDraw(CampusMap applet) {
-		applet.fill(255, 100, 100, 255);
+		applet.fill(150, 100, 100, 255);
 		finalDebugDraw(applet);
 	}
 
@@ -118,5 +118,47 @@ public class CollisionRectangle {
 		}
 		applet.endShape();
 		applet.popMatrix();
+	}
+	
+	public FVector getCorner1()
+	{
+		return 	m_vCorner1;
+	}
+	
+	public FVector getCorner2()
+	{
+		return 	m_vCorner2;
+	}
+	
+	public FVector getCorner3()
+	{
+		if (m_nAlignedToAxis == 0)
+		{
+			return new FVector(m_vCorner1.getX(), m_vCorner1.getY(), m_vCorner2.getZ());
+		}
+		else if (m_nAlignedToAxis == 1)
+		{
+			return new FVector(m_vCorner2.getX(), m_vCorner1.getY(), m_vCorner1.getZ());
+		}
+		else
+		{
+			return new FVector(m_vCorner1.getX(), m_vCorner2.getY(), m_vCorner1.getZ());
+		}
+	}
+	
+	public FVector getCorner4()
+	{
+		if (m_nAlignedToAxis == 0)
+		{
+			return new FVector(m_vCorner1.getX(), m_vCorner2.getY(), m_vCorner1.getZ());
+		}
+		else if (m_nAlignedToAxis == 1)
+		{
+			return new FVector(m_vCorner1.getX(), m_vCorner1.getY(), m_vCorner2.getZ());
+		}
+		else
+		{
+			return new FVector(m_vCorner2.getX(), m_vCorner1.getY(), m_vCorner1.getZ());
+		}
 	}
 }
