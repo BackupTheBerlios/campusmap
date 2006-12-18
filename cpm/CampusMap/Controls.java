@@ -217,16 +217,16 @@ class Controls{
 	
 	public void keyPressed() {
 		if (controlsEnabled && !tempControlDisable) {
-			if (applet.keyCode == PConstants.LEFT) {
+			if (applet.keyCode == PConstants.LEFT || applet.key == 'A' || applet.key == 'a') {
 				leftButtonPressed	= true;
 			}
-			else if (applet.keyCode == PConstants.RIGHT) {
+			else if (applet.keyCode == PConstants.RIGHT || applet.key == 'D' || applet.key == 'd') {
 				rightButtonPressed	= true;
 			}
-			else if (applet.keyCode == PConstants.UP) {
+			else if (applet.keyCode == PConstants.UP || applet.key == 'W' || applet.key == 'w') {
 				upButtonPressed		= true;
 			}
-			else if (applet.keyCode == PConstants.DOWN) {
+			else if (applet.keyCode == PConstants.DOWN || applet.key == 'S' || applet.key == 's') {
 				downButtonPressed	= true;
 			}
 			else if (applet.keyCode == PConstants.ENTER) {
@@ -254,16 +254,16 @@ class Controls{
 	
 	
 	public void keyReleased() {
-		if (applet.keyCode == PConstants.LEFT) {
+		if (applet.keyCode == PConstants.LEFT || applet.key == 'A' || applet.key == 'a') {
 			leftButtonPressed	= false;
 		}
-		else if (applet.keyCode == PConstants.RIGHT) {
+		else if (applet.keyCode == PConstants.RIGHT || applet.key == 'D' || applet.key == 'd') {
 			rightButtonPressed	= false;
 		}
-		else if (applet.keyCode == PConstants.UP) {
+		else if (applet.keyCode == PConstants.UP || applet.key == 'W' || applet.key == 'w') {
 			upButtonPressed		= false;
 		}
-		else if (applet.keyCode == PConstants.DOWN) {
+		else if (applet.keyCode == PConstants.DOWN || applet.key == 'S' || applet.key == 's') {
 			downButtonPressed	= false;
 		}
 		else if (controlsEnabled && !tempControlDisable) {
