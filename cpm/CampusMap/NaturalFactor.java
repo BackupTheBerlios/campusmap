@@ -131,7 +131,7 @@ class NaturalFactor {
 		if (currentTimeFromSunrise < 0) currentTimeFromSunrise = 0;
 		else if (currentTimeFromSunrise > (t_suns - t_sunr)*3600000) currentTimeFromSunrise = (int)((t_suns - t_sunr)*3600000);
 		fogNumber = (float)(currentTimeFromSunrise / lengthInMsPerFogColor);
-		System.out.println(" fognumber: " + fogNumber + " of " + fogColors.length + " in total.");
+		//System.out.println(" fognumber: " + fogNumber + " of " + fogColors.length + " in total.");
 		fogColor = fogColors[(int)fogNumber].combine(fogColors[((int)fogNumber)>fogColors.length-2?0:((int)fogNumber)+1], fogNumber - ((int)fogNumber));
 		int fogNearDist	= (int)(fogDistances[(int)fogNumber][0] * (1.0f - (fogNumber - ((int)fogNumber))) + fogDistances[((int)fogNumber)>fogColors.length-2?0:((int)fogNumber)+1][0] * (fogNumber - ((int)fogNumber)));
 		int fogFarDist	= (int)(fogDistances[(int)fogNumber][1] * (1.0f - (fogNumber - ((int)fogNumber))) + fogDistances[((int)fogNumber)>fogColors.length-2?0:((int)fogNumber)+1][1] * (fogNumber - ((int)fogNumber)));
