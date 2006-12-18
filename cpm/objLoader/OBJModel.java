@@ -216,7 +216,7 @@ public class OBJModel {
 						parent.beginShape(mode); // specify render mode
 
 						if (bTexture && flagTexture) {
-							if (tmpf.tindexes.size() > 0) {
+							if (tmpf.intTIndexes.length > 0) {
 //								int minValX;
 //								int maxValX;
 //								int minValY;
