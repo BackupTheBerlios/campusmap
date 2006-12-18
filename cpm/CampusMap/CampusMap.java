@@ -458,8 +458,11 @@ public class CampusMap extends PApplet{
 		env.theContent.theCamera.flyToRoom(selectedBuilding, pos2Fly2AfterPrep, showroom);
 	}
 
+        /**
+         *  Global entrance/exit into/from detailview
+         */
 	public void setTouring(boolean p_touring, Building selectedBuilding_p){
-		selectedBuilding = selectedBuilding_p;
+            selectedBuilding = selectedBuilding_p;
 		controls.setEnabled(!p_touring);
 		SlideCase.setActive(!p_touring);
 

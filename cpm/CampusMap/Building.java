@@ -146,7 +146,7 @@ public class Building extends ObjectOfInterest {
                 cameraUp=null;
 		return false;
 	}
-	
+
 	private boolean testColRectsWithFrustum() {
 		if (collisionRectangles == null || collisionRectangles.length==0)
 			return false;
@@ -183,6 +183,8 @@ public class Building extends ObjectOfInterest {
 	    	break;
 	    case MouseEvent.MOUSE_CLICKED:
 	    	if (mouseOver && myParentApplet.controls.getThreeDeeControlEnabled()) {
+                      // set exclusive loading
+                      myParentApplet.objectManager.streamingManager.setUrgendModelToLoad(this);
 	    		FVector		centerPosition	=  getCenterPosition();
 				centerPosition.setZ(flyAroundCenterHeight);
 //				myParentApplet.theCamera.flyToPosInBuilding(entrancePosition, centerPosition, flyAroundRadius, 2000, 2000, this, false);

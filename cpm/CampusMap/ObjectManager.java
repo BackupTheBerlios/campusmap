@@ -14,7 +14,7 @@ import nanoxml.*;
  */
 public class ObjectManager{
 
-	private StreamingManager streamingManager;
+	public StreamingManager streamingManager;
 
 	//final XMLElement	XMLObjects	= new XMLElement("objects"); //"root" xml element
 	private XMLElement	XMLObjects;
