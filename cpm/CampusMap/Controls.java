@@ -245,6 +245,9 @@ class Controls{
 				if (applet.key == 'F' || applet.key == 'f') {
 					theCamera.m_bFrameRateDrawingOn = !theCamera.m_bFrameRateDrawingOn;
 				}
+				if (applet.key == 'M' || applet.key == 'm') {
+					applet.objectsGoForTheMouse = !applet.objectsGoForTheMouse;
+				}
 			}
 		}
 	}

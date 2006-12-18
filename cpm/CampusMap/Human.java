@@ -11,6 +11,8 @@ public class Human extends MovingObject{
 
 	protected final static int MOVE_Z 			= 20;
 	protected final static int FADE_DISTANCE	= 500; // distance at which the object fades out
+	
+	boolean interestedInMouse = false;
 
 	//constructor
 	public Human(CampusMap drawApplet, FVector position) {
@@ -18,6 +20,8 @@ public class Human extends MovingObject{
 		newRandomDirection();
 		fullSpeed = myDrawApplet.random(10, 20);
 		currentSpeed = fullSpeed;
+		if (myDrawApplet.random(0,2) < 1.0f)
+			interestedInMouse = true;
 
 	}
 
@@ -52,17 +56,31 @@ public class Human extends MovingObject{
 				if (sphere != null)
 					myDir = sphere.getTangent(myPos);
 				else {
-					if (myDrawApplet.random(0,20) < 1.0f) {
+					if ((myDrawApplet.objectsGoForTheMouse && interestedInMouse) || myDrawApplet.random(0,20) < 1.0f)
 						newRandomDirection();
-					}
+					if (myDrawApplet.objectsGoForTheMouse && myDrawApplet.random(0,35) < 1.0f)
+						interestedInMouse = !interestedInMouse;
 				}
 			}
 		}
 	}
 
 	private void newRandomDirection() {
-		myDir = new FVector(myDrawApplet.random(-1, 1), myDrawApplet.random(-1, 1), myDrawApplet.random(0));
-		myDir.normalizeMe();
+		if (myDrawApplet.objectsGoForTheMouse && interestedInMouse)
+		{
+			myDir.set(myDrawApplet.theCamera.getMouseGroundPlaneIntersection(false));
+			myDir.subtractMe(myPos);
+		}
+		else
+		{
+			myDir.x = myDrawApplet.random(-1, 1);
+			myDir.y = myDrawApplet.random(-1, 1);
+			myDir.z = 0;
+		}
+		if (myDrawApplet.objectsGoForTheMouse && interestedInMouse && myDir.magnitudeSqr() < 225)
+			myDir.set(0,0,0);
+		else
+			myDir.normalizeMe();
 	}
 
 }

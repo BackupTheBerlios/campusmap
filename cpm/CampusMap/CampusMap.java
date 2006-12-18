@@ -74,6 +74,7 @@ public class CampusMap extends PApplet{
 	boolean notify = false;
 	boolean inited = false;
 	boolean drawDebugSpheres = false;
+	boolean objectsGoForTheMouse = true;
 
 	// 2D Box variables.. car taken out.
 	// float boxX, boxY, boxAngle;
