@@ -56,9 +56,9 @@ public class Human extends MovingObject{
 				if (sphere != null)
 					myDir = sphere.getTangent(myPos);
 				else {
-					if ((myDrawApplet.objectsGoForTheMouse && interestedInMouse) || myDrawApplet.random(0,20) < 1.0f)
+					if ((!myDrawApplet.isTouring() && myDrawApplet.objectsGoForTheMouse && interestedInMouse) || myDrawApplet.random(0,20) < 1.0f)
 						newRandomDirection();
-					if (myDrawApplet.objectsGoForTheMouse && myDrawApplet.random(0,35) < 1.0f)
+					if (!myDrawApplet.isTouring() && myDrawApplet.objectsGoForTheMouse && myDrawApplet.random(0,35) < 1.0f)
 						interestedInMouse = !interestedInMouse;
 				}
 			}
@@ -66,7 +66,7 @@ public class Human extends MovingObject{
 	}
 
 	private void newRandomDirection() {
-		if (myDrawApplet.objectsGoForTheMouse && interestedInMouse)
+		if (!myDrawApplet.isTouring() && myDrawApplet.objectsGoForTheMouse && interestedInMouse)
 		{
 			myDir.set(myDrawApplet.theCamera.getMouseGroundPlaneIntersection(false));
 			myDir.subtractMe(myPos);
@@ -77,7 +77,7 @@ public class Human extends MovingObject{
 			myDir.y = myDrawApplet.random(-1, 1);
 			myDir.z = 0;
 		}
-		if (myDrawApplet.objectsGoForTheMouse && interestedInMouse && myDir.magnitudeSqr() < 225)
+		if (!myDrawApplet.isTouring() && myDrawApplet.objectsGoForTheMouse && interestedInMouse && myDir.magnitudeSqr() < 225)
 			myDir.set(0,0,0);
 		else
 			myDir.normalizeMe();

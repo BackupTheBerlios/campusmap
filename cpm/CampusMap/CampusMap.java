@@ -478,6 +478,10 @@ public class CampusMap extends PApplet{
 			Environment.contentHolder.setBorder(Environment.grayline);
 		}
 	}
+	
+	public boolean isTouring() {
+		return touring;
+	}
 
 	public void hideSlideCases(){
 		for(int scHideIndex=0;scHideIndex<objectManager.drawers.size();scHideIndex++)
