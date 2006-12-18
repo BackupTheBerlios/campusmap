@@ -19,459 +19,415 @@ import processing.core.*; // for class PMatrix
 public class FVector {
 
 	public static final float TOL = 0.00001f;
-	
-	private int N;		//the number of elements of this vector
-	public float e[]; 	//the array which contains all the elements of this vector
-	
-	//constructor for creating a null-vector with n elements 
-	public FVector(int n) {
-		N = n;
-		e = new float[N];
-		for( int i=0; i<N; i++ )
-			e[i] = 0;
+
+	public float x;
+	public float y;
+	public float z;
+
+	//constructor for creating a null-vector with n elements
+	public FVector() {
+		x = 0;
+		y = 0;
+		z = 0;
 	}
-	
-	//constructor for creating a vector from a given array of float values	
+
+	//constructor for creating a vector from a given array of float values
 	public FVector(float[] ee) {
-		N = ee.length;
-		e = new float[N]; 
-		for( int i=0; i<N; i++ )
-			e[i] = ee[i]; 
+		int n = ee.length;
+		if (n>0)
+		{
+			x = ee[0];
+			if (n>1)
+			{
+				y = ee[1];
+				if (n>2)
+				{
+					z = ee[2];
+				}
+			}
+		}
 	}
-	
-	//constructor for creating a vector with the same elements of another vector v1. Similar to cloning a vector.	
+
+	//constructor for creating a vector with the same elements of another vector v1. Similar to cloning a vector.
 	public FVector(FVector v2) {
-		N = v2.e.length;
-		e = new float[N]; 
-		for( int i=0; i<N; i++ )
-			e[i] = v2.e[i]; 
+		x = v2.x;
+		y = v2.y;
+		z = v2.z;
 	}
-	
-	//constructor for creating a 3D vector with specified values _x, _y and _z	
+
+	//constructor for creating a 3D vector with specified values _x, _y and _z
 	public FVector(float _x, float _y, float _z) {
-		N = 3;
-		e = new float[3]; 
-		e[0] = _x;
-		e[1] = _y;
-		e[2] = _z;
+		x = _x;
+		y = _y;
+		z = _z;
 	}
-	
+
 	//returns the magnitude of this vector
 	public float magnitude() {
-		float sum = 0.0f;
-		for ( int i=0; i<N; i++ )
-			sum = sum + e[i] * e[i];
-		return (float)Math.sqrt( sum<TOL?TOL:sum );	 
+		float sum = x*x;
+		sum += y*y;
+		sum += z*z;
+		return (float)Math.sqrt( sum<TOL?TOL:sum );
 	}
-	
+
 	//returns the squared magnitude of this vector
 	public float magnitudeSqr() {
-		float sum = 0.0f;
-		for ( int i=0; i<N; i++ )
-			sum = sum + e[i] * e[i];
-		return (float)sum<TOL?TOL:sum;	 
+		float sum = x*x;
+		sum += y*y;
+		sum += z*z;
+		return (float)sum<TOL?TOL:sum;
 	}
-	
+
 	//returns a new vector as a result of adding another vector v2 to this vector
-	public FVector add(FVector v2) {
-		FVector product = new FVector(N);
-		if( N == v2.N )
-			for ( int i=0; i<N; i++ )
-				product.e[i] = e[i] + v2.e[i];
-		else
-			System.err.println( "FVector.add(): FVectors differ in dimension!" );
+	public static FVector add(FVector v1, FVector v2) {
+		FVector product = new FVector(v1);
+		product.x += v2.x;
+		product.y += v2.y;
+		product.z += v2.z;
 		return product;
 	}
-	
+
 	//adds another vector v2 to this vector
 	public void addMe(FVector v2) {
-		if( N == v2.N )
-			for ( int i=0; i<N; i++ )
-				e[i] += v2.e[i];
-		else
-			System.err.println( "FVector.add(): FVectors differ in dimension!" );
+		x += v2.x;
+		y += v2.y;
+		z += v2.z;
 	}
-	
+
 	public float distance2(FVector v2){
-		float sum=-1;
-		if( N == v2.N ){
-			FVector actResultVector = this.cloneMe();
-			actResultVector = actResultVector.subtract(v2); 
-			sum = actResultVector.magnitude();
-		} else
-			System.err.println( "FVector.add(): FVectors differ in dimension!" );
+		FVector actResultVector = cloneMe();
+		actResultVector = FVector.subtract(actResultVector, v2);
+		float sum = actResultVector.magnitude();
 		return sum;
 	}
-	
-	//returns a new vector as a result of subtracting another vector v2 from this vector
-	public FVector subtract(FVector v2) {
-		FVector product = new FVector(N);
-		if( N == v2.N )
-			for ( int i=0; i<N; i++ )
-				product.e[i] = e[i] - v2.e[i];
-		else
-			System.err.println( "FVector.subtract(): FVectors differ in dimension!" );
-		return product;
-	}
-	
+
 	//subtracts another vector v2 from this vector
 	public void subtractMe(FVector v2) {
-		if( N == v2.N )
-			for ( int i=0; i<N; i++ )
-				e[i] -= v2.e[i];
-		else
-			System.err.println( "FVector.subtract(): FVectors differ in dimension!" );
+		x -= v2.x;
+		y -= v2.y;
+		z -= v2.z;
 	}
-	
-	//returns a new vector as a result of multiplying this vector with a given float value v
-	public FVector multiply(float v) {
-		FVector product = new FVector(N);
-		for ( int i=0; i<N; i++ )
-			product.e[i] = e[i] * v;
+
+	//returns a new vector as a result of subtracting another vector v2 from this vector
+	public static FVector subtract(FVector v1, FVector v2) {
+		FVector product = new FVector(v1);
+		product.x -= v2.x;
+		product.y -= v2.y;
+		product.z -= v2.z;
 		return product;
 	}
-	
+
+	//returns a new vector as a result of multiplying this vector with a given float value v
+	public static FVector multiply(FVector v1, float v) {
+		FVector product = new FVector(v1);
+		product.x *= v;
+		product.y *= v;
+		product.z *= v;
+		return product;
+	}
+
 	//multiplies this vector with a given float value v
 	public void multiplyMe(float v) {
-		for ( int i=0; i<N; i++ )
-			e[i] *= v;
+		x *= v;
+		y *= v;
+		z *= v;
 	}
-	
+
 	//returns a new vector as a result of dividing this vector by a given float value v
-	public FVector divide(float v) {
+	public static FVector divide(FVector v1, float v) {
 		v = (v < TOL)?TOL:v;
-		FVector product = new FVector(N);
-		for ( int i=0; i<N; i++ )
-			product.e[i] = e[i] / v;
+		FVector product = new FVector(v1);
+		product.x /= v;
+		product.y /= v;
+		product.z /= v;
 		return product;
 	}
-	
+
 	//divides this vector by a given float value v
 	public void divideMe(float v) {
 		v = (v < TOL)?TOL:v;
-		for ( int i=0; i<N; i++ )
-			e[i] /=	v;
+		x /= v;
+		y /= v;
+		z /= v;
 	}
-	
+
 	//returns a new vector with the same direction of this vector, but with a length of 1
 	public FVector normalize() {
-		return divide(magnitude());
+		return FVector.divide(this, magnitude());
 	}
-	
+
 	//makes this vector to have a length of 1
 	public void normalizeMe() {
-		FVector norm = new FVector(divide(magnitude()));
-		for ( int i=0; i<N; i++ )
-			e[i] = norm.e[i];
+		this.divideMe(magnitude());
 	}
-	
+
 	//returns the crossproduct of this vector and a given vector v2. see math book for description of the crosproduct
-	public FVector crossProduct(FVector v2)
+        /**********
+         *
+         *  STATIC
+         *
+         */
+
+
+	public static FVector crossProduct(FVector v1, FVector v2)
 	{
-		FVector crossProduct = new FVector(3);
-		if (N == 3	&&	v2.N == 3) //cross product only defined in R3
-		{
-			crossProduct.e[0] = e[1] * v2.e[2] - e[2] * v2.e[1];
-			crossProduct.e[1] = e[2] * v2.e[0] - e[0] * v2.e[2];
-			crossProduct.e[2] = e[0] * v2.e[1] - e[1] * v2.e[0];
-		}
-		else
-			System.err.println("FVector.crossProduct(): FVectors are not both in R3!");
+		FVector crossProduct = new FVector();
+		crossProduct.x = v1.y * v2.z - v1.z * v2.y;
+		crossProduct.y = v1.z * v2.x - v1.x * v2.z;
+		crossProduct.z = v1.x * v2.y - v1.y * v2.x;
 		return crossProduct;
 	}
-	
+
 	//returns the dotproduct of this vector and a given vector v2. see math book for description of the dotproduct
-	public float dotProduct (FVector v2)
+	public static float dotProduct (FVector v1, FVector v2)
 	{
-		float sum = 0;
-		if (N == v2.N)
-			for ( int i=0; i<N; i++ )
-				sum += e[i] * v2.e[i];
-		else
-			System.err.println("FVector.dotProduct(): FVectors differ in dimension!");
+		float sum = v1.x*v2.x;
+		sum += v1.y*v2.y;
+		sum += v1.z*v2.z;
 		return sum;
 	}
-	
+
 	//returns true, if this vector equals a null-vector
 	public boolean isZero() {
-		boolean zero = true;
-		for ( int i=0; i<N; i++ )
-			if (e[i] != 0.0f) {
-				zero = false;
-				break;
-			}
-		return zero;
+		if (x != 0.0f || y != 0.0f || z != 0.0f)
+			return false;
+		return true;
 	}
-	
+
 	//returns true, if this vector equals a given vector v2
 	public boolean equals(FVector v2) {
-		boolean same = true;
-		if (N == v2.N) {
-			for ( int i=0; i<N; i++ )
-				if (e[i] != v2.e[i]) {
-					same = false;
-					break;
-				}
-		}
-		else {
-			System.err.println("FVector.equals(): FVectors differ in dimension!");
-			same = false;
-		}
-		return same;
+		if (x != v2.x || y != v2.y || z != v2.z)
+			return false;
+		return true;
 	}
-	
+
 	//returns a new vector as a result of rotating this vector around the x-axis by a given float value val (in radians)
-	public FVector rotateX(float val) {
-		FVector result = new FVector(this);
-		if (N > 2) {
-			double cosval = Math.cos(val);
-			double sinval = Math.sin(val);
-			double tmp1 = e[1]*cosval - e[2]*sinval;
-			double tmp2 = e[1]*sinval + e[2]*cosval;
-		
-			result.e[1] = (float)tmp1;
-			result.e[2] = (float)tmp2;
-		}
-		else
-			System.err.println("FVector.rotateX(): FVector is not in R3 or higher");
-	
+	public static FVector rotateX(FVector v1, float val) {
+		FVector result = new FVector(v1);
+		double cosval = Math.cos(val);
+		double sinval = Math.sin(val);
+		double tmp1 = v1.y*cosval - v1.z*sinval;
+		double tmp2 = v1.y*sinval + v1.z*cosval;
+
+		result.y = (float)tmp1;
+		result.z = (float)tmp2;
+
 		return result;
 	}
-	
+
 	//rotates this vector around the x-axis by a given float value val (in radians)
 	public void rotateMeX(float val) {
-		if (N > 2) {
-			double cosval = Math.cos(val);
-			double sinval = Math.sin(val);
-			double tmp1 = e[1]*cosval - e[2]*sinval;
-			double tmp2 = e[1]*sinval + e[2]*cosval;
-		
-			e[1] = (float)tmp1;
-			e[2] = (float)tmp2;
-		}
-		else
-			System.err.println("FVector.rotateMeX(): FVector is not in R3 or higher");
+		double cosval = Math.cos(val);
+		double sinval = Math.sin(val);
+		double tmp1 = y*cosval - z*sinval;
+		double tmp2 = y*sinval + z*cosval;
+
+		y = (float)tmp1;
+		z = (float)tmp2;
 	}
-	
+
 	//returns a new vector as a result of rotating this vector around the y-axis by a given float value val (in radians)
-	public FVector rotateY(float val) {
-		FVector result = new FVector(this);
-		if (N > 2) {
-			double cosval = Math.cos(val);
-			double sinval = Math.sin(val);
-			double tmp1	 = e[0]*cosval - e[2]*sinval;
-			double tmp2	 = e[0]*sinval + e[2]*cosval;
-		
-			result.e[0] = (float)tmp1;
-			result.e[2] = (float)tmp2;
-		}
-		else
-			System.err.println("FVector.rotateY(): FVector is not in R3 or higher");
-	
+	public static FVector rotateY(FVector v1, float val) {
+		FVector result = new FVector(v1);
+		double cosval = Math.cos(val);
+		double sinval = Math.sin(val);
+		double tmp1	 = v1.x*cosval - v1.z*sinval;
+		double tmp2	 = v1.x*sinval + v1.z*cosval;
+
+		result.x = (float)tmp1;
+		result.z = (float)tmp2;
+
 		return result;
 	}
-	
+
 	//rotates this vector around the y-axis by a given float value val (in radians)
 	public void rotateMeY(float val) {
-		if (N > 2) {
-			double cosval = Math.cos(val);
-			double sinval = Math.sin(val);
-			double tmp1	 = e[0]*cosval - e[2]*sinval;
-			double tmp2	 = e[0]*sinval + e[2]*cosval;
-		
-			e[0] = (float)tmp1;
-			e[2] = (float)tmp2;
-		}
-		else
-			System.err.println("FVector.rotateMeY(): FVector is not in R3 or higher");
+		double cosval = Math.cos(val);
+		double sinval = Math.sin(val);
+		double tmp1	 = x*cosval - z*sinval;
+		double tmp2	 = x*sinval + z*cosval;
+
+		x = (float)tmp1;
+		z = (float)tmp2;
 	}
-	
+
 	//returns a new vector as a result of rotating this vector around the z-axis by a given float value val (in radians)
 	//can be used for 2D Vectors too
-	public FVector rotateZ(float val) {
-		FVector result = new FVector(this);
-		if (N > 1) {
-			double cosval = Math.cos(val);
-			double sinval = Math.sin(val);
-			double tmp1	 = e[0]*cosval - e[1]*sinval;
-			double tmp2	 = e[0]*sinval + e[1]*cosval;
-		
-			result.e[0] = (float)tmp1;
-			result.e[1] = (float)tmp2;
-		}
-		else
-			System.err.println("FVector.rotateMeZ(): FVector is not in R2 or higher");
-		
+	public static FVector rotateZ(FVector v1, float val) {
+		FVector result = new FVector(v1);
+		double cosval = Math.cos(val);
+		double sinval = Math.sin(val);
+		double tmp1	 = v1.x*cosval - v1.y*sinval;
+		double tmp2	 = v1.x*sinval + v1.y*cosval;
+
+		result.x = (float)tmp1;
+		result.y = (float)tmp2;
+
 		return result;
 	}
-	
+
 	//rotates this vector around the z-axis by a given float value val (in radians)
 	//can be used for 2D Vectors too
 	public void rotateMeZ(float val) {
-		if (N > 1) {
-			double cosval = Math.cos(val);
-			double sinval = Math.sin(val);
-			double tmp1	 = e[0]*cosval - e[1]*sinval;
-			double tmp2	 = e[0]*sinval + e[1]*cosval;
-			
-			e[0] = (float)tmp1;
-			e[1] = (float)tmp2;
-		}
-		else
-			System.err.println("FVector.rotateMeZ(): FVector is not in R2 or higher");
+		double cosval = Math.cos(val);
+		double sinval = Math.sin(val);
+		double tmp1	 = x*cosval - y*sinval;
+		double tmp2	 = x*sinval + y*cosval;
+
+		x = (float)tmp1;
+		y = (float)tmp2;
 	}
-	
+
 	//rotates this vector around all axis by a given Vector val
 	//can be used for 2D Vectors too
 	public void rotateMeXYZ(FVector val) {
-		if (N > 2 && val.getLength() > 2) {
-			rotateMeX(val.getX());
-			rotateMeY(val.getY());
-			rotateMeZ(val.getZ());
-		}
-		else
-			System.err.println("FVector.rotateMeXYZ(): FVector is not in R2 or higher");
+		rotateMeX(val.getX());
+		rotateMeY(val.getY());
+		rotateMeZ(val.getZ());
 	}
-	
+
 	//rotates this vector around all axis by a given Vector val
 	//can be used for 2D Vectors too
-	public FVector rotateXYZ(FVector val) {
-		FVector result = new FVector(this);
-		if (N > 2 && val.getLength() > 2) {
-			result.rotateMeX(val.getX());
-			result.rotateMeY(val.getY());
-			result.rotateMeZ(val.getZ());
-		}
-		else
-			System.err.println("FVector.rotateMeXYZ(): FVector is not in R2 or higher");
-		
+	public static FVector rotateXYZ(FVector v1, FVector val) {
+		FVector result = new FVector(v1);
+		result.rotateMeX(val.getX());
+		result.rotateMeY(val.getY());
+		result.rotateMeZ(val.getZ());
+
 		return result;
 	}
-	
+
 	//rotates this vector around a given axis v2 by a given float value val (in radiens)
-	public FVector rotateAxis(float val, FVector v2) {
-		FVector result = new FVector(this);
-		
-		if (N == 3 && v2.N == 3) {
-			PMatrix rotateMatrix = new PMatrix();
-			rotateMatrix.rotate(val, v2.e[0], v2.e[1], v2.e[2]);
-			
-			float in[]	= {e[0], e[1], e[2], 0};
-			float out[]	= {0, 0, 0, 0};
-			rotateMatrix.mult(in,out);
-			
-			result.e[0] = out[0];
-			result.e[1] = out[1];
-			result.e[2] = out[2];
-		}
-		else
-			System.err.println("FVector.rotateAxis(): FVectors are not both in R3");
-		
+	public static FVector rotateAxis(FVector v1, float val, FVector v2) {
+		FVector result = new FVector(v1);
+
+		PMatrix rotateMatrix = new PMatrix();
+		rotateMatrix.rotate(val, v2.x, v2.y, v2.z);
+
+		float in[]	= {v1.x, v1.y, v1.z, 0};
+		float out[]	= {0, 0, 0, 0};
+		rotateMatrix.mult(in,out);
+
+		result.x = out[0];
+		result.y = out[1];
+		result.z = out[2];
+
 		return result;
 	}
-	
+
 	//returns a new vector as a result of rotating this vector around a given axis v2 by a given float value val (in radiens)
 	public void rotateAxisMe(float val, FVector v2) {
-		if (N == 3 && v2.N == 3) {
-			PMatrix rotateMatrix = new PMatrix();
-			rotateMatrix.rotate(val, v2.e[0], v2.e[1], v2.e[2]);
-			
-			float in[]	= {e[0], e[1], e[2], 0};
-			float out[]	= {0, 0, 0, 0};
-			rotateMatrix.mult(in,out);
-			
-			e[0] = out[0];
-			e[1] = out[1];
-			e[2] = out[2];
-		}
-		else
-			System.err.println("FVector.rotateAxisMe(): FVectors are not both in R3");
+		PMatrix rotateMatrix = new PMatrix();
+		rotateMatrix.rotate(val, v2.x, v2.y, v2.z);
+
+		float in[]	= {x, y, z, 0};
+		float out[]	= {0, 0, 0, 0};
+		rotateMatrix.mult(in,out);
+
+		x = out[0];
+		y = out[1];
+		z = out[2];
 	}
-	
-	// returns the dimension of the vector
-	public int getLength(){
-		return N;
-	}
-	
+
+
 	//returns the value of the nst element of this vector
 	public float getElementAt(int n) {
-		return e[n];
+		if (n == 0)
+			return x;
+		if (n == 1)
+			return y;
+                return z;
 	}
-	
+
+        //returns the value of the nst element of this vector
+        public float setElementAt(int n, float value) {
+                if (n == 0) x=value;
+                else if (n == 1)y=value;
+                else if (n == 2)z=value;
+                return value;
+        }
+
+
 	//returns the value of the 1st element of this vector
 	public float getX() {
-		return e[0];
+		return x;
 	}
-	
+
 	//returns the value of the 2nd element of this vector
 	public float getY() {
-		return e[1];
+		return y;
 	}
-	
+
 	//returns the value of the 3rd element of this vector
 	public float getZ() {
-		return e[2];
+		return z;
 	}
-	
+
 	//sets the 1st element to a given value newX
 	public void setX(float newX) {
-		e[0] = newX;
+		x = newX;
 	}
-	
+
 	//sets the 2nd element to a given value newY
 	public void setY(float newY) {
-		e[1] = newY;
+		y = newY;
 	}
-	
+
 	//sets the 3rd element to a given value newZ
 	public void setZ(float newZ) {
-		e[2] = newZ;
+		z = newZ;
 	}
-	
+
 	//changes the elements of this vector to the values of another vector
 	public void set(FVector v2)
 	{
-		for ( int i=0; i<Math.min(N,v2.N); i++ )
-			e[i] = v2.e[i];
+		x = v2.x;
+		y = v2.y;
+		z = v2.z;
 	}
-	
+
 	//changes the first three elements of this vector to the given values x, y, z
-	public void set(float x, float y, float z)
+	public void set(float _x, float _y, float _z)
 	{
-		if (N > 2) {
-			e[0] = x;
-			e[1] = y;
-			e[2] = z;
-		}		
-		else
-			System.err.println("FVector.set(): FVector's dimension is too small");
+		x = _x;
+		y = _y;
+		z = _z;
 	}
-	
+
 	//changes the elements of this vector to the values of a given float array
-	public void set(float x[])
+	public void set(float ee[])
 	{
-		for ( int i=0; i<Math.min(N,x.length); i++ )
-			e[i] = x[i];
+		int n = ee.length;
+		if (n>0)
+		{
+			x = ee[0];
+			if (n>1)
+			{
+				y = ee[1];
+				if (n>2)
+				{
+					z = ee[2];
+				}
+			}
+		}
 	}
 
 	//returns a new vector with the same elements the this vector
 	public FVector cloneMe() {
 		return new FVector(this);
 	}
-	
+
 	public void printMe() {
-		System.out.println("FVector: x:" + e[0] + " y:" + e[1] + " z:" + e[2]);
+		System.out.println("FVector: x:" + x + " y:" + y + " z:" + z);
 	}
-	
+
 	public void printMe(String prefix) {
 		System.out.print(prefix);
-		for(int k=0;k<N;k++)
-			System.out.print(" e"+k+": "+e[k]+" ");
-		System.out.print("\n");
+		System.out.println(prefix + " FVector: x:" + x + " y:" + y + " z:" + z);
 	}
-	
+
 	public String toString() {
-		return ("x:" + e[0] + " y:" + e[1] + " z:" + e[2]);
+		return ("x:" + x + " y:" + y + " z:" + z);
 	}
 
 } //end of class FVector

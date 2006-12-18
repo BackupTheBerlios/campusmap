@@ -24,18 +24,18 @@ public class GroundPlane {
 	public static final int width = 2600;
 	public static final int height = 1500;
 	public static final int elipseSize = 20000;
-	
+
 	public static final int lineDistance = 150;
-	
+
 	final static Color border_Color = new Color(240, 180, 170, 255);
 	final static Color grid_Color = new Color(220, 220, 200, 255);
-	
+
 //	public static final int x = -50000;
 //	public static final int y = -50000;
 //	public static final int width = 100000;
 //	public static final int height = 100000;
 	private CampusMap applet;
-	
+
 	private int lineLengthX = width - (width%lineDistance);
 	private int lineLengthY = height - (height%lineDistance);
 
@@ -58,7 +58,7 @@ public class GroundPlane {
     	applet.ellipse(0, 0, elipseSize, elipseSize);
     	//applet.rect(x, y, width, width);
     	applet.popMatrix();
-    	
+
     	//draw lines
     	applet.stroke(220,220,200,255);
     	for (int i=x; i <= (x + width); i+=lineDistance) {
@@ -78,10 +78,10 @@ public class GroundPlane {
     		}
     		else
     			applet.line(x, i, 0, x + lineLengthX, i, 0);
-    		
+
     	}
 	}
-	
+
 	public FVector limit(FVector point) {
         if(point.getX() < x)			point.setX(x);
         if(point.getX() > x + width)	point.setX(x + width);
@@ -89,9 +89,9 @@ public class GroundPlane {
         if(point.getY() > y + height)	point.setY(y + height);
 		return point;
 	}
-	
+
 	public FVector check(FVector point) {
-		FVector returnMe = new FVector(3);
+		FVector returnMe = new FVector();
         if(!( (point.getX() < x) || (point.getX() > x + width) || (point.getY() < y) || (point.getY() > y + height) ))
         	return returnMe;
     	if (point.getX() <= x)
@@ -104,16 +104,16 @@ public class GroundPlane {
     		returnMe.setY(point.getY()-(y + height));
     	return returnMe;
 	}
-	
+
 	public boolean check(FVector point, float multiplier) {
         if( (point.getX() < x*multiplier) || (point.getX() > (x + width)*multiplier) || (point.getY() < y*multiplier) || (point.getY() > (y + height)*multiplier) )
         	return true;
         return false;
 	}
-	
+
 	public FVector[] getRandomPositionsOnGroundPlane(int numberOfPositions, boolean avoidObjects,
 			boolean avoidEachOther, float avoidingDistance, float groundPlaneMultiplier, boolean avoidGroundPlane) {
-		
+
 		FVector[] returnArray = new FVector[numberOfPositions];
 		float minX = x * groundPlaneMultiplier;
 		float maxX = width * groundPlaneMultiplier;
@@ -131,7 +131,7 @@ public class GroundPlane {
 					foundPosition = true;
 					if (avoidGroundPlane) {
 						if (groundPlaneMultiplier > 1.0) {
-							if (returnArray[i].e[0]>x&&returnArray[i].e[0]<width&&returnArray[i].e[1]>y&&returnArray[i].e[1]<height)
+							if (returnArray[i].x>x&&returnArray[i].x<width&&returnArray[i].y>y&&returnArray[i].y<height)
 								foundPosition = false;
 						} else System.err.println("getRandomPositionsOnGroundPlane: groundPlaneMultiplier < 1 && avoidGroundPlane does NOT work!");
 					}
@@ -140,7 +140,7 @@ public class GroundPlane {
 					}
 					if (avoidEachOther && foundPosition) {
 						for (int n = 0; (n < i); n++) {
-							if (returnArray[i].subtract(returnArray[n]).magnitudeSqr()<=(avoidingDistance*avoidingDistance*4)) {
+							if (FVector.subtract(returnArray[i], returnArray[n]).magnitudeSqr()<=(avoidingDistance*avoidingDistance*4)) {
 								foundPosition = false;
 								break;
 							}
@@ -151,5 +151,5 @@ public class GroundPlane {
 		} //end of else
 		return returnArray;
 	}
-	
+
 } //end of class GroundPlane

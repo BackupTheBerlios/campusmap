@@ -9,77 +9,70 @@ public class CollisionSphere {
 
 	private FVector m_vPositionModelSpace;
 	private	FVector m_vPositionWorldSpace;
+        private FVector	lineToSphere;
+        private float	s, t, q, l2, r2, m2, len; // vars for testray
+
 	private	float	m_fRadius;
-	
+
 	public CollisionSphere(FVector vPosition, float fRadius) {
 		m_vPositionModelSpace	= new FVector(vPosition);
-		m_vPositionWorldSpace	= new FVector(3);
+		m_vPositionWorldSpace	= new FVector();
 		m_fRadius				= fRadius;
 	}
-	
+
 	public CollisionSphere(float fXPos, float fYPos, float fZPos, float fRadius) {
 		m_vPositionModelSpace	= new FVector(fXPos, fYPos, fZPos);
-		m_vPositionWorldSpace	= new FVector(3);
+		m_vPositionWorldSpace	= new FVector();
 		m_fRadius				= fRadius;
 	}
-	
+
 	public float getRadius() {
 		return m_fRadius;
 	}
-		
+
 	public void setRadius(float newRadius) {
 		m_fRadius = newRadius;
 	}
-	
+
 	public FVector getPosition() {
-		return m_vPositionWorldSpace.add(m_vPositionModelSpace);
+		return FVector.add(m_vPositionWorldSpace, m_vPositionModelSpace);
 	}
-	
+
 	public void moveAbout(FVector about) {
-		if (about.getLength() == 3)
 			m_vPositionWorldSpace.addMe(about);
 	}
-	
+
 	public void moveTo(FVector to) {
-		if (to.getLength() == 3)
 			m_vPositionWorldSpace.set(to);
 	}
-	
+
 	public void scaleAbout(FVector scaleValue) {
 		m_fRadius *= scaleValue.magnitude();
-		m_vPositionModelSpace.e[0] *= scaleValue.e[0];
-		m_vPositionModelSpace.e[1] *= scaleValue.e[1];
-		m_vPositionModelSpace.e[2] *= scaleValue.e[2];
+		m_vPositionModelSpace.x *= scaleValue.x;
+		m_vPositionModelSpace.y *= scaleValue.y;
+		m_vPositionModelSpace.z *= scaleValue.z;
 	}
-	
+
 	public void moveModelSpaceTo(FVector to) {
-		if (to.getLength() == 3)
 			m_vPositionModelSpace.set(to);
 	}
-	
+
 	public void moveModelSpaceAbout(FVector about) {
-		if (about.getLength() == 3)
-			m_vPositionModelSpace.add(about);
+			FVector.add(m_vPositionModelSpace, about);
 	}
-	
+
 	public void rotateModelSpaceXYZ(FVector rotation) {
 		m_vPositionModelSpace.rotateMeXYZ(rotation);
 	}
-	
+
 	public boolean testRay(FVector rayStart, FVector rayDir)
 	{
-		FVector	lineToSphere;
-		float	s, t, q,
-				l2, 
-				r2,				
-				m2,
-				len;
-
 		rayDir.normalizeMe();
 
-		lineToSphere = getPosition().subtract(rayStart);
+                //System.out.println("Spaces:"+m_vPositionModelSpace+", "+m_vPositionWorldSpace);
+		lineToSphere = FVector.subtract(getPosition(), rayStart);
 
-		s  = lineToSphere.dotProduct(rayDir);
+		s  = FVector.dotProduct(lineToSphere, rayDir);
 		l2 = lineToSphere.magnitudeSqr();
 		r2 = m_fRadius * m_fRadius;
 
@@ -114,38 +107,38 @@ public class CollisionSphere {
 
 		return true;
 	}
-	
+
 	public boolean testPoint(FVector point)
 	{
-		FVector lineToSphere = getPosition().subtract(point);
+		FVector lineToSphere = FVector.subtract(getPosition(), point);
 		if (lineToSphere.magnitudeSqr() > m_fRadius*m_fRadius)
 			return true;
 		return false;
 	}
-	
+
 	public CollisionSphere testPoint(FVector point, float distance)
 	{
-		FVector lineToSphere = getPosition().subtract(point);
+/*		FVector lineToSphere = getPosition().subtract(point);
 		if (lineToSphere.magnitudeSqr() < (m_fRadius+distance)*(m_fRadius+distance))
 			return this;
-		return null;
+*/		return null;
 	}
-	
+
 	public FVector getTangent(FVector point) {
-		FVector lineToSphere = getPosition().subtract(point).normalize();
-		return lineToSphere.crossProduct(new FVector(0,0,1));
+		FVector lineToSphere = FVector.subtract(getPosition(), point).normalize();
+		return FVector.crossProduct(lineToSphere, new FVector(0,0,1));
 	}
-	
+
 	public void debugDraw(CampusMap applet) {
 		applet.fill(255, 100, 100, 255);
 		finalDebugDraw(applet);
 	}
-	
+
 	public void debugDraw(CampusMap applet, int color) {
 		applet.fill(color);
 		finalDebugDraw(applet);
 	}
-	
+
 	private void finalDebugDraw(CampusMap applet) {
 		FVector pos = getPosition();
 		applet.pushMatrix();

@@ -4,23 +4,23 @@ import processing.core.*;
 
 
 /** Class describing a human that moves around on the groundplane
- * 
+ *
  */
 
 public class Human extends MovingObject{
-	
+
 	protected final static int MOVE_Z 			= 20;
 	protected final static int FADE_DISTANCE	= 500; // distance at which the object fades out
-	
+
 	//constructor
 	public Human(CampusMap drawApplet, FVector position) {
 		super(drawApplet, position);
 		newRandomDirection();
 		fullSpeed = myDrawApplet.random(10, 20);
 		currentSpeed = fullSpeed;
-		
+
 	}
-	
+
 	// draw method
 	public void draw(){
 		myDrawApplet.noStroke();
@@ -29,7 +29,7 @@ public class Human extends MovingObject{
 //		myDrawApplet.scale(myScale.getX(), myScale.getY(), myScale.getZ());
 //		myDrawApplet.rotateX(myRot.getX());
 //		myDrawApplet.rotateY(myRot.getY());
-		myDrawApplet.rotateZ(myDrawApplet.atan2(myDir.e[1], myDir.e[0])+ PConstants.PI/2);
+		myDrawApplet.rotateZ(myDrawApplet.atan2(myDir.y, myDir.x)+ PConstants.PI/2);
 		//body
 		myDrawApplet.fill(100, 100, 100, 255);
 		myDrawApplet.translate(0, 0, 3);
@@ -41,9 +41,9 @@ public class Human extends MovingObject{
 		myDrawApplet.sphere(1);
 		myDrawApplet.popMatrix();
 	}
-	
+
 	public void move(float partOfSecond, boolean doCheck) {
-		myPos.addMe(myDir.multiply(currentSpeed*partOfSecond));
+		myPos.addMe(FVector.multiply(myDir, currentSpeed*partOfSecond));
 		if (doCheck) {
 			if (myDrawApplet.groundPlane.check(myPos, 1.0f))
 				myDir.multiplyMe(-1);
@@ -59,10 +59,10 @@ public class Human extends MovingObject{
 			}
 		}
 	}
-	
+
 	private void newRandomDirection() {
 		myDir = new FVector(myDrawApplet.random(-1, 1), myDrawApplet.random(-1, 1), myDrawApplet.random(0));
 		myDir.normalizeMe();
 	}
-	
+
 }

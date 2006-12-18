@@ -20,46 +20,46 @@ class Houses {
 
 	private final static int boxWidth = 80;
 	private final static int gapWidth = 30;
-	
+
 	private int	numHouses;
-	
+
 	private FVector[] myPos;
 	private float[] myRot;
 	private FVector[] myScale;
-	
+
 	private int[]	style;
 
 	private boolean[]	active;
-	
+
 	private CampusMap applet;
 
-	
+
 	public Houses(CampusMap p_applet, int p_numHouses) {
-		
+
 		applet = p_applet;
 		applet.env.objectInitDisplay.setText("Explications");
 
 		numHouses = p_numHouses;
-	
+
 		myPos	= new FVector[numHouses];
 		myRot	= new float[numHouses];
 		myScale	= new FVector[numHouses];
 		style	= new int[numHouses];
-	
+
 		active		= new boolean[numHouses];
-		
+
 		FVector[] posVectors = applet.groundPlane.getRandomPositionsOnGroundPlane(numHouses, false, true, 60.0f, 20.0f, true);
-	
+
 		for (int i = 0; i < numHouses; i++) {
 			myPos[i] = posVectors[i];
 			myScale[i]	= new FVector(applet.random(1, 1.4f), applet.random(1, 1.4f), applet.random(1, 1.4f));
 			myRot[i]	= applet.random(0, PApplet.PI);
 	    	style[i]		= (int)applet.random(0, 2.5f);
-	
+
 	    	active[i] = true;
 	    }
 	}
-	
+
 	public void draw() {
 		applet.noStroke();
 
@@ -68,8 +68,8 @@ class Houses {
 				switch (style[i]) {
 				case 0:
 					applet.pushMatrix();
-					applet.translate(myPos[i].e[0], myPos[i].e[1], 0);
-					applet.scale(myScale[i].e[0], myScale[i].e[1], myScale[i].e[2]);
+					applet.translate(myPos[i].x, myPos[i].y, 0);
+					applet.scale(myScale[i].x, myScale[i].y, myScale[i].z);
 					applet.rotateZ(myRot[i]);
 					applet.translate(0, 0, 12.5f);
 					applet.fill(170, 180, 190, 255);
@@ -84,8 +84,8 @@ class Houses {
 					break;
 				case 1:
 					applet.pushMatrix();
-					applet.translate(myPos[i].e[0], myPos[i].e[1], 0);
-					applet.scale(myScale[i].e[0], myScale[i].e[1], myScale[i].e[2]);
+					applet.translate(myPos[i].x, myPos[i].y, 0);
+					applet.scale(myScale[i].x, myScale[i].y, myScale[i].z);
 					applet.rotateZ(myRot[i]);
 					applet.translate(0, 0, 7.5f);
 					applet.fill(130, 140, 160, 255);
@@ -101,8 +101,8 @@ class Houses {
 					break;
 				case 2:
 					applet.pushMatrix();
-					applet.translate(myPos[i].e[0], myPos[i].e[1], 0);
-					applet.scale(myScale[i].e[0], myScale[i].e[1], myScale[i].e[2]);
+					applet.translate(myPos[i].x, myPos[i].y, 0);
+					applet.scale(myScale[i].x, myScale[i].y, myScale[i].z);
 					applet.rotateZ(myRot[i]);
 					applet.translate(0, 0, 12.5f);
 					applet.fill(140, 140, 140, 255);

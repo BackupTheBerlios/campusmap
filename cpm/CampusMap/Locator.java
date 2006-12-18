@@ -15,18 +15,18 @@ package CampusMap;
 //class to find a position with the mouse in two steps:  a) x/y  b) z
 
 class Locator {
-	
+
 	private final static int timeToWaitAfterClick = 5000;
 
 	private CampusMap applet;
-	
+
 	private FVector position;
 	private FVector lastStoredPosition;
 
 	private boolean	active;
 	private boolean x_and_y_set;
 	private boolean z_set;
-	
+
 	private int	mouse_y_stored;
 	private int timeClicked;
 
@@ -34,8 +34,8 @@ class Locator {
 	public Locator(CampusMap p_applet) {
 		applet = p_applet;
 		applet.env.objectInitDisplay.setText("Locator");
-		position = new FVector(3);
-		lastStoredPosition = new FVector(3);
+		position = new FVector();
+		lastStoredPosition = new FVector();
 		active = false;
 		x_and_y_set = false;
 		z_set = false;
@@ -52,7 +52,7 @@ class Locator {
 					if (applet.controls.mouseJustPressed) {
 						x_and_y_set = true;
 						mouse_y_stored = applet.mouseY;
-						applet.theCamera.birdView(position.add(new FVector(0,0,30)), 20.0f, 1200, 40.0f);
+						applet.theCamera.birdView(FVector.add(position, new FVector(0,0,30)), 20.0f, 1200, 40.0f);
 						Object[] actionObjects = {new Boolean(true)};
 						applet.theCamera.queueAction("setInstantCircleView", 1200, actionObjects);
 					}
@@ -84,29 +84,29 @@ class Locator {
 			}
 		}
 	}
-	
+
 	private void drawGroundPos(FVector pos) {
 		applet.pushMatrix();
 		applet.translate(0.0f, 0.0f, 0.1f);
 		applet.stroke(255,0,0);
 		applet.fill(255);
-		applet.ellipse(pos.e[0], pos.e[1],25.0f,25.0f);
+		applet.ellipse(pos.x, pos.y,25.0f,25.0f);
 		applet.popMatrix();
 	}
-	
+
 	private void drawHeight(FVector pos) {
 		applet.pushMatrix();
 		applet.fill(255, 255, 0, 255);
 		applet.noStroke();
-		applet.translate(pos.e[0], pos.e[1], 0.0f);
+		applet.translate(pos.x, pos.y, 0.0f);
 		applet.box(4, 4, 1000);
 		applet.popMatrix();
 
 		applet.pushMatrix();
 		applet.fill(255);
 		applet.stroke(0,255,0,255);
-		applet.translate(0.0f, 0.0f, pos.e[2]);
-		applet.ellipse(pos.e[0], pos.e[1],25.0f,25.0f);
+		applet.translate(0.0f, 0.0f, pos.z);
+		applet.ellipse(pos.x, pos.y,25.0f,25.0f);
 		applet.popMatrix();
 	}
 
@@ -115,9 +115,9 @@ class Locator {
 		active = true;
 		return true;
 	}
-	
+
 	public FVector getLastPosition() {
 		return lastStoredPosition;
 	}
-	
+
 } //end of class Locator

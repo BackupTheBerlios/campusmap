@@ -17,31 +17,36 @@ import java.net.URLEncoder;
  * Constructor
  */
 public class Building extends ObjectOfInterest {
-	
+
 	final static Color	gray		= new Color(100, 100, 100, 255);
 	final static Color	red			= new Color(255, 0, 0, 255);
-	
+
 	final static float	roomAlpha	= 0.5f;
-	
+
 	public	CollisionSphere collisionSpheres[];
 	public	CollisionRectangle collisionRectangles[];
 	//private int currentDetailLevel;
 	private	boolean		mouseOver;
-	public	FVector		entrancePosition;
+        private boolean         mouseMovedBetweenFrames=false;
+        private FVector         cameraPosFloatArray;
+        private FVector         distanceVector;
+        public	FVector		entrancePosition;
 	public	FVector		roomCoordOrigin;
 	public	float		roomCoordRotation = 0;
 	public	float		flyAroundRadius = 0;
 	public	float		flyAroundCenterHeight = 0;
 	public	boolean		onScreen;
 	private	boolean		forceSelectedModel = false;
-	
-	private	FVector		showPosition = null;
+
+        private FVector         mouseRay;
+        private FVector         camerPos;
+        private FVector		showPosition = null;
 	private float		sinusVal = 0.0f;
 	public	String		myBuildingNo = "";
 	public	String		shortDescription;
 	public	String		longDescription;
-	
-	
+
+
 	public Building(CampusMap drawApplet, FVector myPos, FVector myScale, FVector myRot, String[] modelsToLoad, String address, boolean drawLines, boolean zFade)
 	{
 		super(drawApplet, myPos, myScale, myRot, modelsToLoad, address, true, drawLines, zFade);
@@ -51,12 +56,12 @@ public class Building extends ObjectOfInterest {
 		//drawApplet.registerDraw( this );
 		mouseOver = false;
 		onScreen = false;
-		entrancePosition = new FVector(3);
-		roomCoordOrigin = new FVector(3);
+		entrancePosition = new FVector();
+		roomCoordOrigin = new FVector();
 		shortDescription = "";
 		longDescription  = "";
 	}
-	
+
 	// methods to change or obtain the level of detail
 	public void setDetailLevel(int p_detailLevel){
 		currentDetailLevel = p_detailLevel;
@@ -65,25 +70,25 @@ public class Building extends ObjectOfInterest {
 	public void changeModelDetail(){
 		System.out.print("Modelchange");
 	}
-	
+
 	public void initColSpheresArray(int i) {
 		collisionSpheres = new CollisionSphere[i];
 	}
-	
+
 	public void addColSphere(int i, FVector vPosition, float fRadius) {
 		if (i<collisionSpheres.length)
 			collisionSpheres[i] = new CollisionSphere(vPosition, fRadius);
 	}
-	
+
 	public void initColRectangleArray(int i) {
 		collisionRectangles = new CollisionRectangle[i];
 	}
-	
+
 	public void addColRectangle(int i, FVector p1, FVector p2, int alignedToAxis) {
 		if (i<collisionRectangles.length)
 			collisionRectangles[i] = new CollisionRectangle(p1, p2, alignedToAxis);
 	}
-	
+
 	public CollisionSphere testColSpheresWithPoint(FVector point, float distance) {
 		for (int i = 0; i < collisionSpheres.length; i++) {
 			CollisionSphere sphere = collisionSpheres[i].testPoint(point, distance);
@@ -91,11 +96,11 @@ public class Building extends ObjectOfInterest {
 		}
 		return null;
 	}
-	
+
 	private boolean testColWithMouse() {
 		if (onScreen && collisionSpheres!=null && collisionRectangles!=null) {
-			FVector mouseRay = myParentApplet.theCamera.getMousePointRay();
-			FVector camerPos = myParentApplet.theCamera.getPos();
+			mouseRay = myParentApplet.theCamera.getMousePointRay();
+			camerPos = myParentApplet.theCamera.getPos();
 			myModels[currentDetailLevel].setLineColor(gray);
 			if (myParentApplet.controls.getThreeDeeControlEnabled()) {
 				for (int i = 0; i < collisionSpheres.length; i++) {
@@ -121,7 +126,7 @@ public class Building extends ObjectOfInterest {
 		}
 		return false;
 	}
-	
+
 	private boolean testColSpheresWithFrustum() {
 		if (collisionSpheres == null || collisionSpheres.length==0)
 			return true;
@@ -129,30 +134,32 @@ public class Building extends ObjectOfInterest {
 		FVector cameraUp = myParentApplet.theCamera.getUp();
 		for (int i = 0; i < collisionSpheres.length; i++) {
 			for (int m = -1; m < 2; m++) {
-				if (isPointInFrustum(collisionSpheres[i].getPosition().add(cameraLeft.multiply(m*collisionSpheres[i].getRadius())))) {
+				if (isPointInFrustum(FVector.add(collisionSpheres[i].getPosition(), FVector.multiply(cameraLeft, m*collisionSpheres[i].getRadius())))) {
 					return true;
 				}
-				if (isPointInFrustum(collisionSpheres[i].getPosition().add(cameraUp.multiply(m*collisionSpheres[i].getRadius())))) {
+				if (isPointInFrustum(FVector.add(collisionSpheres[i].getPosition(), FVector.multiply(cameraUp, m*collisionSpheres[i].getRadius())))) {
 					return true;
 				}
 			}
 		}
+                cameraLeft=null;
+                cameraUp=null;
 		return false;
 	}
-	
+
 	private boolean isPointInFrustum(FVector point) {
-		float screenX = myParentApplet.screenX(point.e[0], point.e[1], point.e[2]);
+		float screenX = myParentApplet.screenX(point.x, point.y, point.z);
 		if (screenX < 0 || screenX > myParentApplet.width) return false;
-		float screenY = myParentApplet.screenY(point.e[0], point.e[1], point.e[2]);
+		float screenY = myParentApplet.screenY(point.x, point.y, point.z);
 		if (screenY < 0 || screenY > myParentApplet.height) return false;
 		return true;
 	}
-		
+
 	public void mouseEvent(MouseEvent e) {
 		switch (e.getID()) {
 	    case MouseEvent.MOUSE_MOVED:
 	    	if (onScreen)
-	    		testColWithMouse();
+	    		mouseMovedBetweenFrames=true;
 	    	break;
 	    case MouseEvent.MOUSE_CLICKED:
 	    	if (mouseOver && myParentApplet.controls.getThreeDeeControlEnabled()) {
@@ -173,14 +180,20 @@ public class Building extends ObjectOfInterest {
 	    	break;
 		}
 	}
-	
+
 	public FVector getCenterPosition() {
-		return myPos.multiply(myParentApplet.getBuildingUniformScale());
+		return FVector.multiply(myPos, myParentApplet.getBuildingUniformScale());
 	}
-	
+
 	//debug
 	public void draw(CampusMap myDrawApplet, boolean drawGrey){
 		if (onScreen && drawingActive) {
+                        // let collide if mouse was moved
+                        if(mouseMovedBetweenFrames){
+                            testColWithMouse();
+                            mouseMovedBetweenFrames=false;
+                        }
+
 			//draw room position or alike inside model
 			if (showPosition!=null) {
 				sinusVal+=0.2f;
@@ -198,21 +211,19 @@ public class Building extends ObjectOfInterest {
 			//draw model
 			super.draw(myDrawApplet, drawGrey);
 		}
-		
-		FVector cameraPosFloatArray=new FVector(0,0,0);
-		FVector distanceVector = new FVector(0,0,0);
-		int distance=0;
 
 		// calculating the need of detail-level-changing
 		if(selectable==true){
-			
+
+                  int distance = 0;
+
 			cameraPosFloatArray = ((CampusMap)myParentApplet).theCamera.getPos();
-			distanceVector = cameraPosFloatArray.subtract(myPos.multiply( ((CampusMap)myDrawApplet).getBuildingUniformScale()) );
+			distanceVector = FVector.subtract(cameraPosFloatArray, FVector.multiply(myPos, ((CampusMap)myDrawApplet).getBuildingUniformScale()) );
 			distance = (int)distanceVector.magnitude();
-			if(distance<=CLOSER_DISTANCE){ 
+			if(distance<=CLOSER_DISTANCE){
 				setDetailLevel(CLOSER);
 			}else setDetailLevel(OVERVIEW);
-			
+
 			if (forceSelectedModel)
 				setDetailLevel(SELECTED);
 			if (currentDetailLevel == SELECTED && !(modelsLoaded[SELECTED]))
@@ -220,13 +231,15 @@ public class Building extends ObjectOfInterest {
 			if (currentDetailLevel == CLOSER && !(modelsLoaded[CLOSER]))
 				setDetailLevel(OVERVIEW);
 
+                              if(myModels[0].getZFade())
+                                      myModels[0].setFadeMidPoint(new float[]{cameraPosFloatArray.getX(),
+                                                                              cameraPosFloatArray.getY(),
+                                                                              0});
+                        cameraPosFloatArray=null;
+                        distanceVector=null;
 		}
-		if(myModels[0].getZFade())
-			myModels[0].setFadeMidPoint(new float[]{cameraPosFloatArray.getX(),
-													cameraPosFloatArray.getY(),
-													0});
 	}
-	
+
 	public void debugDraw(CampusMap myDrawApplet) {
 		myDrawApplet.hint(PApplet.DISABLE_DEPTH_TEST);
 		for (int i = 0; i < collisionSpheres.length; i++) {
@@ -243,33 +256,34 @@ public class Building extends ObjectOfInterest {
 		}
 		myDrawApplet.noHint(PApplet.DISABLE_DEPTH_TEST);
 	}
-	
+
 	public void testIfOnScreen() {
 		onScreen  = testColSpheresWithFrustum();
 	}
-	
-	
-	public FVector convertDatabasePos(FVector databasePos) { 
-		FVector returnVec = databasePos.subtract(roomCoordOrigin.multiply(myParentApplet.getBuildingUniformScale())).rotateZ(PApplet.radians(-roomCoordRotation)).rotateX(PApplet.PI).multiply(myParentApplet.getBuildingUniformScale()*myParentApplet.getBuildingDatabaseScale());
+
+
+	public FVector convertDatabasePos(FVector databasePos) {
+                FVector uniformScaled = FVector.subtract(databasePos, FVector.multiply(roomCoordOrigin, myParentApplet.getBuildingUniformScale()));
+                FVector zRotated = FVector.rotateZ(uniformScaled, PApplet.radians(-roomCoordRotation));
+		return FVector.multiply(FVector.rotateX(zRotated, PApplet.PI), myParentApplet.getBuildingUniformScale()*myParentApplet.getBuildingDatabaseScale());
 		//returnVec.printMe("returnVec");
-		return  returnVec;
 	}
-	
+
 	public void showPositionInBuilding(FVector pos) {
 		sinusVal = 0.0f;
 		myAlpha = roomAlpha;
 		showPosition = pos;
 	}
-	
+
 	public void setForceSelectedModel(boolean status) {
 		forceSelectedModel = status;
 	}
-	
+
 	public void clearPositionInBuilding() {
 		myAlpha = 1.0f;
 		showPosition = null;
 	}
-	
+
  } // end Buildings
 
 

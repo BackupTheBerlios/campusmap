@@ -1,8 +1,8 @@
 
 /** @author Gunnar
- *  
- *  @description Implements the output of Files conected to the object selected in the viewport. 
- * 
+ *
+ *  @description Implements the output of Files conected to the object selected in the viewport.
+ *
  **/
 package CampusMap;
 
@@ -22,7 +22,7 @@ import java.net.*;
 import java.util.regex.*;
 
 /**
- * 
+ *
  */
 public class Explications extends JPanel implements Runnable{
 	private String actualText;
@@ -30,15 +30,15 @@ public class Explications extends JPanel implements Runnable{
 	public JEditorPane textDisplay;
 	private Thread getTextThread;
 	private int threadCounter=0;
-	private BufferedReader in; 
+	private BufferedReader in;
 	private String buffer;
 	private boolean lookForCoordsThisRun=false;
 	Matcher matchString;
 	private Pattern coordFinder = Pattern.compile("([a-z]{0,2})Coords (\\w{1,3}-[\\d{0,2}|k|K].\\w{1,3} )*([^a-z ]*) *([^a-z ]*) (Tour)*");
-	protected Environment env; 
+	protected Environment env;
 	private EventListener browserEventListener;
-	
-	
+
+
 	public Explications(Environment p_env)
 	{
 		env = p_env;
@@ -49,7 +49,7 @@ public class Explications extends JPanel implements Runnable{
 			textDisplay = new JEditorPane("text/html", "");
 			textDisplay.setBackground(Environment.bg_Color);
 			browserEventListener = new InnerHyperListener(this);
-			
+
 
 			// Behavior for form elements
 			textDisplay.setEditorKit (new HTMLEditorKit() {
@@ -59,15 +59,15 @@ public class Explications extends JPanel implements Runnable{
 				});
 
 			// HTML Editorkit definition MUST happen before the text-set!
-			
+
 			textDisplay.setEditable(false);
 			textDisplay.setPage(folderPrefix);
-			
+
 			// Behavior for normal Hyperlinks
 			textDisplay.addHyperlinkListener((HyperlinkListener)browserEventListener);
-			
-						
-		}catch(Exception e){ 
+
+
+		}catch(Exception e){
 			System.out.println("Text-Field initialissation failed.");
 			e.printStackTrace();
 			textDisplay.setText("Keine Verbindung zum HTML Verzeichnis. Bitte überprüfen sie ihre Internetverbindung, oder lassen sie den Webmaster der FH-Lübeck von dem Fehler wissen. Danke!");
@@ -76,17 +76,17 @@ public class Explications extends JPanel implements Runnable{
 		this.add(textDisplay);
 		this.setBackground(Color.WHITE);
 		//this.setPreferredSize(new java.awt.Dimension(570, 300));
-		
+
 	}
-	
+
 	/********************************************************
-	 * Inner class 
+	 * Inner class
 	 * Behavior for Hyperlinks
-	 * 
-	 */ 
+	 *
+	 */
 	class InnerHyperListener extends HTMLEditorKit.HTMLFactory implements HyperlinkListener{
 		private Explications expl;
-		
+
 		public InnerHyperListener(Explications p_expl){
 			expl = p_expl;
 		}
@@ -109,56 +109,56 @@ public class Explications extends JPanel implements Runnable{
 //		              protected  void imageSubmit(String data) {
 //		      	    	env.setToolTip("loading", 0);
 //		                System.out.println ("Data: "+data);
-//		              }  
+//		              }
 	            };
 	        }
 	        return super.create (elem);
 	      }
-		
+
 	    public void hyperlinkUpdate(HyperlinkEvent e) {
             if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        		
+
     	    	Environment.setToolTip("loading", 0);
 	            JEditorPane pane = (JEditorPane) e.getSource();
 	            getTextForInput(e.getURL(), true);
 	        }
 	    }
-	} 
+	}
 	/**
 	 * Inner class
 	 */
 
-	
+
 	public void getTextForInput(URL input, boolean lookForCoords)
 	{
 		System.out.println(input);
 		actualText = new String();
 		lookForCoordsThisRun = lookForCoords;
-		
+
 		env.showLoadingLayer("please wait while loading new text-content");
 		try{
 	        textDisplay.setContentType("text/html");
-	        
+
 	        in = new BufferedReader(new InputStreamReader(input.openStream()));
 			buffer = new String();
 			getTextThread=new Thread(this);
 			getTextThread.setPriority(Thread.MIN_PRIORITY);
 			getTextThread.setName("getTextThread"+(threadCounter++));
 			getTextThread.start();
-	        
+
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void run(){
 		boolean found=false;
 		try{
 			while((buffer = in.readLine())!=null){
 				actualText+=buffer;
 				env.increaseLoadingBar();
-				
+
 				if(lookForCoordsThisRun){
 					matchString = coordFinder.matcher(buffer);
 					if(!found && buffer!=""){
@@ -183,7 +183,7 @@ public class Explications extends JPanel implements Runnable{
 		    Reader r = new StringReader(actualText);
 		    EditorKit kit = textDisplay.getEditorKit();
 	            kit.read(r, doc, 0);
-			
+
 		}catch(IOException ioe){
 			ioe.printStackTrace();
 		} catch(BadLocationException ble){
@@ -191,7 +191,7 @@ public class Explications extends JPanel implements Runnable{
 		}
 		env.hideLoadingLayer();
 	}
-	
+
 	public void getCoordsFromUrl(String locator){
 		//System.out.println(buffer);
 		try{
@@ -201,7 +201,7 @@ public class Explications extends JPanel implements Runnable{
 			String roomNumber = matchString.group(2);
 			int firstSeperator = roomNumber.indexOf('-');
 			int secondSeperator = roomNumber.indexOf('.');
-	
+
 			String buildingNumber = roomNumber.substring(0,firstSeperator);
 			String levelNumberString = roomNumber.substring(firstSeperator+1, secondSeperator);
 			float levelNumber = 0;
@@ -217,7 +217,7 @@ public class Explications extends JPanel implements Runnable{
 			float x = Float.parseFloat(matchString.group(3).replace(',','.'))/100;
 			float y = Float.parseFloat(matchString.group(4).replace(',','.'))/100;
 	//    		System.out.println(matchString.group(5)+" "+matchString.group(3)+" "+matchString.group(4));
-	
+
 			/************************************
 			 * Is this a REAL tour? (multiple buildungs in a row)
 			 */
@@ -233,14 +233,14 @@ public class Explications extends JPanel implements Runnable{
 //				System.out.println("building: "+tempBuild);
 				env.theContent.setTouring(true, tempBuild);
 				//env.theContent.spheres.add(tempBuild.myPos.multiply(env.theContent.getBuildingUniformScale()));
-				tempBuild.myPos.multiply(env.theContent.getBuildingUniformScale()).printMe("myPos");
-				
+				FVector.multiply(tempBuild.myPos, env.theContent.getBuildingUniformScale()).printMe("myPos");
+
 				// Calculate the virtual floor height
-				FVector convRoomPos = tempBuild.myPos.multiply(env.theContent.getBuildingUniformScale()).add(tempBuild.convertDatabasePos(roomPos));
+				FVector convRoomPos = FVector.add(FVector.multiply(tempBuild.myPos, env.theContent.getBuildingUniformScale()), tempBuild.convertDatabasePos(roomPos));
 				//convRoomPos.printMe("convRoomPos");
 				//env.theContent.spheres.add(convRoomPos);
 				convRoomPos.setZ(levelNumber*12 + 6);
-				
+
 				env.theContent.theCamera.guaranteeMinInteractiveCameraHeight();
 				env.theContent.prepareForDetailDraw(convRoomPos, true);
 			} else Environment.setToolTip("Das Gebaeude wurde noch nicht geladen.", 2);

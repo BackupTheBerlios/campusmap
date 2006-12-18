@@ -19,11 +19,11 @@ import processing.core.*;
 //class to manage create visual effects for the time and weather etc.
 
 class NaturalFactor {
-	
+
 	private final static int updateTime	= 10000;//600000; //every 10 sec... do update
 	private final static float Hoehe	= 53.87f; //every 30 minutes... do update
 	private final static float Breite	= 10.68f; //every 30 minutes... do update
-	//private final static int[] lengthOfMonths = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; 
+	//private final static int[] lengthOfMonths = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	private CampusMap	applet;
 	private fog myFog;
 	private Color lightBlue;
@@ -38,8 +38,8 @@ class NaturalFactor {
 	private int[][] fogDistances;
 	private Stars stars;
 	private float fogNumber = 0.0f;
-	
-	
+
+
 	public NaturalFactor(CampusMap p_applet){
 		applet = p_applet;
 		applet.env.objectInitDisplay.setText("NaturalFactor");
@@ -93,11 +93,11 @@ class NaturalFactor {
 //			fogDistances[i] = realFogDistances[i%7];
 //		}
 		stars = new Stars(applet, 150, 30000, 300);
-		
+
 		update();
 	}
 
-	
+
 	public void putIntoEffect() {
 		if (applet.millis() % updateTime < 1000) {
 			if (applet.millis() - timeLastUpdate > 1000) {
@@ -110,7 +110,7 @@ class NaturalFactor {
 //		applet.ambientLight(50,50,50,0,0,0);
 //		applet.shininess(0.5f);
 	}
-	
+
 	public void applySurroundings() {
 		//enlightenSky();
 		//myFog.doFog();
@@ -120,10 +120,10 @@ class NaturalFactor {
 		}
 		stars.draw();
 	}
-	
+
 	private void update() {
 		sun.compute(Hoehe, Breite, 1);
-		double t_dayl = sun.getDayLength() + 4.0; //it's getting light ~two hour earlier and getting dark ~two hour later 
+		double t_dayl = sun.getDayLength() + 4.0; //it's getting light ~two hour earlier and getting dark ~two hour later
 		double t_sunr = sun.getSunriseTime() - 1.0;
 		double t_suns = sun.getSunsetTime() + 3.0;
 		double lengthInMsPerFogColor = (t_dayl * 3600000 / (fogColors.length-1));
@@ -139,7 +139,7 @@ class NaturalFactor {
 //		myFog.setColor(fogColor.getP5Color());
 		//System.out.println("fogNearDist " + fogNearDist + " fogFarDist " + fogFarDist + "color: " + fogColor.getP5Color() + " " + fogColor.r + " " + fogColor.g + " " + fogColor.b);
 	}
-	
+
 	//schmu so far
 	public void enlightenSky() {
 		applet.hint(PConstants.DISABLE_DEPTH_TEST);
@@ -166,24 +166,24 @@ class CurrentTime {
 	public int monat,tag;
 	public double stunde;
 	public String ErrorMsg;
-	
+
 	public void setCurrentTime(int p_monat, int p_tag, double p_stunde) {
-		
+
 		monat	= p_monat;
 		tag		= p_tag;
 		stunde	= p_stunde;
-		
+
 		// Chech validity of the values and force reasonable values
 		// Show illegal value messages on statusline
 		// Clear the errormsg first:
 		ErrorMsg =" ";
-		
+
 		if (monat<1) {ErrorMsg ="Month? " + monat; monat = 1; }
 		else if (monat>12) {ErrorMsg+=" Month? " + monat; monat = 12; }
-		
+
 		if (tag<1) {ErrorMsg +=" Day? " + tag; tag = 1; }
 		else if (tag >31) {ErrorMsg +=" Day? " + tag; tag = 31; }
-		
+
 		if (stunde<0.0) {ErrorMsg +=" Hour? " + stunde; stunde = 0.0;}
 		else if (stunde>24.0) {ErrorMsg +=" Hour? " + stunde; stunde = 24.0;}
 		if (!ErrorMsg.equals(" ")) System.out.println(ErrorMsg);
@@ -195,60 +195,60 @@ class Sun {
 	final double tpi = 2.0 * pi;
 	final double degs = 180.0/pi;
 	final double rads = pi/180.0;
-	
+
 	CampusMap applet;
 	double L,RA,daylen,delta,x,y,z;
 	double riset,settm,altmax,altmin,noont,midnt,azim,altit;
 
 	int year,month,day;
-	
+
 	CurrentTime setdate = new CurrentTime();
-	
+
 	final double AirRefr = 34.0/60.0; // athmospheric refraction degrees //
-	
+
 	String tSyote = null;
-	
+
 	public Sun(CampusMap p_applet){
 		applet = p_applet;
 		year = PApplet.year();
 		month = PApplet.month();
 		day = PApplet.day();
 	}
-	
+
 	//   Get the days to J2000
 	//   h is UT in decimal hours
 	//   FNday only works between 1901 to 2099 - see Meeus chapter 7
-	
+
 	float Round2d3(double x) {
 		double z = (1000.0*x + 0.499);
 		int i = (int)(z);
 		z = ((float)i/1000.0);
 		return (float)z;
 	}
-	
+
 	public double FNday (int y, int m, int d, double h) {
 		long luku = - 7 * (y + (m + 9)/12)/4 + 275*m/9 + d;
 		// type casting necessary on PC DOS and TClite to avoid overflow
 		luku+= (long)y*367;
 		return (double)luku - 730530.0 + h/24.0;
 	};
-	
+
 	//   the function below returns an angle in the range
 	//   0 to 2*pi
-	
+
 	public double FNrange(double x) {
 	    double b = x / tpi;
 	    double a = tpi * (b - (long)(b));
 	    if (a < 0) a = tpi + a;
 	    return a;
 	};
-	
+
 	// Calculating the hourangle
-	
+
 	public double f0(double lat, double declin) {
 		double fo, dfo;
 		double SunDia = 0.53;     // Sunradius degrees
-		
+
 		dfo = rads*(0.5*SunDia + AirRefr);
 		if (lat < 0.0) dfo = -dfo;      // Southern hemisphere
 		fo = Math.tan(declin + dfo) * Math.tan(lat*rads);
@@ -256,9 +256,9 @@ class Sun {
 		fo = Math.asin(fo) + pi/2.0;
 		return fo;
 	};
-	
+
 	//   Find the ecliptic longitude of the Sun
-	
+
 	public double FNsun (double d) {
 		double w,M,v,r,g;
 		//   mean longitude of the Sun
@@ -266,16 +266,16 @@ class Sun {
 		M = 356.047 + 0.9856002585 * d;
 		// Sun's mean longitude
 		L = FNrange(w * rads + M * rads);
-		
+
 		//   mean anomaly of the Sun
-		
+
 		g = FNrange(M * rads);
-		
+
 		// eccentricity
 		double ecc = 0.016709 - 1.151E-9 * d;
-		
+
 		//   Obliquity of the ecliptic
-		
+
 		double obliq = 23.4393 * rads - 3.563E-7 * rads * d;
 		double E = M + degs * ecc * Math.sin(g) * (1.0 + ecc * Math.cos(g));
 		E = degs*FNrange(E*rads);
@@ -286,7 +286,7 @@ class Sun {
 		// longitude of sun
 		double lonsun = v + w;
 		if (lonsun>360.0) lonsun-= 360.0;
-		
+
 		// sun's ecliptic rectangular coordinates
 		x = r * Math.cos(lonsun*rads);
 		y = r * Math.sin(lonsun*rads);
@@ -295,9 +295,9 @@ class Sun {
 		RA = Math.atan2(yequat,x);
 		delta = Math.atan2(zequat,Math.sqrt(x*x + yequat*yequat));
 		RA*= degs;
-		
+
 		//   Ecliptic longitude of the Sun
-		
+
 		return FNrange(L + 1.915 * rads * Math.sin(g) + .02 * rads * Math.sin(2 * g));
 	};
 
@@ -316,25 +316,25 @@ class Sun {
 	public void compute(double latit, double longit, double tzone) {
 		int m;
 		double h;
-		
+
 		//  get the date and time from the user
 		setdate.setCurrentTime(PApplet.month(),PApplet.day(),PApplet.hour());
 		m = setdate.monat; day = setdate.tag;
 		h = setdate.stunde;
 		// Show allways status to clear it if no error
-		
+
 		// Input latitude, longitude and timezone
-		
+
 		double UT = h - tzone;  // universal time
 		double jd = FNday(year, m, day, UT);
-		
+
 		//   Use FNsun to find the ecliptic longitude of the
 		//   Sun
 		double lambda = FNsun(jd);
 		//   Obliquity of the ecliptic
-		
+
 		double obliq = 23.4393 * rads - 3.563E-7 * rads * jd;
-		
+
 		// Sidereal time at Greenwich meridian
 		double GMST0 = L*degs/15.0 + 12.0;      // hours
 		double SIDTIME = GMST0 + UT + longit/15.0;
@@ -352,14 +352,14 @@ class Sun {
 		altit = Math.asin(zhor) * degs;
 		// Include Air refraction if altitude less than 30 degrees
 		if (altit < 30.0) altit+= AirRefr;
-		
+
 		double alpha = Math.atan2(Math.cos(obliq) * Math.sin(lambda), Math.cos(lambda));
-		
+
 		//   Find the Equation of Time in minutes
 		double equation = 1440.0 - (L - alpha) * degs * 4.0;
-		
+
 		ha = f0(latit,delta);
-		
+
 		// Conversion of angle to hours and minutes //
 		daylen = degs*ha/7.5;
 		     if (daylen<0.0001) {daylen = 0.0;}
@@ -369,24 +369,24 @@ class Sun {
 		settm = 12.0 + 12.0 * ha/pi + tzone - longit/15.0 + equation/60.0;
 		noont = riset + 12.0 * ha/pi;
 		midnt = noont -12.0;
-		altmax = 90.0 + delta*degs - latit; 
+		altmax = 90.0 + delta*degs - latit;
 		altmin = altmax + 2.0*latit -180.0;
 		if (altmax > 90.0) altmax=180.0 - altmax; //se =" (N)";} // around the equator and in south
 		if (altmin < -90.0) altmin = -(altmin + 180.0);
 		if (altmax < 30.0) altmax+= AirRefr;            // Airrefraction included at small altitudes
 		if (altmin > -30.0) altmin+= AirRefr;
-		
+
 		if (noont>24.0) noont-= 24.0;
 		if (midnt<0.0) midnt+= 24.0;
 		if (riset > 24.0) riset-= 24.0;
 		// sometimes Sunrise may take place before midnight
-		// We must correct the negative decimal hour 
+		// We must correct the negative decimal hour
 		if (riset < 0.0) riset+= 24.0;
 		if (settm > 24.0) settm-= 24.0;
-		
+
 		riset = addSummertime(riset);
 		settm = addSummertime(settm);
-		
+
 //		System.out.println(String.valueOf(Round2d3(delta * degs)));
 //		System.out.println(showhrmn(daylen));
 //		System.out.println(showhrmn(addSummertime(riset)));
@@ -398,7 +398,7 @@ class Sun {
 //		System.out.println(String.valueOf(Round2d3(azim*degs)));
 //		System.out.println(String.valueOf(Round2d3(altit)));
 	}
-	
+
 	public void draw() {
 		FVector toSun = new FVector(1,0,0);
 		toSun.rotateMeY(PApplet.radians((float)altit));
@@ -408,26 +408,26 @@ class Sun {
 		applet.noStroke();
 		applet.fill(255, 255, (int)applet.random(20, 100), (int)applet.random(180, 200));
 		applet.pushMatrix();
-		applet.translate(toSun.e[0], toSun.e[1], toSun.e[2]);
+		applet.translate(toSun.x, toSun.y, toSun.z);
 		applet.sphere(5000);
 		applet.popMatrix();
 		applet.fill(255, 255, 255, 255);
 		//System.out.println("azim: " + applet.degrees((float)azim) + " altit: " + (float)altit);
 		//toSun.printMe();
 	}
-	
+
 	public double getSunriseTime() {
 		return riset;
 	}
-	
+
 	public double getSunsetTime() {
 		return settm;
 	}
-	
+
 	public double getDayLength() {
 		return daylen;
 	}
-	
+
 	public double addSummertime(double time) {
 		if (month >3 && month<10) {
 			//System.out.println("add");
@@ -480,16 +480,16 @@ class Sun {
 			}
 		}
 	}
-	
+
 }
 
 class Stars {
-	
+
 	private CampusMap applet;
 	private int height;
 	private int width;
 	private int positions[][];
-	
+
 	public Stars(CampusMap p_applet, int numStars, int p_height, int p_width) {
 		applet	= p_applet;
 		width	= p_width;
@@ -501,7 +501,7 @@ class Stars {
 			positions[i][1] = (int)posVectors[i].getY();
 		}
 	}
-	
+
 	public void draw() {
 		applet.noStroke();
 		for (int i=0; i<positions.length; i++) {
@@ -509,20 +509,20 @@ class Stars {
 			applet.fill(c, c, 255);
 			applet.pushMatrix();
 			applet.translate(positions[i][0], positions[i][1], height);
-			applet.beginShape(PConstants.TRIANGLES); 
-			applet.vertex( 0*width,  1*width, 0); 
-			applet.vertex( 1*width, -1*width, 0); 
-			applet.vertex(-1*width, -1*width, 0); 
-			applet.endShape(); 
+			applet.beginShape(PConstants.TRIANGLES);
+			applet.vertex( 0*width,  1*width, 0);
+			applet.vertex( 1*width, -1*width, 0);
+			applet.vertex(-1*width, -1*width, 0);
+			applet.endShape();
 			applet.popMatrix();
 		}
-		
+
 		//clouds tryout
 //		int height = 100;
 //		applet.noStroke();
 //		applet.fill(255,255,255,255);
 //		PImage a = applet.loadImage("clouds.jpg");
-//		applet.textureMode(applet.NORMALIZED); 
+//		applet.textureMode(applet.NORMALIZED);
 //		applet.beginShape(applet.TRIANGLES);
 //		applet.texture(a);
 //		applet.vertex(0, 0, height, 0, 0);

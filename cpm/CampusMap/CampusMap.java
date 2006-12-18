@@ -1,7 +1,7 @@
 /*
  * Created on 30.05.2005
  *
- * @author David	
+ * @author David
  *
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
@@ -17,8 +17,8 @@ import java.awt.image.PixelGrabber;
 
 import javax.swing.border.LineBorder;
 
-public class CampusMap extends PApplet{ 
- 
+public class CampusMap extends PApplet{
+
 	// DEFINITIONS
 	static	final	float	TOL 			= 0.00001f;
 
@@ -27,12 +27,12 @@ public class CampusMap extends PApplet{
 
 	static	final	int	SLIDER_NUM			= 1;
 	static	final	int	BUTTON_NUM			= 2;
-	
+
 	static 	final 	int	OVERVIEW_REFRESH_RATE = 20;
-	
+
 	// final int
 	int overview_draw_count;
-	
+
 	// CLASS VARIABLES
 	//float[] clearZ;
 	Camera		theCamera;
@@ -52,13 +52,13 @@ public class CampusMap extends PApplet{
 	// Houses houses;
 	public Locator locator;
 	//private Button detailButton;
-		
+
 	float letterRotX, letterRotY, letterRotZ;
 	private float buildingUniScale = 1;
 	private float buildingDatabaseScale = 1;
-	
+
 	int initedObjCounter = 0;
-	
+
 	// camera path notify values
 	int notifyInterval;
 	int intervalBegin;
@@ -78,92 +78,92 @@ public class CampusMap extends PApplet{
 	// 2D Box variables.. car taken out.
 	// float boxX, boxY, boxAngle;
 	// boolean carClockwise = false;
-	
+
 	int runNum;
-	
+
 	PFont myFont;
 	PImage overlay;
-	
+
 	int ropeSlideIndex=0;
-	
-	int detailBraceIndex = 0; 
+
+	int detailBraceIndex = 0;
 	int detailBraceMulti=1;
-	
+
 	// temp for testing
 	public	Vector		spheres;
-	
+
 	public void setup() {
 		System.out.println("before");
 		size(SCREEN_WIDTH,SCREEN_HEIGHT, P3D);
 		System.out.println("afterwards");
 		// create the empty zbuffer array and fill it
-		
+
 		  //clearZ=new float[width*height];
 		  //for (int i = 0; i < width*height;i++) clearZ[i] = 1.0f;
-		 
+
 		g3 = (PGraphics3) g;
 		// ? does this help ? ((PGraphics3)g).triangle.setCulling(true);
 		runNum=0;
-		
+
 		groundPlane = new GroundPlane(this);
 		returnChanges = true;
-		
+
 		theCamera	= new Camera(this);
 		controls	= new Controls(this, theCamera);
 		theCamera.moveToNow(new FVector(-500.51917f, 951.8057f, 200));
 		theCamera.lookAtNow(new FVector(-500.51917f, 851.8057f, 0));
-		
+
 		// Camera Rotate Reference
 		//letters = new OBJModel(this);
-		
+
 		naturalFactor = new NaturalFactor(this);
-		
+
 		// houses = new Houses(this, 100);
 
 		// Model Architecture
 		letterRotX=0;
 		letterRotY=0;
 		letterRotZ=0;
-		
+
 		boxes = new Boxes(this);
 
 		buildingUniScale=1;
 		objectManager = new ObjectManager(this, theCamera);
 		movingObjectsManager = new MovingObjectsManager(this);
-		
+
 		loadPixels();
-		
+
 		locator = new Locator(this);
 
 		noLoop();
-		
-		
+
+
 		/* GUI-Elements
 		detailButton = new Button(450, 300, 30, 30, "detailModusButton.gif", new int[] {0,0}, false, "Beenden des Detailmodus");
 		detailButton.setVisible(false);
 		*/
-		
+
 		// temp for testing
 		spheres = new Vector();
-		
-		
+
+
 	}
-	
+
 	public void startDrawing(){
 		//System.out.println("startDrawing");
 		loop();
 	}
-	
+
 	public void setNotifyInterval(int p_interval){
 		notifyInterval = p_interval;
 		intervalBegin=millis();
 		notify=true;
 	}
-	
+
 	public void setNotify(boolean p_notify){
 		notify=p_notify;
 	}
-	
+
 	public void setBuildingUniformScale(float scaleVal){
 		buildingUniScale = scaleVal;
 	}
@@ -171,7 +171,7 @@ public class CampusMap extends PApplet{
 	public float getBuildingUniformScale(){
 		return buildingUniScale;
 	}
-	
+
 	public void setBuildingDatabaseScale(float scaleVal){
 		buildingDatabaseScale = scaleVal;
 	}
@@ -181,7 +181,7 @@ public class CampusMap extends PApplet{
 	}
 
 	public void draw() {
-		 
+
 		runNum++;
 		//System.out.println("runNum:"+runNum);
 		//env.addThem();
@@ -190,7 +190,7 @@ public class CampusMap extends PApplet{
 			if (runNum<4)
 				ortho(-1500, 800, -800, 800, 1000, 2000);
 			else returnChanges = theCamera.apply();
-				
+
 			if (runNum == 4) {
 				theCamera.lookAtNow(new FVector(-500.51917f, 851.8057f, 0));
 				theCamera.lookAtInter(new FVector(1341.8213f, 757.865f, 0), new Integer(4000), new Integer(3));
@@ -218,36 +218,36 @@ public class CampusMap extends PApplet{
 			movingObjectsManager.process();
 			// draw time and weather conditions
 			naturalFactor.putIntoEffect();
-	
+
 			// korrdinatensystem
 			groundPlane.draw(touring);
 			clearZBuffer();
-			
-			// houses.draw();
-	
 
-			
+			// houses.draw();
+
+
+
 			/**
 			 * Drawing of Overview window
 			 */
 	// boxes campusmap logo test
 			boxes.draw();
-			
+
 			locator.draw();
-			
+
 			if(touring){
 				if(preparingForTouring){
 					detailPreparingStep();
 //					System.out.println("Touring");
 				}
 			}
-			
-	
+
+
 	  if(theCamera.getPos()!=null) Overview.setLookPoint(theCamera.getPos());
 	 /* overview.setControlPoints(new FVector[]{ theCamera.m_vControlPoints[0],
 	 * theCamera.m_vControlPoints[1], theCamera.getOriginPos(),
 	 * theCamera.getTargetPos() }); }
-	 */	 
+	 */
 
 			pushMatrix();
 			scale(buildingUniScale);
@@ -259,10 +259,10 @@ public class CampusMap extends PApplet{
 				else ((ObjectOfInterest)(objectManager.worldObjects.elementAt(i))).draw(this, touring);
 			}
 			popMatrix();
-			
+
 			// draw moving objects
 			movingObjectsManager.draw();
-			
+
 			if (drawDebugSpheres) {
 				sphereDetail(20);
 				for(int i = 0;i < objectManager.worldObjects.size(); i++) {
@@ -270,13 +270,13 @@ public class CampusMap extends PApplet{
 						((Building)(objectManager.worldObjects.elementAt(i))).debugDraw(this);
 				}
 			}
-				
+
 
 			fill(255,255,255,255);
 			noStroke();
-			
+
 			naturalFactor.applySurroundings();
-			
+
 			// 2nd draw models, only for transparent ones
 //			for(int i = 0;i < objectManager.worldObjects.size(); i++) {
 //				if (((ObjectOfInterest)(objectManager.worldObjects.elementAt(i))).selectable && ((Building)(objectManager.worldObjects.elementAt(i))).myAlpha < 1.0f) {
@@ -293,11 +293,11 @@ public class CampusMap extends PApplet{
 				selectedBuilding.draw(this, false);
 				popMatrix();
 			}
-			
-	
+
+
 			// clearZBuffer();
 			hint(DISABLE_DEPTH_TEST);
-			
+
 			//sphere list drawing for testing
 			for (int i = 0; i< spheres.size(); i++){
 				FVector pos = ((FVector)(spheres.elementAt(i))).cloneMe();
@@ -307,9 +307,9 @@ public class CampusMap extends PApplet{
 				sphere(10+5*i);
 				popMatrix();
 			}
-			
+
 			//updatePixels();
-	
+
 			/*
 			 * if (overviewImage != null) { for (int y = 0, y2 = 0; y <
 			 * (overviewImage.height * width); y += width, y2 +=
@@ -320,7 +320,7 @@ public class CampusMap extends PApplet{
 			 * (overviewImage.pixels[y2+x2]))/2, (blue(pixels[y+x]) +
 			 * blue(overviewImage.pixels[y2+x2]))/2); } } }
 			 */
-			
+
 			// 2D interface (buttons and sliders so far)
 			camera(); // reset camera
 			//lights();
@@ -350,7 +350,7 @@ public class CampusMap extends PApplet{
 			fill(0, 20, 150, 20);
 			stroke(255,0,0);
 			noFill();
-	
+
 			if(runNum>3)
 			// render SlideCases
 			// ****************************************
@@ -361,33 +361,33 @@ public class CampusMap extends PApplet{
 				paintTouringRope();
 				drawDetailBraces();
 			}
-			
+
 			if(overlay!=null){
 //				System.out.println("bgImage groesse: "+bgPixels[50]);
 				image(overlay, 0, 250);
 			}
-			
+
 			// lights();
 			// buttons.evaluate(mouseX, mouseY, controls.mouseJustReleased,
 			// controls.mouseJustPressed);
 			// buttons.draw(this);
-	
+
 			theCamera.drawFramerate();
-			
-	
-			
+
+
+
 			// clean up and similar
 			// *****************************************************
 			controls.reset();
 			env.repaintEnv();
-	
-		} 
+
+		}
 
 		// wait delay to allow processing of other system tasks
-		delay(15);
+		delay(30);
 		noHint(DISABLE_DEPTH_TEST);
 	}
-	
+
 	public void getOverviewShut(){
 		updatePixels();
 		int[] buffer = new int[pixels.length];
@@ -396,7 +396,7 @@ public class CampusMap extends PApplet{
 		// overviewImage.save("image.tif");
 		System.out.println("shut for overview");
 	}
-	
+
 	private void drawDetailBraces(){
 		stroke(255,0,0);
 		pushMatrix();
@@ -412,10 +412,10 @@ public class CampusMap extends PApplet{
 		detailBraceIndex+=detailBraceMulti;
 		if(detailBraceIndex>5||detailBraceIndex<0)detailBraceMulti*=-1;
 	}
-	
+
 	public void prepareForDetailDraw(FVector pos2Fly2AfterPrep_p, boolean showroom_p){
 		pos2Fly2AfterPrep=pos2Fly2AfterPrep_p;
-		showroom =showroom_p; 
+		showroom =showroom_p;
 		if(lastSelectedBuilding!=selectedBuilding){
 			preparingForTouring=true;
 			objectManager.resetBuildings();
@@ -425,7 +425,7 @@ public class CampusMap extends PApplet{
 
 	public void prepareForNextBuildingDetail(FVector pos2Fly2AfterPrep_p, boolean showroom_p){
 		pos2Fly2AfterPrep=pos2Fly2AfterPrep_p;
-		showroom =showroom_p; 
+		showroom =showroom_p;
 		if(lastSelectedBuilding!=selectedBuilding){
 			preparingForTouring=true;
 			objectManager.resetBuildings();
@@ -451,17 +451,17 @@ public class CampusMap extends PApplet{
 			readyPrepared();
 		}
 	}
-	
+
 	private void readyPrepared(){
 		System.out.println("ready!");
 		env.theContent.theCamera.flyToRoom(selectedBuilding, pos2Fly2AfterPrep, showroom);
 	}
-	
+
 	public void setTouring(boolean p_touring, Building selectedBuilding_p){
 		selectedBuilding = selectedBuilding_p;
 		controls.setEnabled(!p_touring);
 		SlideCase.setActive(!p_touring);
-		
+
 		touring = p_touring;
 		ropeSlideIndex=0;
 		if(touring){
@@ -477,16 +477,16 @@ public class CampusMap extends PApplet{
 			Environment.contentHolder.setBorder(Environment.grayline);
 		}
 	}
-	
+
 	public void hideSlideCases(){
 		for(int scHideIndex=0;scHideIndex<objectManager.drawers.size();scHideIndex++)
 			if(((SlideCase)objectManager.drawers.get(scHideIndex)).getState()!=SlideCase.SHIFTED_IN){
 					if(((SlideCase)objectManager.drawers.get(scHideIndex)).isSliding())
 						((SlideCase)objectManager.drawers.get(scHideIndex)).requestSlide();
-					else ((SlideCase)objectManager.drawers.get(scHideIndex)).slide(); 
+					else ((SlideCase)objectManager.drawers.get(scHideIndex)).slide();
 			}
 	}
-	
+
 	private void paintTouringRope(){
 		noStroke();
 		fill(255,255,0);
@@ -506,11 +506,11 @@ public class CampusMap extends PApplet{
 		popMatrix();
 		ropeSlideIndex++;
 		if(ropeSlideIndex>20)ropeSlideIndex=1;
-		
+
 //		detailButton.check(mouseX, mouseY, controls.mouseJustPressed, controls.mouseJustReleased);
 //		detailButton.draw(this);
 	}
-	
+
 	public void renderSlideCases(int mouseX, int mouseY){
 		// ObjectManager slideCases
 		tint(200,10,10,200);
@@ -518,7 +518,7 @@ public class CampusMap extends PApplet{
 			// Get Values from SlideCase
 			((SlideCase)objectManager.drawers.get(caseIndex)).evalMouse(mouseX, mouseY, mousePressed, controls.mouseJustReleased);
 			((SlideCase)objectManager.drawers.get(caseIndex)).draw();
-			
+
 			// Pixels existing?
 			if(((SlideCase)objectManager.drawers.get(caseIndex)).pixels!=null){
 				FVector imgPos = ((SlideCase)objectManager.drawers.get(caseIndex)).getPos();
@@ -530,18 +530,18 @@ public class CampusMap extends PApplet{
 		}// for
 //		tint(255,255,255,200);
 	}
-	
+
 	// public void paint(){/**/}
 
-	
+
 	  public void clearZBuffer() {
 		  for (int i = 0; i< g3.zbuffer.length; i++)
 			  if (g3.zbuffer[i]<=1.0f)
 				  g3.zbuffer[i] = 1.0f;
 		  //System.arraycopy(clearZ,0,g3.zbuffer,0,clearZ.length);
 	  }
-	 
-	
+
+
 	/*
 	 * void updateBox() { // Draw a box that rotates in a circle pushMatrix();
 	 * if(carClockwise) { boxAngle += 0.1; if(round(boxX/5)*5 == 0 &&
@@ -552,16 +552,16 @@ public class CampusMap extends PApplet{
 	 * translate(0,-50,0); noStroke(); fill(255, 0, 0); box(50, 30, 20);
 	 * popMatrix(); }
 	 */
-	
+
 	/**
-	 * 
+	 *
 	 * @param holder
 	 */
 	public void setEnvironment(Environment holder)
 	{
 		env=holder;
 	}
-	
+
 //	public void findRoom(int buildingNo, int levelNo, int roomNo) {
 //		try {
 //			Building	building		= (Building)objectManager.buildingReferences[buildingNo-1];
@@ -575,7 +575,7 @@ public class CampusMap extends PApplet{
 //			System.err.println("wrong room number or building number " + aexp);
 //		}
 //	}
-	
+
 	// Mouse and Key Envents processed in Controls
 	public void mouseDragged() {
 		controls.mouseDragged();
@@ -595,11 +595,11 @@ public class CampusMap extends PApplet{
 	public void keyReleased() {
 		controls.keyReleased();
 	}
-	
+
 	public void sayHello() {
 		System.out.println("Hello");
 	}
 
 
-}	
+}
 

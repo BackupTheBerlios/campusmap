@@ -1,11 +1,11 @@
 package CampusMap;
 
-/** Class describing main funcionality of objects that move around on the groundplane 
- * 
+/** Class describing main funcionality of objects that move around on the groundplane
+ *
  */
 
 public class MovingObject{
-	
+
 	protected final static int MOVE_Z 			= 20;
 	protected static CampusMap myDrawApplet;
 
@@ -18,7 +18,7 @@ public class MovingObject{
 	protected float fullSpeed = 10.0f;
 	protected float currentSpeed = 10.0f;
 	protected boolean requestingMedicide;
-	
+
 	//constructor
 	public MovingObject(CampusMap drawApplet, FVector position) {
 		myDrawApplet = drawApplet;
@@ -30,7 +30,7 @@ public class MovingObject{
 		myDir = new FVector(1, 0, 0);
 		requestingMedicide = false;
 	}
-	
+
 	// draw method
 	public void draw(){
 		myDrawApplet.pushMatrix();
@@ -44,13 +44,13 @@ public class MovingObject{
 		myDrawApplet.sphere(200);
 		myDrawApplet.popMatrix();
 	}
-	
+
 	public void move(float partOfSecond, boolean doCheck) {
-		myPos.addMe(myDir.multiply(currentSpeed*partOfSecond));
+		myPos.addMe(FVector.multiply(myDir, currentSpeed*partOfSecond));
 	}
-	
+
 	public boolean getRequestingMedicide() {
 		return requestingMedicide;
 	}
-	
+
 }
