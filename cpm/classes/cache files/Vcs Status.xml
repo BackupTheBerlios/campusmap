@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vcsstatus version="1.0">
+  <file status="chiw">CampusMap/Building.java</file>
+  <file status="chiw">CampusMap/Bus.java</file>
+  <file status="chiw">CampusMap/Camera.java</file>
+  <file status="chiw">CampusMap/CampusMap.java</file>
+  <file status="chiw">CampusMap/CollisionRectangle.java</file>
+  <file status="chiw">CampusMap/CollisionSphere.java</file>
+  <file status="chiw">CampusMap/Environment.java</file>
+  <file status="chiw">CampusMap/Explications.java</file>
+  <file status="chiw">CampusMap/FVector.java</file>
+  <file status="chiw">CampusMap/GroundPlane.java</file>
+  <file status="chiw">CampusMap/Houses.java</file>
+  <file status="chiw">CampusMap/Human.java</file>
+  <file status="chiw">CampusMap/Locator.java</file>
+  <file status="chiw">CampusMap/MovingObject.java</file>
+  <file status="chiw">CampusMap/NaturalFactor.java</file>
+  <file status="chiw">CampusMap/ObjectManager.java</file>
+  <file status="chiw">objLoader/OBJModel.java</file>
+  <file status="niw">bak/objLoader/OBJModel.java~10~</file>
+  <file status="niw">bak/objLoader/OBJModel.java~11~</file>
+  <file status="niw">bak/objLoader/OBJModel.java~12~</file>
+  <file status="niw">bak/objLoader/OBJModel.java~3~</file>
+  <file status="niw">bak/objLoader/OBJModel.java~4~</file>
+  <file status="niw">bak/objLoader/OBJModel.java~5~</file>
+  <file status="niw">bak/objLoader/OBJModel.java~6~</file>
+  <file status="niw">bak/objLoader/OBJModel.java~7~</file>
+  <file status="niw">bak/objLoader/OBJModel.java~8~</file>
+  <file status="niw">bak/objLoader/OBJModel.java~9~</file>
+</vcsstatus>

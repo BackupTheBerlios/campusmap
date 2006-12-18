@@ -1,0 +1,433 @@
+//FVector.pde by David Huebner  (2005|06|05)
+//last changes                  (2005|06|21)
+//modify and use in any way
+
+//Vector class with N float elements. Built for Processing 0.90.
+//To get it working in Java you need the core.jar library from processing or delete/change the methods using matrices.
+
+//This vector class ist not limited to a 3D vector, although some of the methods only work with 3 dimensions.
+
+//Most methods have a second variant.
+//The normal one like multiply() returns a new vector with the calculations applied to.
+//The one with "Me" in its name like multiplyMe() applies the calculations to this vector.
+
+//Please report any bugs and additions to David@millbridge.de
+
+package CampusMap;
+import processing.core.*; // for class PMatrix
+
+public class FVector {
+
+	public static final float TOL = 0.00001f;
+
+	public float x;
+	public float y;
+	public float z;
+
+	//constructor for creating a null-vector with n elements
+	public FVector() {
+		x = 0;
+		y = 0;
+		z = 0;
+	}
+
+	//constructor for creating a vector from a given array of float values
+	public FVector(float[] ee) {
+		int n = ee.length;
+		if (n>0)
+		{
+			x = ee[0];
+			if (n>1)
+			{
+				y = ee[1];
+				if (n>2)
+				{
+					z = ee[2];
+				}
+			}
+		}
+	}
+
+	//constructor for creating a vector with the same elements of another vector v1. Similar to cloning a vector.
+	public FVector(FVector v2) {
+		x = v2.x;
+		y = v2.y;
+		z = v2.z;
+	}
+
+	//constructor for creating a 3D vector with specified values _x, _y and _z
+	public FVector(float _x, float _y, float _z) {
+		x = _x;
+		y = _y;
+		z = _z;
+	}
+
+	//returns the magnitude of this vector
+	public float magnitude() {
+		float sum = x*x;
+		sum += y*y;
+		sum += z*z;
+		return (float)Math.sqrt( sum<TOL?TOL:sum );
+	}
+
+	//returns the squared magnitude of this vector
+	public float magnitudeSqr() {
+		float sum = x*x;
+		sum += y*y;
+		sum += z*z;
+		return (float)sum<TOL?TOL:sum;
+	}
+
+	//returns a new vector as a result of adding another vector v2 to this vector
+	public static FVector add(FVector v1, FVector v2) {
+		FVector product = new FVector(v1);
+		product.x += v2.x;
+		product.y += v2.y;
+		product.z += v2.z;
+		return product;
+	}
+
+	//adds another vector v2 to this vector
+	public void addMe(FVector v2) {
+		x += v2.x;
+		y += v2.y;
+		z += v2.z;
+	}
+
+	public float distance2(FVector v2){
+		FVector actResultVector = cloneMe();
+		actResultVector = FVector.subtract(actResultVector, v2);
+		float sum = actResultVector.magnitude();
+		return sum;
+	}
+
+	//subtracts another vector v2 from this vector
+	public void subtractMe(FVector v2) {
+		x -= v2.x;
+		y -= v2.y;
+		z -= v2.z;
+	}
+
+	//returns a new vector as a result of subtracting another vector v2 from this vector
+	public static FVector subtract(FVector v1, FVector v2) {
+		FVector product = new FVector(v1);
+		product.x -= v2.x;
+		product.y -= v2.y;
+		product.z -= v2.z;
+		return product;
+	}
+
+	//returns a new vector as a result of multiplying this vector with a given float value v
+	public static FVector multiply(FVector v1, float v) {
+		FVector product = new FVector(v1);
+		product.x *= v;
+		product.y *= v;
+		product.z *= v;
+		return product;
+	}
+
+	//multiplies this vector with a given float value v
+	public void multiplyMe(float v) {
+		x *= v;
+		y *= v;
+		z *= v;
+	}
+
+	//returns a new vector as a result of dividing this vector by a given float value v
+	public static FVector divide(FVector v1, float v) {
+		v = (v < TOL)?TOL:v;
+		FVector product = new FVector(v1);
+		product.x /= v;
+		product.y /= v;
+		product.z /= v;
+		return product;
+	}
+
+	//divides this vector by a given float value v
+	public void divideMe(float v) {
+		v = (v < TOL)?TOL:v;
+		x /= v;
+		y /= v;
+		z /= v;
+	}
+
+	//returns a new vector with the same direction of this vector, but with a length of 1
+	public FVector normalize() {
+		return FVector.divide(this, magnitude());
+	}
+
+	//makes this vector to have a length of 1
+	public void normalizeMe() {
+		this.divideMe(magnitude());
+	}
+
+	//returns the crossproduct of this vector and a given vector v2. see math book for description of the crosproduct
+        /**********
+         *
+         *  STATIC
+         *
+         */
+
+
+	public static FVector crossProduct(FVector v1, FVector v2)
+	{
+		FVector crossProduct = new FVector();
+		crossProduct.x = v1.y * v2.z - v1.z * v2.y;
+		crossProduct.y = v1.z * v2.x - v1.x * v2.z;
+		crossProduct.z = v1.x * v2.y - v1.y * v2.x;
+		return crossProduct;
+	}
+
+	//returns the dotproduct of this vector and a given vector v2. see math book for description of the dotproduct
+	public static float dotProduct (FVector v1, FVector v2)
+	{
+		float sum = v1.x*v2.x;
+		sum += v1.y*v2.y;
+		sum += v1.z*v2.z;
+		return sum;
+	}
+
+	//returns true, if this vector equals a null-vector
+	public boolean isZero() {
+		if (x != 0.0f || y != 0.0f || z != 0.0f)
+			return false;
+		return true;
+	}
+
+	//returns true, if this vector equals a given vector v2
+	public boolean equals(FVector v2) {
+		if (x != v2.x || y != v2.y || z != v2.z)
+			return false;
+		return true;
+	}
+
+	//returns a new vector as a result of rotating this vector around the x-axis by a given float value val (in radians)
+	public static FVector rotateX(FVector v1, float val) {
+		FVector result = new FVector(v1);
+		double cosval = Math.cos(val);
+		double sinval = Math.sin(val);
+		double tmp1 = v1.y*cosval - v1.z*sinval;
+		double tmp2 = v1.y*sinval + v1.z*cosval;
+
+		result.y = (float)tmp1;
+		result.z = (float)tmp2;
+
+		return result;
+	}
+
+	//rotates this vector around the x-axis by a given float value val (in radians)
+	public void rotateMeX(float val) {
+		double cosval = Math.cos(val);
+		double sinval = Math.sin(val);
+		double tmp1 = y*cosval - z*sinval;
+		double tmp2 = y*sinval + z*cosval;
+
+		y = (float)tmp1;
+		z = (float)tmp2;
+	}
+
+	//returns a new vector as a result of rotating this vector around the y-axis by a given float value val (in radians)
+	public static FVector rotateY(FVector v1, float val) {
+		FVector result = new FVector(v1);
+		double cosval = Math.cos(val);
+		double sinval = Math.sin(val);
+		double tmp1	 = v1.x*cosval - v1.z*sinval;
+		double tmp2	 = v1.x*sinval + v1.z*cosval;
+
+		result.x = (float)tmp1;
+		result.z = (float)tmp2;
+
+		return result;
+	}
+
+	//rotates this vector around the y-axis by a given float value val (in radians)
+	public void rotateMeY(float val) {
+		double cosval = Math.cos(val);
+		double sinval = Math.sin(val);
+		double tmp1	 = x*cosval - z*sinval;
+		double tmp2	 = x*sinval + z*cosval;
+
+		x = (float)tmp1;
+		z = (float)tmp2;
+	}
+
+	//returns a new vector as a result of rotating this vector around the z-axis by a given float value val (in radians)
+	//can be used for 2D Vectors too
+	public static FVector rotateZ(FVector v1, float val) {
+		FVector result = new FVector(v1);
+		double cosval = Math.cos(val);
+		double sinval = Math.sin(val);
+		double tmp1	 = v1.x*cosval - v1.y*sinval;
+		double tmp2	 = v1.x*sinval + v1.y*cosval;
+
+		result.x = (float)tmp1;
+		result.y = (float)tmp2;
+
+		return result;
+	}
+
+	//rotates this vector around the z-axis by a given float value val (in radians)
+	//can be used for 2D Vectors too
+	public void rotateMeZ(float val) {
+		double cosval = Math.cos(val);
+		double sinval = Math.sin(val);
+		double tmp1	 = x*cosval - y*sinval;
+		double tmp2	 = x*sinval + y*cosval;
+
+		x = (float)tmp1;
+		y = (float)tmp2;
+	}
+
+	//rotates this vector around all axis by a given Vector val
+	//can be used for 2D Vectors too
+	public void rotateMeXYZ(FVector val) {
+		rotateMeX(val.getX());
+		rotateMeY(val.getY());
+		rotateMeZ(val.getZ());
+	}
+
+	//rotates this vector around all axis by a given Vector val
+	//can be used for 2D Vectors too
+	public static FVector rotateXYZ(FVector v1, FVector val) {
+		FVector result = new FVector(v1);
+		result.rotateMeX(val.getX());
+		result.rotateMeY(val.getY());
+		result.rotateMeZ(val.getZ());
+
+		return result;
+	}
+
+	//rotates this vector around a given axis v2 by a given float value val (in radiens)
+	public static FVector rotateAxis(FVector v1, float val, FVector v2) {
+		FVector result = new FVector(v1);
+
+		PMatrix rotateMatrix = new PMatrix();
+		rotateMatrix.rotate(val, v2.x, v2.y, v2.z);
+
+		float in[]	= {v1.x, v1.y, v1.z, 0};
+		float out[]	= {0, 0, 0, 0};
+		rotateMatrix.mult(in,out);
+
+		result.x = out[0];
+		result.y = out[1];
+		result.z = out[2];
+
+		return result;
+	}
+
+	//returns a new vector as a result of rotating this vector around a given axis v2 by a given float value val (in radiens)
+	public void rotateAxisMe(float val, FVector v2) {
+		PMatrix rotateMatrix = new PMatrix();
+		rotateMatrix.rotate(val, v2.x, v2.y, v2.z);
+
+		float in[]	= {x, y, z, 0};
+		float out[]	= {0, 0, 0, 0};
+		rotateMatrix.mult(in,out);
+
+		x = out[0];
+		y = out[1];
+		z = out[2];
+	}
+
+
+	//returns the value of the nst element of this vector
+	public float getElementAt(int n) {
+		if (n == 0)
+			return x;
+		if (n == 1)
+			return y;
+                return z;
+	}
+
+        //returns the value of the nst element of this vector
+        public void setElementAt(int n, float value) {
+                if (n == 0) x=value;
+                else if (n == 1)y=value;
+                else if (n == 2)z=value;
+        }
+
+
+	//returns the value of the 1st element of this vector
+	public float getX() {
+		return x;
+	}
+
+	//returns the value of the 2nd element of this vector
+	public float getY() {
+		return y;
+	}
+
+	//returns the value of the 3rd element of this vector
+	public float getZ() {
+		return z;
+	}
+
+	//sets the 1st element to a given value newX
+	public void setX(float newX) {
+		x = newX;
+	}
+
+	//sets the 2nd element to a given value newY
+	public void setY(float newY) {
+		y = newY;
+	}
+
+	//sets the 3rd element to a given value newZ
+	public void setZ(float newZ) {
+		z = newZ;
+	}
+
+	//changes the elements of this vector to the values of another vector
+	public void set(FVector v2)
+	{
+		x = v2.x;
+		y = v2.y;
+		z = v2.z;
+	}
+
+	//changes the first three elements of this vector to the given values x, y, z
+	public void set(float _x, float _y, float _z)
+	{
+		x = _x;
+		y = _y;
+		z = _z;
+	}
+
+	//changes the elements of this vector to the values of a given float array
+	public void set(float ee[])
+	{
+		int n = ee.length;
+		if (n>0)
+		{
+			x = ee[0];
+			if (n>1)
+			{
+				y = ee[1];
+				if (n>2)
+				{
+					z = ee[2];
+				}
+			}
+		}
+	}
+
+	//returns a new vector with the same elements the this vector
+	public FVector cloneMe() {
+		return new FVector(this);
+	}
+
+	public void printMe() {
+		System.out.println("FVector: x:" + x + " y:" + y + " z:" + z);
+	}
+
+	public void printMe(String prefix) {
+		System.out.print(prefix);
+		System.out.println(prefix + " FVector: x:" + x + " y:" + y + " z:" + z);
+	}
+
+	public String toString() {
+		return ("x:" + x + " y:" + y + " z:" + z);
+	}
+
+} //end of class FVector
+

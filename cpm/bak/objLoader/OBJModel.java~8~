@@ -1,0 +1,673 @@
+/*
+ * Alias .obj loader for processing
+ * programmed by Tatsuya SAITO / UCLA Design | Media Arts
+ * Created on 2005/04/17
+ *
+ *
+ * Gunnar added functions:
+ * public void setFadeMidPoint(float[] p_FadeMidPoint)
+ * public float[] getFadeMidPoint()
+ * public void setFadeDistance(float p_fadeDistance)
+ * public void setFadeSpace(float p_fadeSpace)
+ * public void enableZFade(boolean p_fadeFlag)
+ *
+ */
+
+package objLoader;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+//import java.io.File;
+//import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.zip.*;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Hashtable;
+import java.util.Vector;
+
+
+import processing.core.PApplet;
+import processing.core.PImage;
+import CampusMap.Color;
+import CampusMap.ObjectOfInterest;
+
+/**
+ *
+ * @author tatsuyas
+ *
+ * TODO:
+ *
+ */
+
+public class OBJModel {
+
+	Vector vertexes; // vertexes
+	Vector groups;
+	Vector objects;
+	Vector texturev; // texture coordinates
+	Vector normv;
+	Hashtable materials;
+	PApplet parent;
+	ObjectOfInterest myWrap;
+	int lod;
+	PImage texture; // texture image
+	int mode = PApplet.POLYGON; // render mode (ex. POLYGON, POINTS ..)
+	boolean flagTexture = true;
+	String mtlfilename = null;
+	String myFileName;
+	boolean bDebug = false;
+	String sourceFolderURL;
+
+	// Fade variables
+	boolean fadeFlag = false;
+	float[] fadeMidPoint;
+	float fadeDistance=500;
+	float fadeSpace=1000;
+
+	//Line Variables
+	boolean drawLines = false;
+	Color	lineColor;
+
+	public OBJModel(PApplet parent, ObjectOfInterest myWrap_p, int lod_p) {
+		this.parent = parent;
+		myWrap = myWrap_p;
+		lod=lod_p;
+		vertexes = new Vector();
+		texturev = new Vector();
+		normv = new Vector();
+		groups = new Vector();
+		objects = new Vector();
+		materials = new Hashtable();
+		sourceFolderURL = new String("");
+		lineColor = new Color(100,100,100);
+	}
+
+	public void setParentApplet(PApplet p_parent){
+		this.parent = p_parent;
+		parent.registerDispose(this);
+	}
+
+	public void pre() {
+		// do something cool
+	}
+
+	public void draw(float matAlphaMultiplier, boolean greyed_p) {
+		drawModel(matAlphaMultiplier, greyed_p);
+	}
+
+	public void showModelInfo() {
+
+		debug("Total:");
+		debug("\tV  Size: " + vertexes.size());
+		debug("\tVt Size: " + texturev.size());
+		debug("\tVn Size: " + normv.size());
+		debug("\tG  Size: " + groups.size());
+
+		for (int g = 0; g < groups.size(); g++) {
+			Group tmpgroup = (Group) (groups.elementAt(g));
+			Material mtl;
+			if (tmpgroup.mtlName != null) {
+				mtl = (Material) materials.get(tmpgroup.mtlName);
+			}
+			debug("Group Name: " + tmpgroup.groupName);
+			debug("\tMtl: " + tmpgroup.mtlName);
+			debug("\tFacet Size: " + tmpgroup.facets.size());
+
+		}
+	}
+
+	public void disableTexture() {
+		flagTexture = false;
+	}
+
+	public void enableTexture() {
+		flagTexture = true;
+	}
+
+	public void texture(PImage tex) {
+		texture = tex;
+	}
+
+	/**
+	 * Methods for fading comunication
+	 *
+	 */
+	public void setFadeMidPoint(float[] p_FadeMidPoint){
+		fadeMidPoint=p_FadeMidPoint;
+	}
+	public float[] getFadeMidPoint(){
+		return fadeMidPoint;
+	}
+	public void setZFade(boolean p_fadeFlag){
+		fadeFlag=p_fadeFlag;
+	}
+	public boolean getZFade(){
+		return fadeFlag;
+	}
+	public void setFadeDistance(float p_fadeDistance){
+		fadeDistance=p_fadeDistance;
+	}
+	public void setFadeSpace(float p_fadeSpace){
+		fadeSpace=p_fadeSpace;
+	}
+
+	public void setLineDrawing(boolean p_drawLines){
+		drawLines=p_drawLines;
+	}
+	public boolean getLineDrawing(){
+		return drawLines;
+	}
+	public void setLineColor(Color p_lineColor){
+		lineColor = p_lineColor;
+	}
+
+	public void drawModel(float matAlphaMultiplier, boolean greyed) {
+		float alphaMultiplier = 1;
+		try {
+			Vertex v = null, vt = null, vn = null, endV = null;
+			int vtidx = 0, vnidx = 0, vidx = 0, vidx2=0;
+			PImage imgtex = null;
+			boolean bTexture = false;
+			// render all triangles
+                        float[] colors;
+			for (int g = 0; g < groups.size(); g++) {
+				Group tmpgroup = (Group) (groups.elementAt(g));
+				Material mtl = null;
+				colors = {255,255,255,255};
+				// debug("hogehoge1");
+				if (tmpgroup.mtlName != null) {
+					try{
+						mtl = (Material) materials.get(tmpgroup.mtlName);
+						//if(tmpgroup.mtlName=="Backstei")System.out.println("mtl: "+mtl);
+						colors[0]=255.0f * mtl.Ka[0];
+						colors[1]=255.0f * mtl.Ka[1];
+						colors[2]=255.0f * mtl.Ka[2];
+						colors[3]=255.0f * mtl.d * matAlphaMultiplier;
+					} catch(NullPointerException e){
+						System.out.println("material: "+tmpgroup.mtlName);
+					}
+				}
+				if(!greyed)parent.fill(colors[0],colors[1],colors[2],colors[3]);
+				else{
+					parent.fill( (colors[0]+colors[1]+colors[2]) /3);
+				}
+				// debug("hogehoge2");
+				// check texture availability
+				if (texture != null) {
+					bTexture = true;
+				} else if (mtl != null) {
+					if (mtl.map_Kd != null) {
+						bTexture = true;
+						imgtex = mtl.map_Kd;
+					} else {
+						bTexture = false;
+					}
+				}
+				// debug("hogehoge3");
+				if (tmpgroup.facets.size() > 0) {
+					for (int f = 0; f < tmpgroup.facets.size(); f++) {
+
+						Facet tmpf = (Facet) (tmpgroup.facets.elementAt(f));
+
+						//parent.textureMode(PApplet.NORMALIZED);
+						parent.beginShape(mode); // specify render mode
+
+						if (bTexture && flagTexture) {
+							if (tmpf.tindexes.size() > 0) {
+//								int minValX;
+//								int maxValX;
+//								int minValY;
+//								int maxValY;
+//								for(int patternIndex=0;patternIndex<tmpf.tindexes.size();patternIndex++){
+//									//minValX = tmpf.tindexes.get(patternIndex);
+//								}
+//
+								if (texture != null)
+									parent.texture(texture); // setting
+								// texture
+								else if (imgtex != null)
+									parent.texture(imgtex); // setting texture
+							} else {
+								bTexture = false;
+							}
+						} else {
+							bTexture = false;
+						}
+
+/**
+ *  {{added by Gunnar
+
+						// z-fading enabled?
+						if(fadeFlag==true){
+							if(fadeMidPoint==null)
+								parent.die("Sorry, you have to call at least once the function to set the midPoint.");
+							else if(fadeMidPoint.length!=3)
+								parent.die("You did't set a 3-dimensional information for the middle-Point");
+							else {
+								float[] collectVector = new float[tmpf.indexes.size()];
+								float mediaDistance=0;
+								for(int collVertexIndex=0;collVertexIndex<tmpf.indexes.size();collVertexIndex++){
+									vidx = ((Integer) (tmpf.indexes.elementAt(collVertexIndex))).intValue();
+									v = (Vertex) vertexes.elementAt(vidx - 1);
+									float[] distanceVertex = new float[3];
+									distanceVertex[0]=v.vx>fadeMidPoint[0]?v.vx-fadeMidPoint[0]:fadeMidPoint[0]-v.vx;
+									distanceVertex[1]=v.vy>fadeMidPoint[1]?v.vy-fadeMidPoint[1]:fadeMidPoint[1]-v.vy;
+									distanceVertex[2]=v.vz>fadeMidPoint[2]?v.vz-fadeMidPoint[2]:fadeMidPoint[2]-v.vz;
+									collectVector[collVertexIndex] 			= (float)Math.sqrt((distanceVertex[0]*distanceVertex[0])+(distanceVertex[1]*distanceVertex[1])+(distanceVertex[2]*distanceVertex[2]));
+									mediaDistance+=collectVector[collVertexIndex];
+									if(f==10)debug("collectVector: "+collectVector[collVertexIndex]);
+								}
+								if(f==10)debug("A Face: ");
+								mediaDistance=mediaDistance/(collectVector.length);
+								if(f==10)debug("mediaDistance: "+mediaDistance);
+								alphaMultiplier = 0;
+								if(mediaDistance<fadeDistance)alphaMultiplier = 1;
+								else if(mediaDistance<fadeDistance+fadeSpace){
+									alphaMultiplier = ((mediaDistance-fadeDistance)/(float)fadeSpace);
+									alphaMultiplier=alphaMultiplier<0?1:(alphaMultiplier>1?0:1-alphaMultiplier);
+								}
+								if(f==10){
+									debug("alphaMultiplier: "+alphaMultiplier);
+									parent.fill(255,0,0,colors[3]*alphaMultiplier);
+								}else{
+									float[] fadeColor = {167,198,167};
+									float[] colorBuffer = new float[3];
+									for(int u=0;u<3;u++)
+										colorBuffer[u]=(float)(colors[u]+(255-colors[u])*(1.0-alphaMultiplier));
+										colorBuffer[u]=(float)(colors[u]+(fadeColor[u]-colors[u])*(1.0-alphaMultiplier));
+									parent.fill(colorBuffer[0],colorBuffer[1],colorBuffer[2],colors[3]);
+									parent.noStroke();
+								//}
+							}
+						}
+*/						if(alphaMultiplier!=0){
+/**
+*  }}added by Gunnar
+*/
+
+							if (tmpf.indexes.size() > 0) {
+								for (int fp = 0; fp < tmpf.indexes.size(); fp++) {
+
+									vidx = ((Integer) (tmpf.indexes.elementAt(fp)))
+											.intValue();
+
+									v = (Vertex) vertexes.elementAt(vidx - 1);
+									if (v != null) {
+										try {
+											if (tmpf.nindexes.size() > 0) {
+												vnidx = ((Integer) (tmpf.nindexes
+														.elementAt(fp))).intValue();
+												vn = (Vertex) normv
+														.elementAt(vnidx - 1);
+												parent.normal(-vn.vx, -vn.vy,
+														-vn.vz);
+											}
+
+											if (bTexture) {
+
+												vtidx = ((Integer) (tmpf.tindexes
+														.elementAt(fp))).intValue();
+
+												vt = (Vertex) texturev
+														.elementAt(vtidx - 1);
+
+												parent.vertex(-v.vx, v.vy, v.vz,
+														1.0f - vt.vx, vt.vy);
+											} else
+												parent.vertex(-v.vx, v.vy, v.vz);
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									} else {
+										parent.vertex(-v.vx, v.vy, v.vz);
+									}
+
+								}
+							}
+							parent.endShape();
+	// Same procedure to draw just the lines in question
+							if(drawLines){
+								parent.noFill();
+								parent.stroke(lineColor.r, lineColor.g, lineColor.b, 255*matAlphaMultiplier);
+								if (tmpf.indexes.size() > 0) {
+									for (int fp = 0; fp < tmpf.indexes.size(); fp++) {
+
+										vidx = ((Integer) (tmpf.indexes.elementAt(fp)))
+												.intValue();
+										if(fp<tmpf.indexes.size()-1)
+											vidx2 = ((Integer) (tmpf.indexes.elementAt(fp+1)))
+													.intValue();
+										else
+											vidx2 = ((Integer) (tmpf.indexes.elementAt(0)))
+											.intValue();
+
+										v = (Vertex) vertexes.elementAt(vidx - 1);
+										endV = (Vertex) vertexes.elementAt(vidx2 - 1);
+										if (	v.vx==endV.vx && v.vz==endV.vz ||
+												v.vz==endV.vz && v.vy==endV.vy ||
+												v.vx==endV.vx && v.vy==endV.vy)
+											parent.line(-v.vx, v.vy, v.vz, -endV.vx, endV.vy, endV.vz);
+									}
+								}
+								parent.endShape();
+								parent.fill(colors[0],colors[1],colors[2],colors[3]);
+								parent.noStroke();
+							}
+	// End Linedrawing
+						}//
+					}
+				}
+                                colors=null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void drawMode(int mode) {
+		this.mode = mode;
+	}
+
+	public BufferedReader getBufferedReader(String filename) throws Exception {
+
+		BufferedReader retval = null;
+		URL url = null;
+
+		if (filename.startsWith("http://")) {
+			//System.out.println("loading file from url: " + filename);
+			url = new URL(filename);
+			//support for gunzip
+			if (filename.endsWith(".gz")) {
+				retval = new BufferedReader(
+							new InputStreamReader(
+									new GZIPInputStream(
+											url.openStream())));
+			} else {
+				retval = new BufferedReader(new InputStreamReader(url
+						.openStream()));
+			}
+		}
+		else {
+			System.out.println("loading file from hd: " + filename);
+			return new BufferedReader(new InputStreamReader(parent.getClass().getResourceAsStream(filename)));
+		}
+		return retval;
+
+//		Original Error handling
+//		parent.die("Could not find .OBJ file " + filename, null);
+
+	}
+
+	//public void load(InputStream filename) {
+	public void load(String url, String filename) {
+		myFileName=filename;
+		sourceFolderURL = url;
+		try {
+			BufferedReader readObject = getBufferedReader(sourceFolderURL + filename);
+			parseOBJ(readObject);
+			readObject.close();
+			//parseOBJ(new BufferedReader(new InputStreamReader(filename)));
+			if (mtlfilename != null)
+				//parseMTL(new BufferedReader(new InputStreamReader(parent.getClass().getResourceAsStream("data/"+mtlfilename))));
+				parseMTL(getBufferedReader(sourceFolderURL + mtlfilename));
+			debug("model loaded");
+			myWrap.setLodModelLoaded(lod);
+		} catch (Exception e) {
+			e.printStackTrace();
+			myWrap.setLodModelLoadFailed(lod);
+		}
+	}
+
+	public void parseOBJ(BufferedReader bread) throws Exception {
+		String line;
+		Group currentGroup = null;
+		int ngCounter = 0;
+		int parseCounter=0;
+		while ((line = bread.readLine()) != null) {
+//				parseCounter++;
+//				System.out.println("parseCounter: "+parseCounter);
+//				// debug(line);
+			// parse the line
+			String[] elements = line.split("\\s+");
+			if (elements.length > 0) {
+				// analyze the format
+				if (elements[0].equals("v")) {
+					Vertex tmpv = new Vertex();
+					tmpv.vx = Float.valueOf(elements[1]).floatValue();
+					tmpv.vy = Float.valueOf(elements[2]).floatValue();
+					tmpv.vz = Float.valueOf(elements[3]).floatValue();
+					vertexes.add(tmpv);
+				} else if (elements[0].equals("vn")) {
+					Vertex tmpv = new Vertex();
+					tmpv.vx = Float.valueOf(elements[1]).floatValue();
+					tmpv.vy = Float.valueOf(elements[2]).floatValue();
+					tmpv.vz = Float.valueOf(elements[3]).floatValue();
+					normv.add(tmpv);
+				} else if (elements[0].equals("g")
+						|| elements[0].equals("o")) {
+					Group tmpG = new Group();
+					currentGroup = tmpG;
+					if (elements.length <= 1) {
+						currentGroup.groupName = "tmp_named_" + ngCounter;
+						ngCounter++;
+					} else {
+						currentGroup.groupName = elements[1];
+					}
+					groups.add(currentGroup);
+				} else if (elements[0].equals("usemtl")) {
+					currentGroup = new Group();
+					currentGroup.groupName = "tmp_named_" + ngCounter++;
+					currentGroup.mtlName = elements[1];
+					groups.add(currentGroup);
+				} else if (elements[0].equals("f")) {
+					Facet tmpf = new Facet();
+					if (elements.length < 3) {
+						debug("Warning: potential model data error");
+					}
+					for (int i = 1; i < elements.length; i++) {
+						String seg = elements[i];
+						if (seg.indexOf("/") > 0) {
+							String[] forder = seg.split("/");
+
+							if (forder.length > 2) {
+								if (forder[2].length() > 0) {
+									int tmpVal = Integer.valueOf(forder[2])
+											.intValue();
+									if (tmpVal < 0) {
+										tmpf.nindexes.add(new Integer(
+												vertexes.size() + tmpVal +1));
+									} else {
+										tmpf.nindexes.add(new Integer(
+												tmpVal));
+									}
+								}
+								if (forder[1].length() > 0) {
+									int tmpVal = Integer.valueOf(forder[1])
+											.intValue();
+									if (tmpVal < 0) {
+										tmpf.tindexes.add(new Integer(
+												vertexes.size() + tmpVal +1));
+									} else {
+										tmpf.tindexes.add(new Integer(
+												tmpVal));
+									}
+								}
+								if (forder[0].length() > 0) {
+									int tmpVal = Integer.valueOf(forder[0])
+											.intValue();
+									if (tmpVal < 0) {
+										tmpf.indexes.add(new Integer(
+												vertexes.size() + tmpVal +1));
+									} else {
+										tmpf.indexes
+												.add(new Integer(tmpVal));
+									}
+								}
+							} else if (forder.length > 1) {
+								if (forder[1].length() > 0) {
+									int tmpVal = Integer.valueOf(forder[1])
+											.intValue();
+									if (tmpVal < 0) {
+										tmpf.tindexes.add(new Integer(
+												vertexes.size() + tmpVal + 1));
+									} else {
+										tmpf.tindexes.add(new Integer(
+												tmpVal));
+									}
+								}
+								if (forder[0].length() > 0) {
+									int tmpVal = Integer.valueOf(forder[0])
+											.intValue();
+									if (tmpVal < 0) {
+										tmpf.indexes.add(new Integer(
+												vertexes.size() + tmpVal +1));
+									} else {
+										tmpf.indexes
+												.add(new Integer(tmpVal));
+									}
+								}
+							} else if (forder.length > 0) {
+								if (forder[0].length() > 0) {
+									int tmpVal = Integer.valueOf(forder[0])
+											.intValue();
+									if (tmpVal < 0) {
+										tmpf.indexes.add(new Integer(
+												vertexes.size() + tmpVal + 1));
+									} else {
+										tmpf.indexes
+												.add(new Integer(tmpVal));
+									}
+								}
+							}
+						} else {
+							if (seg.length() > 0)
+								tmpf.indexes.add(Integer.valueOf(seg));
+						}
+					}
+					if (currentGroup != null)
+						currentGroup.facets.add(tmpf);
+
+				} else if (elements[0].equals("vt")) {
+					Vertex tmpv = new Vertex();
+					tmpv.vx = Float.valueOf(elements[1]).floatValue();
+					// avoid negative values
+					//tmpv.vx = (tmpv.vx<0?-tmpv.vx:tmpv.vx);
+					tmpv.vy = Float.valueOf(elements[2]).floatValue();
+					texturev.add(tmpv);
+				} else if (elements[0].equals("mtllib")) {
+					mtlfilename = elements[1];
+					while (mtlfilename.startsWith("/") || mtlfilename.startsWith(".")){
+						mtlfilename = mtlfilename.substring(1,mtlfilename.length());
+					}
+				}
+			}
+		}
+	}
+
+	public void parseMTL(BufferedReader bread) {
+		try {
+			String line;
+			Material currentMtl = null;
+			while ((line = bread.readLine()) != null) {
+				// parse the line
+				String elements[] = line.split("\\s+");
+				debug(line);
+				if (elements.length > 0) {
+					// analyze the format
+
+					if (elements[0].equals("newmtl")) {
+						debug("material: " + elements[1]);
+						String mtlName = elements[1];
+						Material tmpMtl = new Material();
+						currentMtl = tmpMtl;
+						materials.put(mtlName, tmpMtl);
+					} else if (elements[0].equals("map_Ka")
+							&& elements.length > 1) {
+						debug("texture ambient: " + elements[1]);
+						//String texname = elements[1];
+						// currentMtl.map_Ka = parent.loadImage(texname);
+					} else if (elements[0].equals("map_Kd")
+							&& elements.length > 1) {
+						debug("texture diffuse: " + elements[1]);
+						String texname = elements[1];
+						currentMtl.map_Kd = parent.loadImage(sourceFolderURL+texname);
+					} else if (elements[0].equals("Ka") && elements.length > 1) {
+						debug("material ambient: " + elements[1] + ", "
+								+ elements[2] + ", " + elements[3]);
+						currentMtl.Ka[0] = Float.valueOf(elements[1])
+								.floatValue();
+						currentMtl.Ka[1] = Float.valueOf(elements[2])
+								.floatValue();
+						currentMtl.Ka[2] = Float.valueOf(elements[3])
+								.floatValue();
+
+					} else if (elements[0].equals("d") && elements.length > 1) {
+						debug("material alpha: " + elements[1]);
+						currentMtl.d = Float.valueOf(elements[1]).floatValue();
+
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("filename/mtlfilename: "+myFileName+"/"+mtlfilename);
+			e.printStackTrace();
+		}
+	}
+
+	/* Functions for addressing each group/facet/vertex */
+
+	public int getGroupsize() {
+		return this.groups.size();
+	}
+
+	public Group getGroup(int i) {
+		return (Group) this.groups.elementAt(i);
+	}
+
+	public int getVertexsize() {
+		return this.vertexes.size();
+	}
+
+	public Vertex getVertex(int i) {
+		return (Vertex) vertexes.elementAt(i);
+	}
+
+	public void setVertex(int i, Vertex vertex) {
+		Vertex tmpv = (Vertex) vertexes.elementAt(i);
+		tmpv.vx = vertex.vx;
+		tmpv.vy = vertex.vy;
+		tmpv.vz = vertex.vz;
+	}
+
+	/* Functions for for debugging */
+
+	public void debugMode() {
+		bDebug = true;
+	}
+
+	public void debug(String message) {
+		if (bDebug)
+			System.out.println(message);
+	}
+	public void size(int w, int h) {
+
+	}
+
+	public void post() {
+	}
+
+	public void mouse(MouseEvent event) {
+	}
+
+	public void key(KeyEvent e) {
+	}
+
+	public void dispose() {
+	}
+
+
+}
