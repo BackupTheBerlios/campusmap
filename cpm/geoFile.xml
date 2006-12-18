@@ -319,9 +319,9 @@
 				<modelnames name="10" lodNum="3"/>
 				<flags drawLines="1" zFade="0"/>
 				<colspheres>
-					<sphere x="0" y="444" z="20" radius="250"/>
-					<sphere x="0" y="9" z="20" radius="250"/>
-					<sphere x="0" y="-395" z="20" radius="250"/>
+					<sphere x="50" y="444" z="20" radius="250"/>
+					<sphere x="50" y="9" z="20" radius="250"/>
+					<sphere x="50" y="-395" z="20" radius="250"/>
 				</colspheres>
 				<colrectangles>
 				</colrectangles>
