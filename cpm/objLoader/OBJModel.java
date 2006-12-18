@@ -288,18 +288,16 @@ public class OBJModel {
 *  }}added by Gunnar
 */
 
-							if (tmpf.indexes.size() > 0) {
-								for (int fp = 0; fp < tmpf.indexes.size(); fp++) {
+							if (tmpf.intIndexes.length > 0) {
+								for (int fp = 0; fp < tmpf.intIndexes.length; fp++) {
 	
-									vidx = ((Integer) (tmpf.indexes.elementAt(fp)))
-											.intValue();
+									vidx = tmpf.intIndexes[fp];
 									
 									v = (Vertex) vertexes.elementAt(vidx - 1);
 									if (v != null) {
 										try {
-											if (tmpf.nindexes.size() > 0) {
-												vnidx = ((Integer) (tmpf.nindexes
-														.elementAt(fp))).intValue();
+											if (tmpf.intNIndexes.length > 0) {
+												vnidx = tmpf.intNIndexes[fp];
 												vn = (Vertex) normv
 														.elementAt(vnidx - 1);
 												parent.normal(-vn.vx, -vn.vy,
@@ -308,8 +306,7 @@ public class OBJModel {
 	
 											if (bTexture) {
 	
-												vtidx = ((Integer) (tmpf.tindexes
-														.elementAt(fp))).intValue();
+												vtidx = tmpf.intTIndexes[fp];
 	
 												vt = (Vertex) texturev
 														.elementAt(vtidx - 1);
@@ -332,17 +329,14 @@ public class OBJModel {
 							if(drawLines){
 								parent.noFill();
 								parent.stroke(lineColor.r, lineColor.g, lineColor.b, 255*matAlphaMultiplier);
-								if (tmpf.indexes.size() > 0) {
-									for (int fp = 0; fp < tmpf.indexes.size(); fp++) {
+								if (tmpf.intIndexes.length > 0) {
+									for (int fp = 0; fp < tmpf.intIndexes.length; fp++) {
 		
-										vidx = ((Integer) (tmpf.indexes.elementAt(fp)))
-												.intValue();
-										if(fp<tmpf.indexes.size()-1)
-											vidx2 = ((Integer) (tmpf.indexes.elementAt(fp+1)))
-													.intValue();
+										vidx = tmpf.intIndexes[fp];
+										if(fp<tmpf.intIndexes.length-1)
+											vidx2 = tmpf.intIndexes[fp+1];
 										else
-											vidx2 = ((Integer) (tmpf.indexes.elementAt(0)))
-											.intValue();
+											vidx2 = tmpf.intIndexes[0];
 										
 										v = (Vertex) vertexes.elementAt(vidx - 1);
 										endV = (Vertex) vertexes.elementAt(vidx2 - 1);
@@ -412,6 +406,7 @@ public class OBJModel {
 			if (mtlfilename != null)
 				//parseMTL(new BufferedReader(new InputStreamReader(parent.getClass().getResourceAsStream("data/"+mtlfilename))));
 				parseMTL(getBufferedReader(sourceFolderURL + mtlfilename));
+			makeFacesSmaller();
 			debug("model loaded");
 			myWrap.setLodModelLoaded(lod);
 		} catch (Exception e) {
@@ -562,6 +557,39 @@ public class OBJModel {
 						mtlfilename = mtlfilename.substring(1,mtlfilename.length());
 					}
 				}
+			}
+		}
+	}
+	
+	public void makeFacesSmaller() {
+		for (int g = 0; g < groups.size(); g++) {
+			Group tmpgroup = (Group) (groups.elementAt(g));
+			for (int f = 0; f < tmpgroup.facets.size(); f++) {
+				Facet tmpfacet = (Facet) (tmpgroup.facets.elementAt(f));
+				
+				int numberOfIntegers = tmpfacet.indexes.size();
+				tmpfacet.intIndexes = new int[numberOfIntegers];
+				for (int i = 0; i < numberOfIntegers; i++) {
+					tmpfacet.intIndexes[i] = ((Integer)tmpfacet.indexes.elementAt(i)).intValue();
+				}
+				tmpfacet.indexes.clear();
+				tmpfacet.indexes = null;
+				
+				numberOfIntegers = tmpfacet.tindexes.size();
+				tmpfacet.intTIndexes = new int[numberOfIntegers];
+				for (int i = 0; i < numberOfIntegers; i++) {
+					tmpfacet.intTIndexes[i] = ((Integer)tmpfacet.tindexes.elementAt(i)).intValue();
+				}
+				tmpfacet.tindexes.clear();
+				tmpfacet.tindexes = null;
+				
+				numberOfIntegers = tmpfacet.nindexes.size();
+				tmpfacet.intNIndexes = new int[numberOfIntegers];
+				for (int i = 0; i < numberOfIntegers; i++) {
+					tmpfacet.intNIndexes[i] = ((Integer)tmpfacet.nindexes.elementAt(i)).intValue();
+				}
+				tmpfacet.nindexes.clear();
+				tmpfacet.nindexes = null;
 			}
 		}
 	}

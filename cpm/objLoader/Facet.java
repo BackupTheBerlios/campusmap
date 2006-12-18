@@ -24,6 +24,11 @@ public class Facet {
 	public Vector indexes;
 	public Vector tindexes;
 	public Vector nindexes;
+	
+	public int[] intIndexes;
+	public int[] intTIndexes;
+	public int[] intNIndexes;
+	
 
 	public Facet() {
 		indexes = new Vector();
