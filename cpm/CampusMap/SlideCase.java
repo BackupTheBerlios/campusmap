@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package CampusMap;
 
@@ -10,16 +10,16 @@ import java.util.Vector;
 /**
  * @author kriegerischerKämpfer
  *
- *  Still two cases: 
- * 
+ *  Still two cases:
+ *
  */
 public class SlideCase extends PApplet {
 	//Objects
 	Vector content;
-	
+
 	static final int RIGHT=0, BOTTOM=1, LEFT=2, TOP=3;
 	public static final int SHIFTED_IN=0, SHIFTED_OUT=1;
-	static private boolean enabled=true; 
+	static private boolean enabled=true;
 	private int state;
 	final int VERTICAL=0, HORIZONTAL=1;
 	private String name;
@@ -27,29 +27,29 @@ public class SlideCase extends PApplet {
 	private int buttonOnSideNum = 0;
 	public int width=200, height=200, extWidth, extHeight, top=0, left=0, extLeft, extTop, buttonShift=20;
 	private boolean hidden=true;
-	private int buttonLeft, buttonTop, buttonWidth=20, buttonHeight=height; 
-	private int contentLeft, contentTop, contentWidth=width, contentHeight=height; 
+	private int buttonLeft, buttonTop, buttonWidth=20, buttonHeight=height;
+	private int contentLeft, contentTop, contentWidth=width, contentHeight=height;
 	private float textRot;
-	
+
 	private PImage slideIcon;
 	private int iconToggle=0;
-	
+
 	CampusMap applet;
 	PFont myFont;
-	
+
 	int[][] buttonFill;
 	int[][] buttonOverFill;
-	
+
 	// Timing for sliding
 	private final int SLIDE_DURATION=1200;
 	private int slideBeginTime=0;
 	private int toPos, urPos, slideDistance, currOrigin;
-	
+
 	private boolean sliding;
 	private boolean requestForSlide=false;
 	private int dirOnScreen;
 	private int slideDir=1;
-	
+
 	private boolean mouseOverThis;
 	private boolean wasAlreadyOnThis=false;
 	private boolean mousePressed;
@@ -58,13 +58,14 @@ public class SlideCase extends PApplet {
 	private boolean buttonComponentChanged=true; //initial draw
 	private boolean contentComponentChanged=true;
 	private boolean wholeSlideCaseChanged=true;
+        public static boolean fontLoadInvoked=false;
 	int mousePressNum=0;
-	
+
 	private boolean initialDraw=true;
 
-	
-	
-	public SlideCase(CampusMap p_applet, String p_name, int side, int shift, 
+
+
+	public SlideCase(CampusMap p_applet, String p_name, int side, int shift,
 			int p_occupyOnSide, int p_slideOut){
 		applet= p_applet;
 		applet.env.objectInitDisplay.setText("SlideCases");
@@ -72,7 +73,7 @@ public class SlideCase extends PApplet {
 		state=SHIFTED_IN;
 		mousePressed=true;
 		mouseOverThis=false;
-		
+
 		snap2SideNum=side;
 		shiftOnSide = shift;
 		occupyOnSide= p_occupyOnSide;
@@ -80,33 +81,33 @@ public class SlideCase extends PApplet {
 
 		sliding = false;
 		slideIcon=loadImage(Environment.address+Environment.ressourceFolder+"arrow.gif");
-		
+
 		// Alignments
 		calcAlignment();
 
 		content = new Vector();
-		
+
 		//System.out.println("buttonTop"+buttonTop+", buttonHeight"+buttonHeight+", buttonWidth"+buttonWidth+", buttonLeft"+buttonLeft);
 		buttonFill = new int[buttonHeight][buttonWidth];
 		buttonOverFill = new int[buttonHeight][buttonWidth];
 		float multiplier = 255/ buttonWidth;
 		System.out.println("buttonFill[0].length: "+buttonFill[0].length);
 
-		for (int i=0; i<buttonFill.length; i++) { 
-		  for(int j=0; j<buttonFill[i].length; j++) { 
-		    int c = color( 200-(j*multiplier)/2 , 150, 150); 
-		    buttonFill[i][j] =c; 
-		  } 
-		} 
-		for (int i=0; i<buttonFill.length; i++) { 
-		  for(int j=0; j<buttonFill[i].length; j++) { 
-		    int c = color( 255-((j*multiplier)*2)/3 , 150, 150); 
-		    buttonOverFill[i][j] =c; 
-		  } 
-		} 
+		for (int i=0; i<buttonFill.length; i++) {
+		  for(int j=0; j<buttonFill[i].length; j++) {
+		    int c = color( 200-(j*multiplier)/2 , 150, 150);
+		    buttonFill[i][j] =c;
+		  }
+		}
+		for (int i=0; i<buttonFill.length; i++) {
+		  for(int j=0; j<buttonFill[i].length; j++) {
+		    int c = color( 255-((j*multiplier)*2)/3 , 150, 150);
+		    buttonOverFill[i][j] =c;
+		  }
+		}
 		buttonOver=false;
 	}
-	
+
 	public void calcAlignment(){
 		if(snap2SideNum==LEFT || snap2SideNum==RIGHT){
 			top = shiftOnSide;
@@ -183,22 +184,22 @@ public class SlideCase extends PApplet {
 			break;
 		}
 	}
-	
+
 	public void setup(){
 		loadPixels();
 		size(width, height, P3D);
 		//myFont = createFont(Environment.address+Environment.ressourceFolder+"Genetrix.otf", 10);
 		noLoop();
 	}
-	
+
 	public static void setActive(boolean p_enabled){
 		enabled=p_enabled;
 	}
-	
+
 	public void addContent(GuiObject[] obj){
 		for(int addIndex=0;addIndex<obj.length;addIndex++)content.add(obj[addIndex]);
 	}
-	
+
 	public int getWidth(){
 		return extWidth;
 	}
@@ -209,7 +210,7 @@ public class SlideCase extends PApplet {
 		return height;
 	}
 	public String getName(){
-		return name; 
+		return name;
 	}
 	public FVector getPos(){
 		float[] back = {extLeft, extTop};
@@ -219,7 +220,7 @@ public class SlideCase extends PApplet {
 		//width=content.width+30;
 		//height=content.height+30;
 		//calcAlignment();
-		
+
 		extWidth=width;
 		int lineAmount=height;
 		//int[] bufferInt = new int[pixels.length];
@@ -229,14 +230,14 @@ public class SlideCase extends PApplet {
 		extTop=top;
 		if(left!=urPos)hidden=false;
 		else hidden=true;
-		
+
 		return bufferImage;
 	}
 
 	public void evalMouse(int mouse_x, int mouse_y, boolean p_mouse_pressed, boolean p_mouse_released){
 		if(!sliding && enabled){
 			// genral mouseover for disabling the rest
-			if( mouse_x-left>0 && mouse_x-left<width && 
+			if( mouse_x-left>0 && mouse_x-left<width &&
 				mouse_y-top>0 && mouse_y-top<height){
 				// evoke mouse over
 				mouseover(mouse_x, mouse_y, p_mouse_pressed, p_mouse_released);
@@ -244,7 +245,7 @@ public class SlideCase extends PApplet {
 			// state change check
 			if(buttonOver!=oldButtonOver)buttonComponentChanged=true;
 			oldButtonOver=buttonOver;
-			
+
 			// autonomous content check
 			//**********************
 			for(int contentIndex=0; contentIndex<content.size();contentIndex++)
@@ -267,21 +268,21 @@ public class SlideCase extends PApplet {
 			mouseOverThis=true;
 			//button
 			//**********************
-			if( mouse_x-left>buttonLeft && mouse_x-left<buttonLeft+buttonWidth && 
+			if( mouse_x-left>buttonLeft && mouse_x-left<buttonLeft+buttonWidth &&
 				mouse_y-top>buttonTop 	&& mouse_y-top<buttonTop+buttonHeight)
 				buttonOver=true;
 			else buttonOver=false;
 		}
 	}
-	
+
 	public void mouseClick(){
 		slide();
 	}
-	
+
 	public void mouseOut(){
 		// ONLY when mouse leaves THIS slideCase
 		if(mouseOverThis){
-			//.. set Global control disable 
+			//.. set Global control disable
 			GuiObject.setIsInUse(false);
 			mouseOverThis=false;
 			applet.controls.setThreeDeeControlEnabled(true);
@@ -290,26 +291,26 @@ public class SlideCase extends PApplet {
 		buttonOver=false;
 		mousePressed=false;
 	}
-	
+
 	public void slide(){
 		slideBeginTime=applet.millis();
 		currOrigin=currOrigin==urPos?toPos:urPos;
 		state=state==SHIFTED_IN?SHIFTED_OUT:SHIFTED_IN;
 		sliding=true;
 	}
-	
+
 	public void requestSlide(){
 		requestForSlide=(requestForSlide?false:true);
 	}
-	
+
 	public int getState(){
 		return state;
 	}
-	
+
 	public boolean isSliding(){
 		return sliding;
 	}
-	
+
 	//calculates the current position in the current animation
 	private int updatePos(int p_val) {
 		int val=p_val;
@@ -330,7 +331,7 @@ public class SlideCase extends PApplet {
 			if(state==SHIFTED_IN)
 				for(int contentIndex=0; contentIndex<content.size();contentIndex++)
 					((GuiObject)content.get(contentIndex)).setActive(false);
-			
+
 			// new Slide if requested
 			if(requestForSlide){
 				slide();
@@ -353,7 +354,7 @@ public class SlideCase extends PApplet {
 				this.top=updatePos(this.top);
 			else if(dirOnScreen==HORIZONTAL)
 				this.left=updatePos(this.left);
-		
+
 		//Content changed? - draw all
 		if(contentComponentChanged && state!=SHIFTED_IN || wholeSlideCaseChanged){
 			drawContent();
@@ -364,7 +365,7 @@ public class SlideCase extends PApplet {
 			drawButtonPane();
 			buttonComponentChanged=false;
 		}
-		
+
 		if(initialDraw){
 			drawButtonPane();
 			initialDraw=false;
@@ -374,17 +375,17 @@ public class SlideCase extends PApplet {
 		rect(contentLeft+2, contentTop+2, contentWidth-2, contentHeight-2);
 		if(wholeSlideCaseChanged)updatePixels();
 	}
-	
+
 	private void drawButtonPane(){
 		int size = 20;
-		
+
 		noFill();
 		// buttonFill
 		//***************************************
-		for (int i=0; i<buttonFill.length;i++) 
-			for(int j=0; j<buttonFill[i].length;j++) 
-			    set(j+buttonLeft, i+buttonTop, (buttonOver?buttonOverFill[i][j]:buttonFill[i][j])); 
-		
+		for (int i=0; i<buttonFill.length;i++)
+			for(int j=0; j<buttonFill[i].length;j++)
+			    set(j+buttonLeft, i+buttonTop, (buttonOver?buttonOverFill[i][j]:buttonFill[i][j]));
+
 		//icon and font
 		//***************************************
 		if(slideIcon!=null){
@@ -404,25 +405,27 @@ public class SlideCase extends PApplet {
 			textFont(applet.myFont, 14);
 			text(name, 0, 0);
 			popMatrix();
-		}else {
+		}else if(!fontLoadInvoked){
 			applet.myFont = loadFont(Environment.address+Environment.ressourceFolder+"CenturyGothic-14.vlw.gz");
+                        System.out.println("fontLoad is goddamn invoked");
+                        fontLoadInvoked=true;
 		}
-		
+
 		// global hasChanged
 		//*****************************************
 		wholeSlideCaseChanged=true;
 	}
-	
+
 	private void drawContent(){
 		//background
 		//***************************************
 		background(240, 240, 255);
 		//fill(246, 244, 189);
-		
+
 		for(int contentIndex=0; contentIndex<content.size();contentIndex++)
 			((GuiObject)content.get(contentIndex)).draw(this);
-		
-		
+
+
 		// global hasChanged
 		//*****************************************
 		wholeSlideCaseChanged=true;
@@ -431,8 +434,8 @@ public class SlideCase extends PApplet {
 	public PImage swapImage(PImage img)throws Throwable{
 		PImage bufferImage = new PImage(img.width, img.height);
 		bufferImage.format=ARGB;
-		for(int backIndex=img.width, 
-				runIndex=0, 
+		for(int backIndex=img.width,
+				runIndex=0,
 				lineIndex=0; lineIndex*img.width+runIndex<img.pixels.length;backIndex--, runIndex++){
 			int tempPixel = img.pixels[lineIndex*img.width+backIndex];
 			bufferImage.pixels[lineIndex*img.width+runIndex]=tempPixel;

@@ -11,7 +11,7 @@ public class Human extends MovingObject{
 
 	protected final static int MOVE_Z 			= 20;
 	protected final static int FADE_DISTANCE	= 500; // distance at which the object fades out
-	
+
 	boolean interestedInMouse = false;
 
 	//constructor
@@ -51,7 +51,7 @@ public class Human extends MovingObject{
 		if (doCheck) {
 			if (myDrawApplet.groundPlane.check(myPos, 1.0f))
 				myDir.multiplyMe(-1);
-			else {
+/*			else {
 				CollisionSphere sphere = myDrawApplet.objectManager.testBuildingsWithPoint(myPos, 20.f);
 				if (sphere != null)
 					myDir = sphere.getTangent(myPos);
@@ -62,7 +62,7 @@ public class Human extends MovingObject{
 						interestedInMouse = !interestedInMouse;
 				}
 			}
-		}
+*/		}
 	}
 
 	private void newRandomDirection() {

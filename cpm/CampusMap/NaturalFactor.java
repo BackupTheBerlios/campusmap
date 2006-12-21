@@ -100,7 +100,7 @@ class NaturalFactor {
 
 	public void putIntoEffect() {
 		if (applet.millis() % updateTime < 1000) {
-			if (applet.millis() - timeLastUpdate > 1000) {
+			if (applet.millis() - timeLastUpdate > 10000) {
 				timeLastUpdate = applet.millis();
 				update();
 			}
@@ -135,7 +135,6 @@ class NaturalFactor {
 		fogColor = fogColors[(int)fogNumber].combine(fogColors[((int)fogNumber)>fogColors.length-2?0:((int)fogNumber)+1], fogNumber - ((int)fogNumber));
 		int fogNearDist	= (int)(fogDistances[(int)fogNumber][0] * (1.0f - (fogNumber - ((int)fogNumber))) + fogDistances[((int)fogNumber)>fogColors.length-2?0:((int)fogNumber)+1][0] * (fogNumber - ((int)fogNumber)));
 		int fogFarDist	= (int)(fogDistances[(int)fogNumber][1] * (1.0f - (fogNumber - ((int)fogNumber))) + fogDistances[((int)fogNumber)>fogColors.length-2?0:((int)fogNumber)+1][1] * (fogNumber - ((int)fogNumber)));
-		myFog.setupFog(fogNearDist, fogFarDist);
 		myFog.setColor(fogColor.getP5Color());
 		//System.out.println("fogNearDist " + fogNearDist + " fogFarDist " + fogFarDist + "color: " + fogColor.getP5Color() + " " + fogColor.r + " " + fogColor.g + " " + fogColor.b);
 	}

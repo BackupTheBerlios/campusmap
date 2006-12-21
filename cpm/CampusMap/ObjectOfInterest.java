@@ -3,12 +3,12 @@ package CampusMap;
 import objLoader.OBJModel;
 import processing.core.PApplet;
 
-/** Class describing main funcionality of the objects on the surface 
- *  which are selectable for further informations  
- * 
+/** Class describing main funcionality of the objects on the surface
+ *  which are selectable for further informations
+ *
  */
 public class ObjectOfInterest{
-	
+
 	// static and final Definitions
 
 	protected int currentDetailLevel;
@@ -30,27 +30,27 @@ public class ObjectOfInterest{
 	protected String address;
 	protected float myAlpha = 1.0f;
 	protected boolean drawingActive = true;
-	
+
 	protected boolean hideOnTour = false;
-	
+
 	// detail-constants
 	static final int OVERVIEW = 0, CLOSER = 1, SELECTED = 2;
 	final static String[] lods = {"OVERVIEW", "CLOSER", "SELECTED"};
-	
-	// distance at which to force a detail-change 
+
+	// distance at which to force a detail-change
 	static final int CLOSER_DISTANCE = 400;
 	static final int DETAIL_DISTANCE = 100;
-	
+
 	public ObjectOfInterest(){/**/}
-	
+
 	public ObjectOfInterest(CampusMap drawApplet, FVector p_myPos, FVector p_myScale, FVector p_myRot, String[] p_modelsToLoad, String p_address, boolean p_selectable, boolean p_drawLines, boolean p_zFade){
 		myParentApplet = (CampusMap)drawApplet;
 		myParentApplet.env.objectInitDisplay.setText("ObjectsOfInterest");
 		selectable = p_selectable;
 		drawLines = p_drawLines;
-		zFade = p_zFade; 
+		zFade = p_zFade;
 		notifying = false;
-		
+
 		//oldDetailLevel=-1;
 		currentDetailLevel=OVERVIEW;
 		this.myPos		= p_myPos;
@@ -67,17 +67,17 @@ public class ObjectOfInterest{
 			modelsBeingLoaded[i] = false;
 		}
 	}
-	
+
 	public int getNumberOfLodModels() {
 		return myModels.length;
 	}
-	
+
 	public boolean getLodModelLoaded(int lod) {
 		if (lod > (getNumberOfLodModels()-1) || modelsLoaded[lod])
 			return true;
 		return false;
 	}
-	
+
 	public void setLodModelLoaded(int modelNo) {
 		modelsLoaded[modelNo] = true;
 		modelsBeingLoaded[modelNo] = false;
@@ -98,24 +98,25 @@ public class ObjectOfInterest{
 		System.out.println("request start draw");
 		notifying=true;
 	}
-	
-	
+
+
 	public boolean getLodModelBeingLoaded(int lod) {
 		if (lod > (getNumberOfLodModels()-1) || modelsBeingLoaded[lod])
 			return true;
 		return false;
 	}
-	
+
 	public void setLodModelBeingLoaded(int lod, boolean beingLoaded) {
 		if (lod <= (getNumberOfLodModels()-1))
 			modelsBeingLoaded[lod] = beingLoaded;
-			
-	}	
-	
+
+	}
+
 	// Model loading
 	public void loadModel(int lod){
 		try{
 			myModels[lod] = new OBJModel(myParentApplet, this, lod);
+                        myModels[lod].setParentApplet(myParentApplet);
 			myModels[lod].load(address, modelsToLoad[lod]);
 			//myModels[modelNo].load(myParentApplet.getClass().getResourceAsStream("data/"+modelsToLoad[modelNo]));
 			myModels[lod].drawMode(processing.core.PConstants.TRIANGLES);
@@ -138,26 +139,25 @@ public class ObjectOfInterest{
 			myDrawApplet.rotateX(myRot.getX());
 			myDrawApplet.rotateY(myRot.getY());
 			myDrawApplet.rotateY(myRot.getZ());
-			myModels[currentDetailLevel].setParentApplet(myDrawApplet);
-			
+
 			myModels[currentDetailLevel].draw(myAlpha, drawGrey);
 			myDrawApplet.popMatrix();
-			
+
 			//First time drawing invokes the showing.
 			if(wholeObjectIsInited==false)wholeObjectIsInited=true;
 		}
 	}
-	
+
 	public void setAlpha(float alpha) {
 		myAlpha = alpha;
 	}
-	
+
 	/**
-	 * actual Modelloading at detailchange 
+	 * actual Modelloading at detailchange
 	 * to be overwritten
 	 */
 	public void changeModelDetail(){}
-	
+
 	// methods to change or obtain the level of detail
 	public void setDetailLevel(int p_detailLevel){
 		currentDetailLevel = p_detailLevel;
@@ -165,10 +165,10 @@ public class ObjectOfInterest{
 	public int getDetailLevel(){
 		return currentDetailLevel;
 	}
-	
-	/** 
-	 *  method called when selected(rollover and click once), 
-	 *  excludes doubleclick, 
+
+	/**
+	 *  method called when selected(rollover and click once),
+	 *  excludes doubleclick,
 	 *  overwritten by specialisations
 	 */
 	public void click(){

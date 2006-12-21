@@ -395,6 +395,7 @@ public class CampusMap extends PApplet{
 		System.arraycopy(pixels, 0, buffer, 0, pixels.length);
 		overviewImage=new PImage(buffer, width, height, RGB);
 		// overviewImage.save("image.tif");
+                buffer=null;
 		System.out.println("shut for overview");
 	}
 
@@ -481,7 +482,7 @@ public class CampusMap extends PApplet{
 			Environment.contentHolder.setBorder(Environment.grayline);
 		}
 	}
-	
+
 	public boolean isTouring() {
 		return touring;
 	}

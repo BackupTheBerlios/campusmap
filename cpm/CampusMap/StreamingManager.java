@@ -50,7 +50,12 @@ public class StreamingManager extends Thread {
 	}
 
         public void setUrgendModelToLoad(ObjectOfInterest urgentModelToLoad_p){
-          urgentModelToLoad=urgentModelToLoad_p;
+          // stop stop, has this model so much lods?!
+          try {
+            if (urgentModelToLoad.getNumberOfLodModels() == MAX_LOD_LEVEL) {
+              urgentModelToLoad = urgentModelToLoad_p;
+            }
+          }catch (NullPointerException npex) {System.out.println("Still not entirely loaded, please wait a bit.");}
         }
 
 	private void findNewFileToLoad(int slot) {
@@ -154,7 +159,7 @@ class StreamingFile extends Thread {
 		runNumber=0;
 		modelToLoad = p_modelToLoad;
 		lodToLoad = p_lodToLoad;
-		//if(applet!=null)//applet.env.objectInitDisplay.setText(modelToLoad.modelsToLoad[lodToLoad]);
+		System.out.println("starting to load model "+p_modelToLoad.modelsToLoad[lodToLoad]);
 		try{
 			start();
 		}catch(IllegalThreadStateException e){
