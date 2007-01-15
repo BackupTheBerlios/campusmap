@@ -31,7 +31,7 @@ public class SlideCase extends PApplet {
 	private int contentLeft, contentTop, contentWidth=width, contentHeight=height;
 	private float textRot;
 
-	private PImage slideIcon;
+	private StreamingPicture slideIcon;
 	private int iconToggle=0;
 
 	CampusMap applet;
@@ -80,7 +80,8 @@ public class SlideCase extends PApplet {
 		slideOut=p_slideOut;
 
 		sliding = false;
-		slideIcon=loadImage(Environment.address+Environment.ressourceFolder+"arrow.gif");
+		slideIcon = new StreamingPicture(this, "arrow.gif");
+                slideIcon.start();
 
 		// Alignments
 		calcAlignment();
@@ -320,9 +321,9 @@ public class SlideCase extends PApplet {
 			slideBeginTime = 0;
 			slideDir*=-1;
 			sliding=false;
-			if(slideIcon!=null){
+			if(slideIcon.isDone()){
 				try{
-					slideIcon= swapImage(slideIcon);
+					slideIcon.target= swapImage(slideIcon.target);
 				}catch(Throwable e){
 					System.out.println("Slidecase icon wird noch geladen...");
 				}
@@ -388,8 +389,8 @@ public class SlideCase extends PApplet {
 
 		//icon and font
 		//***************************************
-		if(slideIcon!=null){
-			image(slideIcon, buttonLeft, buttonTop);
+		if(slideIcon.isDone()){
+			image(slideIcon.target, buttonLeft, buttonTop);
 		}
 		//else slideIcon=loadImage(Environment.address+Environment.ressourceFolder+"arrow.gif");
 

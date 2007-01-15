@@ -7,7 +7,7 @@ import processing.core.PApplet;
  *  which are selectable for further informations
  *
  */
-public class ObjectOfInterest{
+public class ObjectOfInterest implements IStreamingFile{
 
 	// static and final Definitions
 
@@ -83,9 +83,9 @@ public class ObjectOfInterest{
 		modelsBeingLoaded[modelNo] = false;
 		System.out.println("Model "+modelsToLoad[modelNo]+" is loaded.");
 		if(notifying){
-			System.out.println("start draw");
-			myParentApplet.startDrawing();//invokeDisplay call should be here
-			notifying=false;
+                    System.out.println("start draw");
+                    myParentApplet.startDrawing();//invokeDisplay call should be here
+                    notifying=false;
 		}
 	}
 	public void setLodModelLoadFailed(int modelNo) {
@@ -94,8 +94,8 @@ public class ObjectOfInterest{
 		System.out.println("Modelloading has failed for "+modelsToLoad[modelNo]+".");
 	}
 
-	public void notifyInitedObj(){
-		System.out.println("request start draw");
+	public void notifyInitedObj(int lodNum){
+		System.out.println("request start draw for "+modelsToLoad[lodNum]);
 		notifying=true;
 	}
 
@@ -113,7 +113,7 @@ public class ObjectOfInterest{
 	}
 
 	// Model loading
-	public void loadModel(int lod){
+	public void loadModel(int lod) throws Exception{
 		try{
 			myModels[lod] = new OBJModel(myParentApplet, this, lod);
                         myModels[lod].setParentApplet(myParentApplet);
@@ -124,7 +124,7 @@ public class ObjectOfInterest{
 			myModels[lod].setZFade(zFade);
 			myModels[lod].setFadeMidPoint(new float[]{0.0f, 0.0f, 0.0f});
 		}catch(ArrayIndexOutOfBoundsException e){
-			System.err.println("not so many models for this object: "+modelsToLoad[lod-1]);
+			System.err.println("not so many models for this object: ");
 			e.printStackTrace();
 		}
 	}
@@ -174,6 +174,7 @@ public class ObjectOfInterest{
 	public void click(){
 		// to be overwritten
 	}
+
 } // end ObjectsOfIterest
 
 
