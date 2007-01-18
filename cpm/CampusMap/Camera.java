@@ -889,7 +889,7 @@ class Camera{
 	}
 
 	public void setControlsEnabled(Boolean status) {
-		applet.controls.setEnabled(status.booleanValue());
+                applet.preInteractivitySetup();
 	}
 
 	public void resetBuildings() {

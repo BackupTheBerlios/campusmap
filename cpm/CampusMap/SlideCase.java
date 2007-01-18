@@ -31,11 +31,9 @@ public class SlideCase extends PApplet {
 	private int contentLeft, contentTop, contentWidth=width, contentHeight=height;
 	private float textRot;
 
-	private StreamingPicture slideIcon;
 	private int iconToggle=0;
 
 	CampusMap applet;
-	PFont myFont;
 
 	int[][] buttonFill;
 	int[][] buttonOverFill;
@@ -80,8 +78,6 @@ public class SlideCase extends PApplet {
 		slideOut=p_slideOut;
 
 		sliding = false;
-		slideIcon = new StreamingPicture(this, "arrow.gif");
-                slideIcon.start();
 
 		// Alignments
 		calcAlignment();
@@ -321,9 +317,9 @@ public class SlideCase extends PApplet {
 			slideBeginTime = 0;
 			slideDir*=-1;
 			sliding=false;
-			if(slideIcon.isDone()){
+			if(applet.slideIcon.isDone()){
 				try{
-					slideIcon.target= swapImage(slideIcon.target);
+					applet.slideIcon.target= swapImage(applet.slideIcon.target);
 				}catch(Throwable e){
 					System.out.println("Slidecase icon wird noch geladen...");
 				}
@@ -389,12 +385,12 @@ public class SlideCase extends PApplet {
 
 		//icon and font
 		//***************************************
-		if(slideIcon.isDone()){
-			image(slideIcon.target, buttonLeft, buttonTop);
+		if(applet.slideIcon.isDone()){
+			image(applet.slideIcon.target, buttonLeft, buttonTop);
 		}
 		//else slideIcon=loadImage(Environment.address+Environment.ressourceFolder+"arrow.gif");
 
-		if(applet.myFont!=null){
+		if(applet.myFont.isDone()){
 			pushMatrix();
 			if(snap2SideNum==LEFT || snap2SideNum==RIGHT){
 				translate(buttonLeft+5,buttonTop+20,0);
@@ -403,13 +399,9 @@ public class SlideCase extends PApplet {
 				translate(buttonLeft+20,buttonTop+13,0);
 			}
 			fill(246, 244, 189);
-			textFont(applet.myFont, 14);
+			textFont(applet.myFont.font, 14);
 			text(name, 0, 0);
 			popMatrix();
-		}else if(!fontLoadInvoked){
-			applet.myFont = loadFont(Environment.address+Environment.ressourceFolder+"CenturyGothic-14.vlw.gz");
-                        System.out.println("fontLoad is goddamn invoked");
-                        fontLoadInvoked=true;
 		}
 
 		// global hasChanged

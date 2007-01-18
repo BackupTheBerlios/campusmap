@@ -41,6 +41,7 @@ public class CampusMap extends PApplet{
 	GroundPlane groundPlane;
 	ObjectManager objectManager;
 	MovingObjectsManager movingObjectsManager;
+        StreamingManager streamingManager;
 	Building selectedBuilding;
 	Building lastSelectedBuilding;
 	OBJModel	letters;
@@ -72,7 +73,9 @@ public class CampusMap extends PApplet{
 	private FVector pos2Fly2AfterPrep;
 	private boolean touring=false;
 	boolean notify = false;
-	boolean inited = false;
+        boolean afterFirstStreaming=false;
+        boolean afterIntro = false;
+        boolean inited = false;
 	boolean drawDebugSpheres = false;
 	boolean objectsGoForTheMouse = true;
 
@@ -82,8 +85,9 @@ public class CampusMap extends PApplet{
 
 	int runNum;
 
-	PFont myFont;
 	PImage overlay;
+        StreamingPicture slideIcon;
+        StreamingFont myFont;
 
 	int ropeSlideIndex=0;
 
@@ -94,299 +98,239 @@ public class CampusMap extends PApplet{
 	public	Vector		spheres;
 
 	public void setup() {
-		System.out.println("before");
-		size(SCREEN_WIDTH,SCREEN_HEIGHT, P3D);
-		System.out.println("afterwards");
-		// create the empty zbuffer array and fill it
+          //everything that happens before Streaming invokation
+          preStreamSetup();
 
-		  //clearZ=new float[width*height];
-		  //for (int i = 0; i < width*height;i++) clearZ[i] = 1.0f;
+          //other setups are called after streaming of min lod-level and intro camera tour
 
-		g3 = (PGraphics3) g;
-		// ? does this help ? ((PGraphics3)g).triangle.setCulling(true);
-		runNum=0;
-
-		groundPlane = new GroundPlane(this);
-		returnChanges = true;
-
-		theCamera	= new Camera(this);
-		controls	= new Controls(this, theCamera);
-		theCamera.moveToNow(new FVector(-500.51917f, 951.8057f, 200));
-		theCamera.lookAtNow(new FVector(-500.51917f, 851.8057f, 0));
-
-		// Camera Rotate Reference
-		//letters = new OBJModel(this);
-
-		naturalFactor = new NaturalFactor(this);
-
-		// houses = new Houses(this, 100);
-
-		// Model Architecture
-		letterRotX=0;
-		letterRotY=0;
-		letterRotZ=0;
-
-		boxes = new Boxes(this);
-
-		buildingUniScale=1;
-		objectManager = new ObjectManager(this, theCamera);
-		movingObjectsManager = new MovingObjectsManager(this);
-
-		loadPixels();
-
-		locator = new Locator(this);
-
-		noLoop();
-
-
-		/* GUI-Elements
-		detailButton = new Button(450, 300, 30, 30, "detailModusButton.gif", new int[] {0,0}, false, "Beenden des Detailmodus");
-		detailButton.setVisible(false);
-		*/
-
-		// temp for testing
-		spheres = new Vector();
-
-
+          noLoop();
 	}
 
-	public void startDrawing(){
-		//System.out.println("startDrawing");
-		loop();
-	}
+        private void preStreamSetup(){
+          size(SCREEN_WIDTH, SCREEN_HEIGHT, P3D);
+          g3 = (PGraphics3) g;
+          noLoop();
+          // ? does this help ? ((PGraphics3)g).triangle.setCulling(true);
+          groundPlane = new GroundPlane(this);
+          returnChanges = true;
+          spheres = new Vector();
+          slideIcon = new StreamingPicture(this, "arrow.gif");
+          myFont = new StreamingFont(this, "CenturyGothic-14.vlw.gz");
+          Vector importantObjects = new Vector();
+          importantObjects.add(slideIcon);
+          importantObjects.add(myFont);
 
-	public void setNotifyInterval(int p_interval){
-		notifyInterval = p_interval;
-		intervalBegin=millis();
-		notify=true;
-	}
+          theCamera = new Camera(this);
+          controls = new Controls(this, theCamera);
+          naturalFactor = new NaturalFactor(this);
+          boxes = new Boxes(this);
+          locator = new Locator(this);
+          objectManager = new ObjectManager(this, theCamera);
 
-	public void setNotify(boolean p_notify){
-		notify=p_notify;
-	}
+          streamingManager = new StreamingManager(this, objectManager.worldObjects, importantObjects);
+          movingObjectsManager = new MovingObjectsManager(this);
+        }
 
-	public void setBuildingUniformScale(float scaleVal){
-		buildingUniScale = scaleVal;
-	}
+        public void preIntroSetup(){
+          try {
 
-	public float getBuildingUniformScale(){
-		return buildingUniScale;
-	}
+            int bgWidth = env.bgImg.getWidth(env);
+            int bgHeight = env.bgImg.getHeight(env);
+            int[] bgPixels = new int[bgWidth * bgHeight];
+            for (int i = 0; i < bgPixels.length; i++)
+              if (bgPixels[i] != 0) System.out.print(bgPixels[i]);
+            overlay = new PImage(bgPixels, bgWidth, bgHeight, ARGB);
+            runNum = 0;
+            controls.setEnabled(false);
 
-	public void setBuildingDatabaseScale(float scaleVal){
-		buildingDatabaseScale = scaleVal;
-	}
+           /**
+             *  give the environment the hint to swop the surfaces
+             */
+            env.addThem();
+            /***
+             *  get into looping
+             */
+            afterFirstStreaming=true;
+            /**
+             *
+             * overview shut
+            */
+            draw();
+            ortho( -1500, 800, -800, 800, 1000, 2000);
+            theCamera.moveToNow(new FVector(-500.51917f, 951.8057f, 200));
+            theCamera.lookAtNow(new FVector(-500.51917f, 851.8057f, 0));
+            draw();
+            loadPixels();
+            noStroke();
+            getOverviewShut();
+            draw();
+            loop();
 
-	public float getBuildingDatabaseScale(){
-		return buildingDatabaseScale;
-	}
+            /***
+             * intro
+             *
+             **/
+            theCamera.lookAtNow(new FVector( -500.51917f, 851.8057f, 0));
+            theCamera.lookAtInter(new FVector(1341.8213f, 757.865f, 0),
+                                  new Integer(4000), new Integer(3));
+            Object[] actionObjects = {
+                new FVector(0, 0, -88), new Integer(2000), new Integer(0)};
+            theCamera.queueAction("lookAtInter", 4000, actionObjects);
+            theCamera.moveToNow(new FVector( -500.51917f, 951.8057f, 200));
+            theCamera.moveToInter(new FVector(1341.8213f, 857.865f, 200),
+                                  new Integer(4000), new Integer(3));
+            Object[] actionObjects2 = {
+                new FVector(0, 800, Camera.maxCameraHeight), new Integer(2000),
+                new Integer(1)};
+            theCamera.queueAction("moveToInter", 0, actionObjects2);
+            Object[] actionObjects3 = {
+                Boolean.valueOf(true)};
+            theCamera.queueAction("setControlsEnabled", 3500, actionObjects3);
+           }
+          catch (Throwable t) {
+            env.setErrorDisplay("Das Applet konnte nicht gestartet werden. Eventuell ist dies ein Speicherproblem. Bitte stoppen sie alle anderen Java-Anwendungen. GGf. muss der Browser neu gestartet werden um den Cache zu leeren.");
+          }
+        }
+
+        public void preInteractivitySetup(){
+          System.err.println("Hello!?!?");
+          controls.setEnabled(true);
+          this.streamingManager.continueStreamingAfterIntro();
+        }
 
 	public void draw() {
+          if(!afterFirstStreaming)return;
+          runNum++;
 
-		runNum++;
-		//System.out.println("runNum:"+runNum);
-		//env.addThem();
-		if(runNum>1){
-			sphere(50);
-			if (runNum<4)
-				ortho(-1500, 800, -800, 800, 1000, 2000);
-			else returnChanges = theCamera.apply();
+          returnChanges = theCamera.apply();
 
-			if (runNum == 4) {
-				theCamera.lookAtNow(new FVector(-500.51917f, 851.8057f, 0));
-				theCamera.lookAtInter(new FVector(1341.8213f, 757.865f, 0), new Integer(4000), new Integer(3));
-				Object[] actionObjects = {new FVector(0, 0, -88), new Integer(2000), new Integer(0)};
-				theCamera.queueAction("lookAtInter", 4000, actionObjects);
-				theCamera.moveToNow(new FVector(-500.51917f, 951.8057f, 200));
-				theCamera.moveToInter(new FVector(1341.8213f, 857.865f, 200), new Integer(4000), new Integer(3));
-				Object[] actionObjects2 = {new FVector(0, 800, Camera.maxCameraHeight), new Integer(2000), new Integer(1)};
-				theCamera.queueAction("moveToInter", 0, actionObjects2);
-				Object[] actionObjects3 = {Boolean.valueOf(true)};
-				theCamera.queueAction("setControlsEnabled", 3500, actionObjects3);
-			}
+          // test world Objects with screen frustum
+          if (returnChanges) {
+            for (int i = 0; i < objectManager.worldObjects.size(); i++) {
+              if ( ( (ObjectOfInterest) (objectManager.worldObjects.elementAt(i))).
+                  selectable)
+                ( (Building) (objectManager.worldObjects.elementAt(i))).
+                    testIfOnScreen();
+            }
+          }
+          //process moving objects
+          movingObjectsManager.process();
+          // draw time and weather conditions
+          naturalFactor.putIntoEffect();
+          // korrdinatensystem
+          groundPlane.draw(touring);
+          clearZBuffer();
+          // houses.draw();
+          boxes.draw();
 
-			// test world Objects with screen frustum
-			if (runNum>2) {
-				if (returnChanges) {
-					for(int i = 0;i < objectManager.worldObjects.size(); i++) {
-						if (((ObjectOfInterest)(objectManager.worldObjects.elementAt(i))).selectable)
-							((Building)(objectManager.worldObjects.elementAt(i))).testIfOnScreen();
-					}
-				}
-			}
+          pushMatrix();
+          scale(buildingUniScale);
+          // draw models
+          for (int i = 0; i < objectManager.worldObjects.size(); i++) {
+            if ( ( (ObjectOfInterest) (objectManager.worldObjects.elementAt(i))).
+                selectable) {
+              ( (Building) (objectManager.worldObjects.elementAt(i))).draw(this,
+                  touring);
+            }
+            else ( (ObjectOfInterest) (objectManager.worldObjects.elementAt(i))).draw(this,
+                touring);
+          }
+          popMatrix();
 
-			//process moving objects
-			movingObjectsManager.process();
-			// draw time and weather conditions
-			naturalFactor.putIntoEffect();
+          /********************
+           *  AFTER INTRO
+           ****************************************************************************************/
+          if(afterIntro){                                                                         //
+            if (theCamera.getPos() != null) Overview.setLookPoint(theCamera.getPos());            //
+            locator.draw();                                                                       //
+                                                                                                  //
+            // draw moving objects                                                                //
+            movingObjectsManager.draw();                                                          //
+                                                                                                  //
+            if (drawDebugSpheres) {                                                               //
+              sphereDetail(20);                                                                   //
+              for (int i = 0; i < objectManager.worldObjects.size(); i++) {                       //
+                if ( ( (ObjectOfInterest) (objectManager.worldObjects.elementAt(i))).             //
+                    selectable)                                                                   //
+                  ( (Building) (objectManager.worldObjects.elementAt(i))).debugDraw(this);        //
+              }                                                                                   //
+            }                                                                                     //
+                                                                                                  //
+            fill(255, 255, 255, 255);                                                             //
+            noStroke();                                                                           //
+                                                                                                  //
+            //sphere list drawing for testing                                                     //
+            for (int i = 0; i < spheres.size(); i++) {                                            //
+              FVector pos = ( (FVector) (spheres.elementAt(i))).cloneMe();                        //
+              fill(255, 100, 100, 255);                                                           //
+              pushMatrix();                                                                       //
+              translate(pos.getX(), pos.getY(), pos.getZ());                                      //
+              sphere(10 + 5 * i);                                                                 //
+              popMatrix();                                                                        //
+            }                                                                                     //
+                                                                                                  //
+          }                                                                                       //
+          /***************************************************************************************
+           *  END AFTER INTRO
+           ****************************/
 
-			// korrdinatensystem
-			groundPlane.draw(touring);
-			clearZBuffer();
+          naturalFactor.applySurroundings();
 
-			// houses.draw();
+          if (selectedBuilding != null) {
+            pushMatrix();
+            scale(buildingUniScale);
+            selectedBuilding.draw(this, false);
+            popMatrix();
+          }
 
+          // clearZBuffer();
+          hint(DISABLE_DEPTH_TEST);
 
+          /*
+           * if (overviewImage != null) { for (int y = 0, y2 = 0; y <
+           * (overviewImage.height * width); y += width, y2 +=
+           * overviewImage.width) { for (int x = width - overviewImage.width,
+           * x2 = 0; x < width; x++, x2++) { //System.out.println("" + (x + y) + " " +
+           * (x2+y2)); pixels[y+x] = 0xff000000 + color( (red(pixels[y+x]) +
+           * red (overviewImage.pixels[y2+x2]))/2, (green(pixels[y+x]) + green
+           * (overviewImage.pixels[y2+x2]))/2, (blue(pixels[y+x]) +
+           * blue(overviewImage.pixels[y2+x2]))/2); } } }
+           */
 
-			/**
-			 * Drawing of Overview window
-			 */
-	// boxes campusmap logo test
-			boxes.draw();
+          // 2D interface (buttons and sliders so far)
+          camera(); // reset camera
+          //lights();
 
-			locator.draw();
+          fill(0, 20, 150, 20);
+          stroke(255, 0, 0);
+          noFill();
 
-			if(touring){
-				if(preparingForTouring){
-					detailPreparingStep();
-//					System.out.println("Touring");
-				}
-			}
+          // render SlideCases
+          renderSlideCases(mouseX, mouseY);
 
+          if (touring) {
+            if (preparingForTouring) {
+              detailPreparingStep();
+            }else{
+              paintTouringRope();
+              drawDetailBraces();
+            }
+          }
 
-	  if(theCamera.getPos()!=null) Overview.setLookPoint(theCamera.getPos());
-	 /* overview.setControlPoints(new FVector[]{ theCamera.m_vControlPoints[0],
-	 * theCamera.m_vControlPoints[1], theCamera.getOriginPos(),
-	 * theCamera.getTargetPos() }); }
-	 */
+          if (overlay != null) {
+            image(overlay, 0, 250);
+          }
 
-			pushMatrix();
-			scale(buildingUniScale);
-			// draw models (not the transparent ones
-			for(int i = 0;i < objectManager.worldObjects.size(); i++) {
-				if (((ObjectOfInterest)(objectManager.worldObjects.elementAt(i))).selectable) {
-					((Building)(objectManager.worldObjects.elementAt(i))).draw(this, touring);
-				}
-				else ((ObjectOfInterest)(objectManager.worldObjects.elementAt(i))).draw(this, touring);
-			}
-			popMatrix();
+          theCamera.drawFramerate();
 
-			// draw moving objects
-			movingObjectsManager.draw();
+          // clean up and similar
+          // *****************************************************
+          controls.reset();
+          env.repaintEnv();
 
-			if (drawDebugSpheres) {
-				sphereDetail(20);
-				for(int i = 0;i < objectManager.worldObjects.size(); i++) {
-					if (((ObjectOfInterest)(objectManager.worldObjects.elementAt(i))).selectable)
-						((Building)(objectManager.worldObjects.elementAt(i))).debugDraw(this);
-				}
-			}
-
-
-			fill(255,255,255,255);
-			noStroke();
-
-			naturalFactor.applySurroundings();
-
-			// 2nd draw models, only for transparent ones
-//			for(int i = 0;i < objectManager.worldObjects.size(); i++) {
-//				if (((ObjectOfInterest)(objectManager.worldObjects.elementAt(i))).selectable && ((Building)(objectManager.worldObjects.elementAt(i))).myAlpha < 1.0f) {
-//					pushMatrix();
-//					scale(buildingUniScale);
-//					((Building)(objectManager.worldObjects.elementAt(i))).draw(this, false);
-//					popMatrix();
-//					break;
-//				}
-//			}
-			if(selectedBuilding!=null){
-				pushMatrix();
-				scale(buildingUniScale);
-				selectedBuilding.draw(this, false);
-				popMatrix();
-			}
-
-
-			// clearZBuffer();
-			hint(DISABLE_DEPTH_TEST);
-
-			//sphere list drawing for testing
-			for (int i = 0; i< spheres.size(); i++){
-				FVector pos = ((FVector)(spheres.elementAt(i))).cloneMe();
-				fill(255, 100, 100, 255);
-				pushMatrix();
-				translate(pos.getX(), pos.getY(), pos.getZ());
-				sphere(10+5*i);
-				popMatrix();
-			}
-
-			//updatePixels();
-
-			/*
-			 * if (overviewImage != null) { for (int y = 0, y2 = 0; y <
-			 * (overviewImage.height * width); y += width, y2 +=
-			 * overviewImage.width) { for (int x = width - overviewImage.width,
-			 * x2 = 0; x < width; x++, x2++) { //System.out.println("" + (x + y) + " " +
-			 * (x2+y2)); pixels[y+x] = 0xff000000 + color( (red(pixels[y+x]) +
-			 * red (overviewImage.pixels[y2+x2]))/2, (green(pixels[y+x]) + green
-			 * (overviewImage.pixels[y2+x2]))/2, (blue(pixels[y+x]) +
-			 * blue(overviewImage.pixels[y2+x2]))/2); } } }
-			 */
-
-			// 2D interface (buttons and sliders so far)
-			camera(); // reset camera
-			//lights();
-
-			// The second time all gets painted
-			if (runNum==3){
-				try{
-					noStroke();
-					getOverviewShut();
-					env.addThem();
-
-					int bgWidth = env.bgImg.getWidth(env);
-					int bgHeight =  env.bgImg.getHeight(env);
-					int[] bgPixels = new int[bgWidth*bgHeight];
-					PixelGrabber pg = new PixelGrabber(env.bgImg, 0, 0, bgWidth, bgHeight, bgPixels, 0, bgWidth);
-					for(int i=0;i<bgPixels.length;i++)
-						if(bgPixels[i]!=0) System.out.print(bgPixels[i]);
-					overlay = new PImage(bgPixels, bgWidth, bgHeight, ARGB);//loadImage(Environment.address+Environment.ressourceFolder+"arrows01.png");
-				}catch(Throwable t){
-					env.setErrorDisplay("Das Applet konnte nicht gestartet werden. Eventuell ist dies ein Speicherproblem. Bitte stoppen sie alle anderen Java-Anwendungen. GGf. muss der Browser neu gestartet werden um den Cache zu leeren.");
-				}
-			}
-
-
-			// rotating thing to rotate camera - has to get its own class
-			// ****************************************
-			fill(0, 20, 150, 20);
-			stroke(255,0,0);
-			noFill();
-
-			if(runNum>3)
-			// render SlideCases
-			// ****************************************
-			renderSlideCases(mouseX, mouseY);
-			// **************************************
-
-			if(touring){
-				paintTouringRope();
-				drawDetailBraces();
-			}
-
-			if(overlay!=null){
-//				System.out.println("bgImage groesse: "+bgPixels[50]);
-				image(overlay, 0, 250);
-			}
-
-			// lights();
-			// buttons.evaluate(mouseX, mouseY, controls.mouseJustReleased,
-			// controls.mouseJustPressed);
-			// buttons.draw(this);
-
-			theCamera.drawFramerate();
-
-
-
-			// clean up and similar
-			// *****************************************************
-			controls.reset();
-			env.repaintEnv();
-
-		}
-
-		// wait delay to allow processing of other system tasks
-		delay(30);
-		noHint(DISABLE_DEPTH_TEST);
+          // wait delay to allow processing of other system tasks
+          delay(30);
+          noHint(DISABLE_DEPTH_TEST);
 	}
 
 	public void getOverviewShut(){
@@ -483,10 +427,6 @@ public class CampusMap extends PApplet{
 		}
 	}
 
-	public boolean isTouring() {
-		return touring;
-	}
-
 	public void hideSlideCases(){
 		for(int scHideIndex=0;scHideIndex<objectManager.drawers.size();scHideIndex++)
 			if(((SlideCase)objectManager.drawers.get(scHideIndex)).getState()!=SlideCase.SHIFTED_IN){
@@ -551,16 +491,9 @@ public class CampusMap extends PApplet{
 	  }
 
 
-	/*
-	 * void updateBox() { // Draw a box that rotates in a circle pushMatrix();
-	 * if(carClockwise) { boxAngle += 0.1; if(round(boxX/5)*5 == 0 &&
-	 * round(boxY/5)*5 == 0) { carClockwise = false; boxX = 0; boxY = 0; } }
-	 * else { boxAngle -= 0.1; if(round(boxX/5)*5 == 0 && round(boxY/5)*5 == 0) {
-	 * carClockwise = true; boxX = 0; boxY = 0; } } boxX += 10 * cos(boxAngle);
-	 * boxY += 10 * sin(boxAngle); translate(boxX, boxY, 0); rotateZ(boxAngle);
-	 * translate(0,-50,0); noStroke(); fill(255, 0, 0); box(50, 30, 20);
-	 * popMatrix(); }
-	 */
+          public boolean isTouring() {
+                  return touring;
+          }
 
 	/**
 	 *
@@ -570,6 +503,32 @@ public class CampusMap extends PApplet{
 	{
 		env=holder;
 	}
+
+        public void setNotifyInterval(int p_interval){
+                notifyInterval = p_interval;
+                intervalBegin=millis();
+                notify=true;
+        }
+
+        public void setNotify(boolean p_notify){
+                notify=p_notify;
+        }
+
+        public void setBuildingUniformScale(float scaleVal){
+                buildingUniScale = scaleVal;
+        }
+
+        public float getBuildingUniformScale(){
+                return buildingUniScale;
+        }
+
+        public void setBuildingDatabaseScale(float scaleVal){
+                buildingDatabaseScale = scaleVal;
+        }
+
+        public float getBuildingDatabaseScale(){
+                return buildingDatabaseScale;
+        }
 
 //	public void findRoom(int buildingNo, int levelNo, int roomNo) {
 //		try {

@@ -163,7 +163,7 @@ public class Bus extends MovingObject{
 		//myDrawApplet.translate(-(BUS_LENGTH/2), -(2*BUS_WIDTH), BUS_HEIGHT+0.1f);
 		myDrawApplet.translate((BUS_LENGTH/3), -(BUS_WIDTH/2), BUS_HEIGHT/2+0.01f);
 		myDrawApplet.rotateZ(PConstants.PI/2);
-		myDrawApplet.textFont(myDrawApplet.myFont, 26);
+		myDrawApplet.textFont(myDrawApplet.myFont.font, 26);
 		myDrawApplet.fill(255, 255, 255, 255);
 		myDrawApplet.text(myBusNumber, 0, 0, 70, 70);
 		myDrawApplet.popMatrix();

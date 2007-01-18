@@ -2,6 +2,7 @@ package CampusMap;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import processing.core.PFont;
 
 /**
  * <p>Title: StreamingFile</p>
@@ -16,14 +17,10 @@ import processing.core.PImage;
 class StreamingFile extends Thread {
 
         boolean done = false;
-        boolean notify= false;
 
         public StreamingFile(){
           done = false;
           setPriority(Thread.MIN_PRIORITY);
-        }
-        public void registerNotify(){
-                notify=true;
         }
         public void run() {
                  done = true;
@@ -33,24 +30,18 @@ class StreamingFile extends Thread {
         }
 }
 
-interface IStreamingFile
-{
-  public void notifyInitedObj(int lod);
-}
-
 class StreamingModel extends StreamingFile {
 
   int lodToLoad = 0;
-  IStreamingFile fileToLoad;
+  ObjectOfInterest fileToLoad;
 
-  public StreamingModel(IStreamingFile p_modelToLoad, int p_lodToLoad) {
+  public StreamingModel(ObjectOfInterest p_modelToLoad, int p_lodToLoad) {
     super();
     fileToLoad = p_modelToLoad;
     lodToLoad = p_lodToLoad;
   }
 
   public void run() {
-    if(notify)fileToLoad.notifyInitedObj(lodToLoad);
     try {
       ( (ObjectOfInterest) fileToLoad).setLodModelBeingLoaded(
                         lodToLoad, true);
@@ -83,16 +74,19 @@ class StreamingPicture extends StreamingFile {
 
 class StreamingFont extends StreamingFile {
 
-  IStreamingFile fileToLoad;
-  PApplet target;
+  String fileToLoad;
+  PApplet applet;
+  PFont font;
 
-  public StreamingFont(PApplet target_p, IStreamingFile p_modelToLoad){
+
+  public StreamingFont(PApplet applet_p, String p_fileToLoad){
     super();
-    fileToLoad = p_modelToLoad;
+    applet = applet_p;
+    fileToLoad = p_fileToLoad;
   }
 
   public void run() {
-    target.loadFont(Environment.address+Environment.ressourceFolder+fileToLoad);
+    font = applet.loadFont( Environment.address+Environment.ressourceFolder + fileToLoad);
     super.run();
   }
 }

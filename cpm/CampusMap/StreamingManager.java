@@ -13,7 +13,7 @@ public class StreamingManager extends Thread {
 	static	final	int	SIMULTAN_FILES		= 3;
 	static	final	int	MAX_LOD_LEVEL		= 2;
         static  final   int     URGENT_FILE             = 1;
-        static  final   int     INIT_MIN_LOD            = 0;
+        static  final   int     INIT_MIN_LOD            = 1;
 	PApplet applet;
 	Vector worldObjects;
         StreamingFile urgentModelToLoad;
@@ -26,12 +26,13 @@ public class StreamingManager extends Thread {
 	int initedObjCounter = 0;
 	int lodToLoad = 0;
         int waitingTime = 300;                          // waiting time to be extended afterwards loading the main models. Afterwards we need performance
+        boolean streamingPausedForIntro=false;
         boolean someModelNOTLoaded=true;
 	boolean load2Loaded = false;
 	boolean initMinLodReached;
 	//JFrame ladeFenster;
 
-	public StreamingManager(PApplet p_applet, Vector p_worldObjects) {
+	public StreamingManager(PApplet p_applet, Vector p_worldObjects, Collection otherImportantObjects) {
 		applet = p_applet;
 		((CampusMap)applet).env.objectInitDisplay.setText("StreamingManager");
 		initMinLodReached=false;
@@ -41,17 +42,15 @@ public class StreamingManager extends Thread {
                 streamingFiles = new Vector[MAX_LOD_LEVEL];
                 for (int i=0; i<MAX_LOD_LEVEL; i++)
                   streamingFiles[i] = new Vector();
-                System.err.println("worldObjects length"+worldObjects.size());
                 for (int i=0; i<worldObjects.size(); i++)
                   for(int lodIndex=0;
                       lodIndex<((ObjectOfInterest)worldObjects.get(i)).getNumberOfLodModels() &&
                       lodIndex<MAX_LOD_LEVEL;
                       lodIndex++){
-                    streamingFiles[lodIndex].add(new StreamingModel( (IStreamingFile) worldObjects.
-                                              get(i), lodIndex));
+                    streamingFiles[lodIndex].add(new StreamingModel(
+                        (ObjectOfInterest)worldObjects.get(i), lodIndex));
                   }
-                ((StreamingFile)streamingFiles[0].lastElement()).registerNotify();
-                System.err.println("streamingFiles length"+streamingFiles[0].size());
+                streamingFiles[0].addAll(otherImportantObjects);
                 slots = new StreamingFile[SIMULTAN_FILES];
 		start();
 	}
@@ -64,11 +63,15 @@ public class StreamingManager extends Thread {
 		return number;
 	}
 
+        public void continueStreamingAfterIntro(){
+          streamingPausedForIntro=false;
+        }
+
         public void setUrgendModelToLoad(ObjectOfInterest urgentModelToLoad_p){
           // stop stop, has this model so much lods?!
           try {
             if (urgentModelToLoad_p.getNumberOfLodModels() >= MAX_LOD_LEVEL) {
-              urgentModelToLoad = new StreamingModel((IStreamingFile)urgentModelToLoad_p, MAX_LOD_LEVEL);
+              urgentModelToLoad = new StreamingModel((ObjectOfInterest)urgentModelToLoad_p, MAX_LOD_LEVEL);
             }else System.err.println("Doesn't have so much detail");
           }catch (NullPointerException npex) {}
         }
@@ -105,27 +108,34 @@ public class StreamingManager extends Thread {
               }
               arrayPointer++;
               if(arrayPointer >= streamingFiles[arrayLod].size()){
-                //System.out.println("Level " + arrayLod + " loaded");
                 arrayLod++;
                 arrayPointer=0;
               }
              }
             }
 
-            if(someModelNOTLoaded){
+            /**********************\
+             *  Invoke of drawing
+            \**********************/
+            if(!((CampusMap)applet).afterFirstStreaming && lodToLoad==INIT_MIN_LOD){
+              System.err.println("Level " + lodToLoad + " loaded");
+              // if this was the initialisation level
+              streamingPausedForIntro = true;
+              ( (CampusMap) applet).preIntroSetup();
+            }
+
+            if(someModelNOTLoaded && !streamingPausedForIntro){
               // set display message and invoke loading
               /*                  ( (CampusMap) applet).env.objectInitDisplay.setText(
                                     ((ObjectOfInterest)streamingFiles[lodToLoad].get(currLoadingPointer)).modelsToLoad[lodToLoad]);
                */
               System.out.println("load Level " + lodToLoad +
                                  " with length " + streamingFiles[lodToLoad].size() +
-                                 " and model "+(currLoadingPointer) +
-                                 " notify: " + ( (StreamingFile) streamingFiles[lodToLoad].get( currLoadingPointer)).notify);
+                                 " and model "+(currLoadingPointer));
               slots[slot] =
                   ( (StreamingFile) streamingFiles[lodToLoad].get( currLoadingPointer));
-              try {
-                slots[slot].start();
-              }
+
+              try {slots[slot].start();}
               catch (IllegalThreadStateException ex) {
                 ex.printStackTrace();
               }
@@ -156,20 +166,20 @@ public class StreamingManager extends Thread {
 		((CampusMap)applet).env.initDisplay.setText("loading geometry files");
                 // runs all the time as we want to load models on runtime
 		while (true) {
+                  if(!streamingPausedForIntro)
+                    try {
 //			System.out.println("load lods loop started: " + numLoadedFiles + " of " + numFilesToLoad + " files loaded.");
-                    for (int i = 0; i < SIMULTAN_FILES; i++) {
+                      for (int i = 0; i < SIMULTAN_FILES; i++) {
                          if (slots[i] == null ||
                              slots[i].isDone() ){
                            //System.out.println("slot " + i + " is empty and can now be used.");
                            findNewFileToLoad(i);
                          }
-                    }
-
-			try {
-				Thread.sleep(waitingTime);
-			} catch(InterruptedException ie) {
-				System.err.println("Insomnia @ StreamingManager");
-			}
+                       }
+                       Thread.sleep(waitingTime);
+                  } catch(InterruptedException ie) {
+                    System.err.println("Insomnia @ StreamingManager");
+                  }
 		}
 		//Environment.setToolTip("Geometrie komplett geladen.", 0);
 		// Commented because overrides error message if internet connection doesn't work

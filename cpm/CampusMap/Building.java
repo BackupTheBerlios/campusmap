@@ -184,7 +184,7 @@ public class Building extends ObjectOfInterest {
 	    case MouseEvent.MOUSE_CLICKED:
 	    	if (mouseOver && myParentApplet.controls.getThreeDeeControlEnabled()) {
                       // set exclusive loading
-                      myParentApplet.objectManager.streamingManager.setUrgendModelToLoad(this);
+                      myParentApplet.streamingManager.setUrgendModelToLoad(this);
 	    		FVector		centerPosition	=  getCenterPosition();
 				centerPosition.setZ(flyAroundCenterHeight);
 //				myParentApplet.theCamera.flyToPosInBuilding(entrancePosition, centerPosition, flyAroundRadius, 2000, 2000, this, false);

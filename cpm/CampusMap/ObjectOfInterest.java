@@ -7,7 +7,7 @@ import processing.core.PApplet;
  *  which are selectable for further informations
  *
  */
-public class ObjectOfInterest implements IStreamingFile{
+public class ObjectOfInterest{
 
 	// static and final Definitions
 
@@ -82,12 +82,8 @@ public class ObjectOfInterest implements IStreamingFile{
 		modelsLoaded[modelNo] = true;
 		modelsBeingLoaded[modelNo] = false;
 		System.out.println("Model "+modelsToLoad[modelNo]+" is loaded.");
-		if(notifying){
-                    System.out.println("start draw");
-                    myParentApplet.startDrawing();//invokeDisplay call should be here
-                    notifying=false;
-		}
 	}
+
 	public void setLodModelLoadFailed(int modelNo) {
 		modelsLoaded[modelNo] = false;
 		modelsBeingLoaded[modelNo] = false;

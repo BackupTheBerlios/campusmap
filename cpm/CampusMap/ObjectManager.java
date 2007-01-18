@@ -14,8 +14,6 @@ import nanoxml.*;
  */
 public class ObjectManager{
 
-	public StreamingManager streamingManager;
-
 	//final XMLElement	XMLObjects	= new XMLElement("objects"); //"root" xml element
 	private XMLElement	XMLObjects;
 	//private FileReader	XMLReader;
@@ -92,8 +90,6 @@ public class ObjectManager{
 		} catch(Exception e){
 			applet.env.setErrorDisplay("The Applet could not be initianted because the Configuration-file could not be loaded. Check the Internet-connection or access to local version Files.");
 		}
-
-		streamingManager = new StreamingManager(applet, worldObjects);
 	}
 
 	private void initGuiObjects(XMLElement guiGroups) {
