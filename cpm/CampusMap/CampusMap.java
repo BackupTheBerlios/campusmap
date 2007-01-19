@@ -74,6 +74,7 @@ public class CampusMap extends PApplet{
 	private boolean touring=false;
 	boolean notify = false;
         boolean afterFirstStreaming=false;
+        boolean afterOverviewShot=false;
         boolean afterIntro = false;
         boolean inited = false;
 	boolean drawDebugSpheres = false;
@@ -143,10 +144,6 @@ public class CampusMap extends PApplet{
             runNum = 0;
             controls.setEnabled(false);
 
-           /**
-             *  give the environment the hint to swop the surfaces
-             */
-            env.addThem();
             /***
              *  get into looping
              */
@@ -156,21 +153,28 @@ public class CampusMap extends PApplet{
              * overview shut
             */
             draw();
-            ortho( -1500, 800, -800, 800, 1000, 2000);
-            theCamera.moveToNow(new FVector(-500.51917f, 951.8057f, 200));
-            theCamera.lookAtNow(new FVector(-500.51917f, 851.8057f, 0));
+            /*theCamera.moveToNow(new FVector(0.0f, 0.0f, 1000));
+            theCamera.lookAtNow(new FVector(0.0f, 1.0f, 0));
+            */
             draw();
+            ortho( -1500, 800, -800, 800, 1000, 2000);
             loadPixels();
             noStroke();
             getOverviewShut();
+            afterOverviewShot=true;
             draw();
             loop();
 
+            /**
+             *  give the environment the hint to swop the surfaces
+             */
+            env.addThem();
             /***
              * intro
              *
              **/
-            theCamera.lookAtNow(new FVector( -500.51917f, 851.8057f, 0));
+            theCamera.moveToNow(new FVector( -200.0f, 950.0f, 1000));
+            theCamera.lookAtNow(new FVector( -200.51917f, 851.8057f, 0));
             theCamera.lookAtInter(new FVector(1341.8213f, 757.865f, 0),
                                   new Integer(4000), new Integer(3));
             Object[] actionObjects = {
@@ -202,7 +206,7 @@ public class CampusMap extends PApplet{
           if(!afterFirstStreaming)return;
           runNum++;
 
-          returnChanges = theCamera.apply();
+          if(afterOverviewShot)returnChanges = theCamera.apply();
 
           // test world Objects with screen frustum
           if (returnChanges) {

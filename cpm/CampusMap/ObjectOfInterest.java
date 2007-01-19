@@ -81,7 +81,7 @@ public class ObjectOfInterest{
 	public void setLodModelLoaded(int modelNo) {
 		modelsLoaded[modelNo] = true;
 		modelsBeingLoaded[modelNo] = false;
-		System.out.println("Model "+modelsToLoad[modelNo]+" is loaded.");
+//		System.out.println("Model "+modelsToLoad[modelNo]+" is loaded.");
 	}
 
 	public void setLodModelLoadFailed(int modelNo) {
@@ -157,6 +157,7 @@ public class ObjectOfInterest{
 	// methods to change or obtain the level of detail
 	public void setDetailLevel(int p_detailLevel){
 		currentDetailLevel = p_detailLevel;
+		System.out.println("detaillevel at:"+currentDetailLevel);
 	}
 	public int getDetailLevel(){
 		return currentDetailLevel;
@@ -172,6 +173,5 @@ public class ObjectOfInterest{
 	}
 
 } // end ObjectsOfIterest
-
 
 

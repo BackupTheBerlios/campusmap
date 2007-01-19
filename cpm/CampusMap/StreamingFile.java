@@ -47,6 +47,7 @@ class StreamingModel extends StreamingFile {
                         lodToLoad, true);
       ( (ObjectOfInterest) fileToLoad).loadModel(lodToLoad);
       super.run();
+      System.out.println("Loading of file "+fileToLoad.modelsToLoad[lodToLoad]+" is done");
     }
     catch (Exception ex) {
       System.err.print("Modelloading failed at one point.");
@@ -69,6 +70,7 @@ class StreamingPicture extends StreamingFile {
   public void run() {
     target = applet.loadImage(Environment.address+Environment.ressourceFolder+fileToLoad);
     super.run();
+    System.out.println("Loading of file "+fileToLoad+" is done");
   }
 }
 
@@ -88,6 +90,7 @@ class StreamingFont extends StreamingFile {
   public void run() {
     font = applet.loadFont( Environment.address+Environment.ressourceFolder + fileToLoad);
     super.run();
+    System.out.println("Loading of file "+fileToLoad+" is done");
   }
 }
 
