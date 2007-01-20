@@ -56,7 +56,7 @@ public class SlideCase extends PApplet {
 	private boolean buttonComponentChanged=true; //initial draw
 	private boolean contentComponentChanged=true;
 	private boolean wholeSlideCaseChanged=true;
-        public static boolean fontLoadInvoked=false;
+    private	boolean fontLoadInvoked=false;
 	int mousePressNum=0;
 
 	private boolean initialDraw=true;
@@ -88,7 +88,6 @@ public class SlideCase extends PApplet {
 		buttonFill = new int[buttonHeight][buttonWidth];
 		buttonOverFill = new int[buttonHeight][buttonWidth];
 		float multiplier = 255/ buttonWidth;
-		System.out.println("buttonFill[0].length: "+buttonFill[0].length);
 
 		for (int i=0; i<buttonFill.length; i++) {
 		  for(int j=0; j<buttonFill[i].length; j++) {
@@ -391,6 +390,10 @@ public class SlideCase extends PApplet {
 		//else slideIcon=loadImage(Environment.address+Environment.ressourceFolder+"arrow.gif");
 
 		if(applet.myFont.isDone()){
+			if(!fontLoadInvoked){
+				fontLoadInvoked=true;
+				textFont(applet.myFont.font, 14);
+			}
 			pushMatrix();
 			if(snap2SideNum==LEFT || snap2SideNum==RIGHT){
 				translate(buttonLeft+5,buttonTop+20,0);
@@ -399,7 +402,6 @@ public class SlideCase extends PApplet {
 				translate(buttonLeft+20,buttonTop+13,0);
 			}
 			fill(246, 244, 189);
-			textFont(applet.myFont.font, 14);
 			text(name, 0, 0);
 			popMatrix();
 		}

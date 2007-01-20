@@ -3,7 +3,8 @@ package CampusMap;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PFont;
-
+import java.io.*;
+import java.awt.*;
 /**
  * <p>Title: StreamingFile</p>
  *
@@ -69,8 +70,23 @@ class StreamingPicture extends StreamingFile {
 
   public void run() {
     target = applet.loadImage(Environment.address+Environment.ressourceFolder+fileToLoad);
-    super.run();
-    System.out.println("Loading of file "+fileToLoad+" is done");
+    /**
+     * Load an AWT image synchronously.
+     */
+      MediaTracker tracker = new MediaTracker(applet);
+      byte bytes[] = applet.loadBytes(Environment.address+Environment.ressourceFolder+fileToLoad);
+      if (bytes != null) {
+        Image awtImage = Toolkit.getDefaultToolkit().createImage(bytes);
+        tracker.addImage(awtImage, 0);
+        try {
+            tracker.waitForAll();
+            target = new PImage(awtImage);
+            super.run();
+            System.out.println("Loading of file "+fileToLoad+" is done");
+          } catch (InterruptedException e) {
+            //e.printStackTrace();  // non-fatal, right?
+          }
+      }
   }
 }
 
@@ -88,8 +104,22 @@ class StreamingFont extends StreamingFile {
   }
 
   public void run() {
-    font = applet.loadFont( Environment.address+Environment.ressourceFolder + fileToLoad);
-    super.run();
+    try {
+	    String lower = (Environment.address+Environment.ressourceFolder + fileToLoad).toLowerCase();
+	    InputStream input = applet.openStream(Environment.address+Environment.ressourceFolder + fileToLoad);
+	
+	    if (lower.endsWith(".vlw.gz")) {
+	      input = new java.util.zip.GZIPInputStream(input);
+	
+	    } else if (!lower.endsWith(".vlw")) {
+	      // this gets thrown down below
+	      throw new IOException("I don't know how to load a font named " +fileToLoad);
+	    }
+	    font = new PFont(input);
+		super.run();
+	  } catch (Exception e) {
+	    e.printStackTrace();
+	  }    
     System.out.println("Loading of file "+fileToLoad+" is done");
   }
 }

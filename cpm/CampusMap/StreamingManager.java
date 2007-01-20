@@ -39,19 +39,19 @@ public class StreamingManager extends Thread {
 		worldObjects = p_worldObjects;
 		numObjectsToLoad = worldObjects.size();
 		numFilesToLoad = findNumberOfFilesForWorldObj();
-                streamingFiles = new Vector[MAX_LOD_LEVEL];
-                for (int i=0; i<MAX_LOD_LEVEL; i++)
-                  streamingFiles[i] = new Vector();
-                for (int i=0; i<worldObjects.size(); i++)
-                  for(int lodIndex=0;
-                      lodIndex<((ObjectOfInterest)worldObjects.get(i)).getNumberOfLodModels() &&
-                      lodIndex<MAX_LOD_LEVEL;
-                      lodIndex++){
-                    streamingFiles[lodIndex].add(new StreamingModel(
-                        (ObjectOfInterest)worldObjects.get(i), lodIndex));
-                  }
-                streamingFiles[0].addAll(otherImportantObjects);
-                slots = new StreamingFile[SIMULTAN_FILES];
+        streamingFiles = new Vector[MAX_LOD_LEVEL];
+        for (int i=0; i<MAX_LOD_LEVEL; i++)
+          streamingFiles[i] = new Vector();
+        streamingFiles[0].addAll(otherImportantObjects);
+        for (int i=0; i<worldObjects.size(); i++)
+          for(int lodIndex=0;
+              lodIndex<((ObjectOfInterest)worldObjects.get(i)).getNumberOfLodModels() &&
+              lodIndex<MAX_LOD_LEVEL;
+              lodIndex++){
+            streamingFiles[lodIndex].add(new StreamingModel(
+                (ObjectOfInterest)worldObjects.get(i), lodIndex));
+          }
+        slots = new StreamingFile[SIMULTAN_FILES];
 		start();
 	}
 
@@ -123,26 +123,28 @@ public class StreamingManager extends Thread {
               streamingPausedForIntro = true;
               ( (CampusMap) applet).preIntroSetup();
             }
-
-            if(someModelNOTLoaded && !streamingPausedForIntro){
-              // set display message and invoke loading
-              /*                  ( (CampusMap) applet).env.objectInitDisplay.setText(
-                                    ((ObjectOfInterest)streamingFiles[lodToLoad].get(currLoadingPointer)).modelsToLoad[lodToLoad]);
-               */
-              System.out.println("load Level " + lodToLoad +
-                                 " with length " + streamingFiles[lodToLoad].size() +
-                                 " and model "+(currLoadingPointer));
-              slots[slot] =
-                  ( (StreamingFile) streamingFiles[lodToLoad].get( currLoadingPointer));
-
-              try {slots[slot].start();}
-              catch (IllegalThreadStateException ex) {
-                ex.printStackTrace();
-              }
-            } else {
-              // no model currently to load!
-              // setting down loading check interval
-              waitingTime = 2000;
+            if(!streamingPausedForIntro){
+	            if(someModelNOTLoaded){
+	              // set display message and invoke loading
+	              /*                  ( (CampusMap) applet).env.objectInitDisplay.setText(
+	                                    ((ObjectOfInterest)streamingFiles[lodToLoad].get(currLoadingPointer)).modelsToLoad[lodToLoad]);
+	               */
+	              System.out.println("load Level " + lodToLoad +
+	                                 " with length " + streamingFiles[lodToLoad].size() +
+	                                 " and model "+(currLoadingPointer)+
+	                                 " at slot: "+slot);
+	              slots[slot] =
+	                  ( (StreamingFile) streamingFiles[lodToLoad].get( currLoadingPointer));
+	
+	              try {slots[slot].start();}
+	              catch (IllegalThreadStateException ex) {
+	                ex.printStackTrace();
+	              }
+	            } else {
+	              // no model currently to load!
+	              // setting down loading check interval
+	              waitingTime = 2000;
+	            }
             }
 	}
 

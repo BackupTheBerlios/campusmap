@@ -191,13 +191,14 @@ public class CampusMap extends PApplet{
                 Boolean.valueOf(true)};
             theCamera.queueAction("setControlsEnabled", 3500, actionObjects3);
            }
-          catch (Throwable t) {
+          catch (Exception e) {
+        	e.printStackTrace();
             env.setErrorDisplay("Das Applet konnte nicht gestartet werden. Eventuell ist dies ein Speicherproblem. Bitte stoppen sie alle anderen Java-Anwendungen. GGf. muss der Browser neu gestartet werden um den Cache zu leeren.");
           }
         }
 
         public void preInteractivitySetup(){
-          System.err.println("Hello!?!?");
+          System.err.println("Go ahead with streaming please!");
           controls.setEnabled(true);
           this.streamingManager.continueStreamingAfterIntro();
         }
