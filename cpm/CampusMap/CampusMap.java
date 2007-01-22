@@ -110,7 +110,6 @@ public class CampusMap extends PApplet{
         private void preStreamSetup(){
           size(SCREEN_WIDTH, SCREEN_HEIGHT, P3D);
           g3 = (PGraphics3) g;
-          noLoop();
           // ? does this help ? ((PGraphics3)g).triangle.setCulling(true);
           groundPlane = new GroundPlane(this);
           returnChanges = true;
@@ -235,7 +234,7 @@ public class CampusMap extends PApplet{
             if ( ( (ObjectOfInterest) (objectManager.worldObjects.elementAt(i))).
                 selectable) {
               ( (Building) (objectManager.worldObjects.elementAt(i))).draw(this,
-                  touring);
+                  false);
             }
             else ( (ObjectOfInterest) (objectManager.worldObjects.elementAt(i))).draw(this,
                 touring);
