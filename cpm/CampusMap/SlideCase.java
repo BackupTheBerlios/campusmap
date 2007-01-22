@@ -15,7 +15,9 @@ import java.util.Vector;
  */
 public class SlideCase extends PApplet {
 	//Objects
+	CampusMap applet;
 	Vector content;
+	PImage slideIcon;
 
 	static final int RIGHT=0, BOTTOM=1, LEFT=2, TOP=3;
 	public static final int SHIFTED_IN=0, SHIFTED_OUT=1;
@@ -33,7 +35,6 @@ public class SlideCase extends PApplet {
 
 	private int iconToggle=0;
 
-	CampusMap applet;
 
 	int[][] buttonFill;
 	int[][] buttonOverFill;
@@ -57,6 +58,7 @@ public class SlideCase extends PApplet {
 	private boolean contentComponentChanged=true;
 	private boolean wholeSlideCaseChanged=true;
     private	boolean fontLoadInvoked=false;
+    private	boolean iconLoadInvoked=false;
 	int mousePressNum=0;
 
 	private boolean initialDraw=true;
@@ -316,9 +318,9 @@ public class SlideCase extends PApplet {
 			slideBeginTime = 0;
 			slideDir*=-1;
 			sliding=false;
-			if(applet.slideIcon.isDone()){
+			if(this.slideIcon != null){
 				try{
-					applet.slideIcon.target= swapImage(applet.slideIcon.target);
+					slideIcon= swapImage(slideIcon);
 				}catch(Throwable e){
 					System.out.println("Slidecase icon wird noch geladen...");
 				}
@@ -384,8 +386,10 @@ public class SlideCase extends PApplet {
 
 		//icon and font
 		//***************************************
-		if(applet.slideIcon.isDone()){
-			image(applet.slideIcon.target, buttonLeft, buttonTop);
+		if(slideIcon != null)image(slideIcon, buttonLeft, buttonTop);
+		else if(applet.slideIcon.isDone() && !iconLoadInvoked){
+			iconLoadInvoked=true;
+			this.slideIcon = applet.slideIcon.target; 
 		}
 		//else slideIcon=loadImage(Environment.address+Environment.ressourceFolder+"arrow.gif");
 

@@ -25,12 +25,13 @@ public class StreamingManager extends Thread {
 	int numObjectsToLoad = 0;
 	int initedObjCounter = 0;
 	int lodToLoad = 0;
-        int waitingTime = 300;                          // waiting time to be extended afterwards loading the main models. Afterwards we need performance
-        boolean streamingPausedForIntro=false;
-        boolean someModelNOTLoaded=true;
+	int currLoadedLod=0;                            // Up to which level should I count up on trying to find a not loaded model 
+    int waitingTime = 300;                          // waiting time to be extended afterwards loading the main models. Afterwards we need performance
+    boolean streamingPausedForIntro=false;
+    boolean someModelNOTInited=true;
 	boolean load2Loaded = false;
 	boolean initMinLodReached;
-	//JFrame ladeFenster;
+	//JFrame ladeFenster; 
 
 	public StreamingManager(PApplet p_applet, Vector p_worldObjects, Collection otherImportantObjects) {
 		applet = p_applet;
@@ -82,6 +83,7 @@ public class StreamingManager extends Thread {
           int arrayLod=0;
           int currLoadingPointer=0;
           boolean foundModel = false;
+          boolean currLodLevelLoaded=true;
           /**
            *  First check if urgent model to load somewhere (presumably will be building clicked)
            */
@@ -97,19 +99,25 @@ public class StreamingManager extends Thread {
             /**
              *  ELse check on all lods if there's something left
              */
-            someModelNOTLoaded=false;
-            while(!someModelNOTLoaded && arrayLod < MAX_LOD_LEVEL){
-              if(arrayLod < MAX_LOD_LEVEL && (
-                  !( (StreamingFile) streamingFiles[arrayLod].get( arrayPointer)).isDone() &&
-                  !( (StreamingFile) streamingFiles[arrayLod].get( arrayPointer)).isAlive() ) ){
-                currLoadingPointer=arrayPointer;
-                lodToLoad=arrayLod;
-                someModelNOTLoaded=true;
+            someModelNOTInited=false;
+            // Loop through current lod until some model found...
+            while(!someModelNOTInited && arrayPointer < streamingFiles[currLoadedLod].size()){
+            	// if model not DONE already mention that this lod is NOT to be extended yet = repeat this lod next time
+            	if(!( (StreamingFile) streamingFiles[currLoadedLod].get( arrayPointer)).isDone() ){
+            	  // if also not ACTIVE in the moment, LOAD this model
+            	  if(!( (StreamingFile) streamingFiles[currLoadedLod].get( arrayPointer)).isAlive()){
+                      currLoadingPointer=arrayPointer;
+                      lodToLoad=currLoadedLod;
+                      someModelNOTInited=true;
+            	  }
+            	  currLodLevelLoaded=false;
               }
+            	//increase pointer and afterwards look if the increased pointer is larger than models in this lod
+            	// if so, AND "flag if some model not done" was not changed to true 
               arrayPointer++;
-              if(arrayPointer >= streamingFiles[arrayLod].size()){
-                arrayLod++;
-                arrayPointer=0;
+              if(arrayPointer >= streamingFiles[currLoadedLod].size()){
+            	 // only increase if all models in this lod are loaded
+            	if((currLoadedLod+1 < MAX_LOD_LEVEL) && currLodLevelLoaded)currLoadedLod++;
               }
              }
             }
@@ -124,7 +132,7 @@ public class StreamingManager extends Thread {
               ( (CampusMap) applet).preIntroSetup();
             }
             if(!streamingPausedForIntro){
-	            if(someModelNOTLoaded){
+	            if(someModelNOTInited){
 	              // set display message and invoke loading
 	              /*                  ( (CampusMap) applet).env.objectInitDisplay.setText(
 	                                    ((ObjectOfInterest)streamingFiles[lodToLoad].get(currLoadingPointer)).modelsToLoad[lodToLoad]);

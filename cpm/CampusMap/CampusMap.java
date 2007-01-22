@@ -234,7 +234,7 @@ public class CampusMap extends PApplet{
             if ( ( (ObjectOfInterest) (objectManager.worldObjects.elementAt(i))).
                 selectable) {
               ( (Building) (objectManager.worldObjects.elementAt(i))).draw(this,
-                  false);
+                  false /* Don't draw in gray old:touring*/);
             }
             else ( (ObjectOfInterest) (objectManager.worldObjects.elementAt(i))).draw(this,
                 touring);

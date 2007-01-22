@@ -48,7 +48,7 @@ class StreamingModel extends StreamingFile {
                         lodToLoad, true);
       ( (ObjectOfInterest) fileToLoad).loadModel(lodToLoad);
       super.run();
-      System.out.println("Loading of file "+fileToLoad.modelsToLoad[lodToLoad]+" is done");
+      System.out.println("Loading of file "+fileToLoad.modelsToLoad[lodToLoad]+" is done: "+done);
     }
     catch (Exception ex) {
       System.err.print("Modelloading failed at one point.");
@@ -82,7 +82,7 @@ class StreamingPicture extends StreamingFile {
             tracker.waitForAll();
             target = new PImage(awtImage);
             super.run();
-            System.out.println("Loading of file "+fileToLoad+" is done");
+            System.out.println("Loading of file "+fileToLoad+" is done: "+done);
           } catch (InterruptedException e) {
             //e.printStackTrace();  // non-fatal, right?
           }
@@ -120,7 +120,7 @@ class StreamingFont extends StreamingFile {
 	  } catch (Exception e) {
 	    e.printStackTrace();
 	  }    
-    System.out.println("Loading of file "+fileToLoad+" is done");
+    System.out.println("Loading of file "+fileToLoad+" is done: "+done);
   }
 }
 
