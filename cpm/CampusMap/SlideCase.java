@@ -386,9 +386,10 @@ public class SlideCase extends PApplet {
 
 		//icon and font
 		//***************************************
-		if(slideIcon != null)image(slideIcon, buttonLeft, buttonTop);
+		if(this.slideIcon != null)image(this.slideIcon, buttonLeft, buttonTop);
 		else if(applet.slideIcon.isDone() && !iconLoadInvoked){
 			iconLoadInvoked=true;
+			System.out.println("Copying slideIcon");
 			this.slideIcon = applet.slideIcon.target; 
 		}
 		//else slideIcon=loadImage(Environment.address+Environment.ressourceFolder+"arrow.gif");
