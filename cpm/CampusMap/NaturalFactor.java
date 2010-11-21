@@ -42,7 +42,7 @@ class NaturalFactor {
 
 	public NaturalFactor(CampusMap p_applet){
 		applet = p_applet;
-		applet.env.objectInitDisplay.setText("NaturalFactor");
+		applet.env.objectInitDisplay.setText("NaturalFactor init");
 		lightBlue	= new Color(230, 241, 243);
 		//blue		= new Color(105, 155, 204);
 		//white		= new Color(255, 255, 255);
@@ -93,6 +93,7 @@ class NaturalFactor {
 		//	fogDistances[i] = realFogDistances[i%7];
 		//}
 		stars = new Stars(applet, 150, 30000, 300);
+		applet.env.objectInitDisplay.setText("NaturalFactor end init");
 
 		update();
 	}

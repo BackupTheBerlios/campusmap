@@ -53,11 +53,11 @@ public class GroundPlane {
     	//applet.fill(255,255,240,255);
     	if(!drawGrey)applet.fill(245,251,213);
     	else applet.fill(240);
-    	applet.pushMatrix();
+//    	applet.pushMatrix();
     	applet.translate(0,0,-2);
     	applet.ellipse(0, 0, elipseSize, elipseSize);
     	//applet.rect(x, y, width, width);
-    	applet.popMatrix();
+//    	applet.popMatrix();
 
     	//draw lines
     	applet.stroke(220,220,200,255);

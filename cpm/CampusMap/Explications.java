@@ -70,7 +70,8 @@ public class Explications extends JPanel implements Runnable{
 		}catch(Exception e){
 			System.out.println("Text-Field initialissation failed.");
 			e.printStackTrace();
-			textDisplay.setText("Keine Verbindung zum HTML Verzeichnis. Bitte überprüfen sie ihre Internetverbindung, oder lassen sie den Webmaster der FH-Lübeck von dem Fehler wissen. Danke!");
+			textDisplay.setText(e.getMessage());
+			//textDisplay.setText("Keine Verbindung zum HTML Verzeichnis. Bitte überprüfen sie ihre Internetverbindung, oder lassen sie den Webmaster der FH-Lübeck von dem Fehler wissen. Danke!");
 		}
 		textDisplay.setIgnoreRepaint(true);
 		this.add(textDisplay);

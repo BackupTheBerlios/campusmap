@@ -222,7 +222,9 @@ public class SlideCase extends PApplet {
 		extWidth=width;
 		int lineAmount=height;
 		//int[] bufferInt = new int[pixels.length];
-		PImage bufferImage = new PImage(pixels, width, height, RGB);
+		PImage bufferImage = new PImage(width, height);
+		bufferImage.format = RGB;
+		bufferImage.pixels = pixels;
 
 		extLeft=left;
 		extTop=top;

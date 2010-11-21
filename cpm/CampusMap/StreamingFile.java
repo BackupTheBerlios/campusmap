@@ -81,6 +81,7 @@ class StreamingPicture extends StreamingFile {
         try {
             tracker.waitForAll();
             target = new PImage(awtImage);
+            target.format = PImage.ARGB;
             super.run();
             System.out.println("Loading of file "+fileToLoad+" is done: "+done);
           } catch (InterruptedException e) {
