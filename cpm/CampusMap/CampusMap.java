@@ -46,7 +46,7 @@ public class CampusMap extends PApplet{
 	Building lastSelectedBuilding;
 	OBJModel	letters;
 	Boxes		boxes;
-	PGraphics3	g3;
+	PGraphics3D	g3;
 	static PImage overviewImage;
 	public Environment env;
 	NaturalFactor naturalFactor;
@@ -109,7 +109,7 @@ public class CampusMap extends PApplet{
 
         private void preStreamSetup(){
           size(SCREEN_WIDTH, SCREEN_HEIGHT, P3D);
-          g3 = (PGraphics3) g;
+          g3 = (PGraphics3D) g;
           // ? does this help ? ((PGraphics3)g).triangle.setCulling(true);
           groundPlane = new GroundPlane(this);
           returnChanges = true;
@@ -139,7 +139,9 @@ public class CampusMap extends PApplet{
             int[] bgPixels = new int[bgWidth * bgHeight];
             for (int i = 0; i < bgPixels.length; i++)
               if (bgPixels[i] != 0) System.out.print(bgPixels[i]);
-            overlay = new PImage(bgPixels, bgWidth, bgHeight, ARGB);
+            overlay = new PImage(bgWidth, bgHeight);
+            overlay.format = ARGB;
+            overlay.pixels = bgPixels;
             runNum = 0;
             controls.setEnabled(false);
 
@@ -333,7 +335,13 @@ public class CampusMap extends PApplet{
           env.repaintEnv();
 
           // wait delay to allow processing of other system tasks
-          delay(30);
+          try
+          {
+        	  delay(30);
+          }catch(java.lang.IllegalMonitorStateException e)
+          {
+//        	  e.printStackTrace();
+          }
           noHint(DISABLE_DEPTH_TEST);
 	}
 
@@ -341,7 +349,9 @@ public class CampusMap extends PApplet{
 		updatePixels();
 		int[] buffer = new int[pixels.length];
 		System.arraycopy(pixels, 0, buffer, 0, pixels.length);
-		overviewImage=new PImage(buffer, width, height, RGB);
+		overviewImage = new PImage(width, height);
+		overviewImage.format = RGB;
+		overviewImage.pixels = buffer;
 		// overviewImage.save("image.tif");
                 buffer=null;
 		System.out.println("shut for overview");
